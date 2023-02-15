@@ -1,3 +1,4 @@
+// To use AllMovies we need to get an api key we use the example for now
 class AllMovies {
   AllMovies({
     required this.page,

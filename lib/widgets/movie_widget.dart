@@ -4,6 +4,7 @@ import 'package:netflix_web/screens/movie_info.dart';
 
 // This is the widget that is shown per movie in the main page.
 Widget movieWidget({required Movie movie, required BuildContext context}) {
+  final currentWidth = MediaQuery.of(context).size.width;
   return GestureDetector(
     onTap: () => Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => MovieInfo(movie: movie))),
@@ -13,7 +14,7 @@ Widget movieWidget({required Movie movie, required BuildContext context}) {
         children: [
           SizedBox(
             width: 500,
-            height: 500,
+            height: 700,
             child: Image.network(
                 fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${movie.posterPath}"),
           ),
@@ -29,17 +30,17 @@ Widget movieWidget({required Movie movie, required BuildContext context}) {
                 end: Alignment.topCenter,
               ),
             ),
-            alignment: Alignment.center,
-            width: 500,
-            child: Container(
+            alignment: Alignment.bottomLeft,
+            child: FittedBox(
               alignment: Alignment.bottomLeft,
-              height: 500,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   movie.title,
-                  style: const TextStyle(
-                      color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: currentWidth * 20 / (currentWidth),
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),

@@ -28,24 +28,29 @@ class _MoviesPageState extends State<MoviesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
+        toolbarHeight: 120,
         title: const Text(
           "Movies",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+              color: Colors.deepPurpleAccent),
         ),
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.black,
       ),
       body: loading
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.71,
-                crossAxisCount: 5,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 0.7,
+                crossAxisCount: currentWidth ~/ 300,
               ),
               itemCount: moviesList.length,
               itemBuilder: (BuildContext context, index) {
