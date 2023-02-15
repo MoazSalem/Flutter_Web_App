@@ -28,11 +28,12 @@ class _MovieInfoState extends State<MovieInfo> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton(
+          backgroundColor: Colors.deepPurpleAccent,
           onPressed: () {
             Navigator.of(context).pop();
           },
           mini: true,
-          child: const Icon(Icons.arrow_back),
+          child: const Icon(Icons.arrow_back,color: Colors.white,),
         ),
       ),
       body: ListView(

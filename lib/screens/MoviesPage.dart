@@ -32,7 +32,7 @@ class _MoviesPageState extends State<MoviesPage> {
       appBar: AppBar(
         title: const Text(
           "Movies",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
         ),
         backgroundColor: Colors.deepPurpleAccent,
       ),
