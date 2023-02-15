@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_web/models/movies.dart';
 
-class MovieInfo extends StatefulWidget {
-  String title;
-  double averageVote;
-  String overview;
-  String poster;
+// This page is opened when you press on a movie
+class MovieInfo extends StatelessWidget {
+  final Movie movie;
 
-  MovieInfo(
-      {Key? key,
-      required this.title,
-      required this.averageVote,
-      required this.overview,
-      required this.poster})
-      : super(key: key);
+  const MovieInfo({Key? key, required this.movie}) : super(key: key);
 
-  @override
-  State<MovieInfo> createState() => _MovieInfoState();
-}
-
-class _MovieInfoState extends State<MovieInfo> {
   @override
   Widget build(BuildContext context) {
     Color primary = Colors.deepPurpleAccent.shade100;
@@ -26,14 +14,17 @@ class _MovieInfoState extends State<MovieInfo> {
       backgroundColor: Colors.black,
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(top: 12.0),
         child: FloatingActionButton(
           backgroundColor: Colors.deepPurpleAccent,
           onPressed: () {
             Navigator.of(context).pop();
           },
           mini: true,
-          child: const Icon(Icons.arrow_back,color: Colors.white,),
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
         ),
       ),
       body: ListView(
@@ -41,12 +32,13 @@ class _MovieInfoState extends State<MovieInfo> {
           SizedBox(
             width: double.infinity,
             height: 600,
-            child: Image.network(fit: BoxFit.fitWidth, widget.poster),
+            child: Image.network(
+                fit: BoxFit.fitWidth, "https://image.tmdb.org/t/p/w500${movie.posterPath}"),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
             child: Text(
-              widget.title,
+              movie.title,
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: primary),
             ),
           ),
@@ -58,7 +50,7 @@ class _MovieInfoState extends State<MovieInfo> {
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
                 children: <TextSpan>[
                   const TextSpan(text: "Rating: "),
-                  TextSpan(text: widget.averageVote.toString(), style: TextStyle(color: primary)),
+                  TextSpan(text: movie.voteAverage.toString(), style: TextStyle(color: primary)),
                 ],
               ),
             ),
@@ -80,7 +72,7 @@ class _MovieInfoState extends State<MovieInfo> {
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Text(
-                widget.overview,
+                movie.overview,
                 style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w300),
               ),
             ),
