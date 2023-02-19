@@ -31,15 +31,16 @@ class MovieInfo extends StatelessWidget {
         children: [
           SizedBox(
             width: double.infinity,
-            height: 600,
+            height: 400,
             child: Image.network(
-                fit: BoxFit.cover, "https://image.tmdb.org/t/p/w500${movie.posterPath}"),
+                fit: BoxFit.cover, "https://image.tmdb.org/t/p/original/${movie.backdropPath}"),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
             child: Text(
               movie.title,
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: primary),
+              style:
+                  const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
           Padding(
@@ -58,23 +59,19 @@ class MovieInfo extends StatelessWidget {
           const SizedBox(
             height: 60,
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
+          const Padding(
+            padding: EdgeInsets.all(10.0),
             child: Text(
               "Overview:",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: primary),
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
-          Card(
-            color: Colors.deepPurpleAccent.shade100,
-            margin: const EdgeInsets.all(10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                movie.overview,
-                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w300),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              movie.overview,
+              style:
+                  const TextStyle(fontSize: 26, fontWeight: FontWeight.w300, color: Colors.white),
             ),
           ),
         ],
