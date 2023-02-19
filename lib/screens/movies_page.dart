@@ -32,16 +32,20 @@ class _MoviesPageState extends State<MoviesPage> {
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      drawer: const Drawer(
+        backgroundColor: Colors.black,
+      ),
       backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
-        toolbarHeight: 120,
+        toolbarHeight: 70,
         title: const Text(
-          "Movies",
+          "Popular",
           style:
-              TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+              TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
         ),
         backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: loading
           ? const Center(
@@ -52,9 +56,10 @@ class _MoviesPageState extends State<MoviesPage> {
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(12),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 0.7,
-                    crossAxisCount: currentWidth ~/ 300,
+                    crossAxisCount: currentWidth ~/ 250,
                   ),
                   itemCount: moviesList.length,
                   itemBuilder: (BuildContext context, index) {
@@ -62,15 +67,35 @@ class _MoviesPageState extends State<MoviesPage> {
                   },
                 ),
                 Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: Center(child: Text("Page $currentPage")),
+                ),
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          minimumSize: const Size(250, 50),
+                          minimumSize: Size(currentWidth * 0.3, 60),
+                        ),
+                        onPressed: currentPage == 1
+                            ? null
+                            : () async {
+                                currentPage = 1;
+                                setState(() {
+                                  loading = true;
+                                });
+                                getMovies(page: 1);
+                              },
+                        child: const Icon(Icons.home_filled),
+                      ),
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          minimumSize: Size(currentWidth * 0.3, 60),
                         ),
                         onPressed: currentPage == 1
                             ? null
@@ -87,7 +112,7 @@ class _MoviesPageState extends State<MoviesPage> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.deepPurpleAccent,
-                          minimumSize: const Size(250, 50),
+                          minimumSize: Size(currentWidth * 0.3, 60),
                         ),
                         onPressed: () async {
                           currentPage++;

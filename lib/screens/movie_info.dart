@@ -9,14 +9,16 @@ class MovieInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color primary = Colors.deepPurpleAccent.shade100;
+    Color primary = Colors.deepPurpleAccent;
+    var currentWidth = MediaQuery.of(context).size.width;
+    currentWidth > 800 ? currentWidth /= 2 : currentWidth *= 1.2;
     return Scaffold(
       backgroundColor: Colors.black,
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(top: 12.0),
         child: FloatingActionButton(
-          backgroundColor: Colors.deepPurpleAccent,
+          backgroundColor: primary,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -39,16 +41,20 @@ class MovieInfo extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
             child: Text(
               movie.title,
-              style:
-                  const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontSize: currentWidth * 0.05,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: RichText(
               text: TextSpan(
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: currentWidth * 0.035,
+                    color: Colors.white),
                 children: <TextSpan>[
                   const TextSpan(text: "Rating: "),
                   TextSpan(text: movie.voteAverage.toString(), style: TextStyle(color: primary)),
@@ -57,21 +63,20 @@ class MovieInfo extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 60,
+            height: 20,
           ),
-          const Padding(
-            padding: EdgeInsets.all(10.0),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               "Overview:",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(fontSize: currentWidth * 0.035, fontWeight: FontWeight.bold),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               movie.overview,
-              style:
-                  const TextStyle(fontSize: 26, fontWeight: FontWeight.w300, color: Colors.white),
+              style: TextStyle(fontSize: currentWidth * 0.03, fontWeight: FontWeight.w300),
             ),
           ),
         ],

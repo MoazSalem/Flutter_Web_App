@@ -17,6 +17,10 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.7.3'
+      - name: Decode base64 secrets
+        run: echo $SECRETS_FILE_CONTENTS | base64 -d > lib/private.dart
+        env:
+          SECRETS_FILE_CONTENTS: ${{ secrets.Private_Dart_File }}
       - run: flutter pub get
       - name: Build web
         run: |

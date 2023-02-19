@@ -12,20 +12,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      scrollBehavior: const MaterialScrollBehavior().copyWith(
-        dragDevices: {
-          PointerDeviceKind.mouse,
-          PointerDeviceKind.touch,
-          PointerDeviceKind.stylus,
-          PointerDeviceKind.unknown
-        }
-      ),
+      scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.touch,
+        PointerDeviceKind.stylus,
+        PointerDeviceKind.unknown
+      }),
       debugShowCheckedModeBanner: false,
       title: 'Netflix Clone',
       darkTheme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.deepPurple,
-      ),
+          useMaterial3: true,
+          primarySwatch: Colors.deepPurple,
+          textTheme: const TextTheme(
+              bodyLarge: TextStyle(color: Colors.white),
+              bodyMedium: TextStyle(color: Colors.white),
+              bodySmall: TextStyle(color: Colors.white))),
       themeMode: ThemeMode.dark,
       home: const MoviesPage(),
     );
