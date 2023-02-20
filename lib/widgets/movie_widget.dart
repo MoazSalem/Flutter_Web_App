@@ -4,7 +4,7 @@ import 'package:netflix_web/screens/movie_info.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // This is the widget that is shown per movie in the main page.
-Widget movieWidget({required Movie movie, required BuildContext context}) {
+Widget movieWidget({required var movie, required BuildContext context}) {
   return GestureDetector(
     onTap: () => Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => MovieInfo(movie: movie))),

@@ -3,6 +3,10 @@ import 'package:netflix_web/screens/movies/now_playing_page.dart';
 import 'package:netflix_web/screens/movies/popular_page.dart';
 import 'package:netflix_web/screens/movies/top_rated_page.dart';
 import 'package:netflix_web/screens/movies/upcoming_page.dart';
+import 'package:netflix_web/screens/tvShows//airing_today_page.dart';
+import 'package:netflix_web/screens/tvShows/popular_page.dart';
+import 'package:netflix_web/screens/tvShows/top_rated_page.dart';
+import 'package:netflix_web/screens/tvShows/on_the_air_page.dart';
 
 Widget drawerWidget({required ThemeData theme, required BuildContext context}) {
   return Drawer(
@@ -49,11 +53,26 @@ Widget drawerWidget({required ThemeData theme, required BuildContext context}) {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           children: [
-            ListTile(onTap: () {}, title: const Text("Popular"), hoverColor: Colors.deepPurple),
             ListTile(
-                onTap: () {}, title: const Text("Airing Today"), hoverColor: Colors.deepPurple),
-            ListTile(onTap: () {}, title: const Text("Top Rated"), hoverColor: Colors.deepPurple),
-            ListTile(onTap: () {}, title: const Text("On The Air"), hoverColor: Colors.deepPurple)
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const PopularTPage())),
+                title: const Text("Popular"),
+                hoverColor: Colors.deepPurple),
+            ListTile(
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const TopRatedTPage())),
+                title: const Text("Top Rated"),
+                hoverColor: Colors.deepPurple),
+            ListTile(
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const AiringTodayPage())),
+                title: const Text("Airing Today"),
+                hoverColor: Colors.deepPurple),
+            ListTile(
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const OnTheAirPage())),
+                title: const Text("On The Air"),
+                hoverColor: Colors.deepPurple)
           ],
         ),
       )
