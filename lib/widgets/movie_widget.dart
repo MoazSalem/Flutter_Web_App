@@ -8,39 +8,34 @@ Widget movieWidget({required Movie movie, required BuildContext context}) {
   return GestureDetector(
     onTap: () => Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => MovieInfo(movie: movie))),
-    child: Center(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 24.0),
-        child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            SizedBox(
-              child: Image.network(
-                  fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${movie.posterPath}"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                radius: 24,
-                backgroundColor: Colors.black87,
-                child: CircularPercentIndicator(
-                  animationDuration: 3000,
-                  curve: Curves.bounceOut,
-                  radius: 24.0,
-                  lineWidth: 3.0,
-                  percent: (movie.voteAverage / 10),
-                  animation: true,
-                  center: Text(
-                    (movie.voteAverage * 10).toString(),
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
-                  ),
-                  progressColor: progressColor(rating: (movie.voteAverage * 10)),
-                ),
-              ),
-            )
-          ],
+    child: Stack(
+      alignment: Alignment.topRight,
+      children: [
+        SizedBox(
+          child:
+              Image.network(fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${movie.posterPath}"),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            radius: 24,
+            backgroundColor: Colors.black87,
+            child: CircularPercentIndicator(
+              animationDuration: 3000,
+              curve: Curves.bounceOut,
+              radius: 24.0,
+              lineWidth: 3.0,
+              percent: (movie.voteAverage / 10),
+              animation: true,
+              center: Text(
+                (movie.voteAverage * 10).toString(),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+              ),
+              progressColor: progressColor(rating: (movie.voteAverage * 10)),
+            ),
+          ),
+        )
+      ],
     ),
   );
 }

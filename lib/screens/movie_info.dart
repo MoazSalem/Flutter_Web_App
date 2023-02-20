@@ -10,7 +10,7 @@ class MovieInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color primary = Colors.deepPurpleAccent;
-    var currentWidth = MediaQuery.of(context).size.width;
+    double currentWidth = MediaQuery.of(context).size.width;
     currentWidth > 800 ? currentWidth /= 2 : currentWidth *= 1.2;
     return Scaffold(
       backgroundColor: Colors.black,

@@ -30,7 +30,7 @@ class _MoviesPageState extends State<MoviesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentWidth = MediaQuery.of(context).size.width;
+    double currentWidth = MediaQuery.of(context).size.width;
     ScrollController scrollController = ScrollController();
     return Scaffold(
       drawer: const Drawer(
@@ -70,9 +70,10 @@ class _MoviesPageState extends State<MoviesPage> {
                 shrinkWrap: false,
                 cacheExtent: 2500,
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.03, vertical: 10),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.6685,
+                  mainAxisSpacing: 1,
                   crossAxisCount: crossAxisCount(currentWidth: currentWidth),
                 ),
                 itemCount: moviesList.length,
