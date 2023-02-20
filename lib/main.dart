@@ -15,25 +15,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.touch,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.unknown
-      }),
-      debugShowCheckedModeBanner: false,
-      title: 'Netflix Clone',
-      darkTheme: ThemeData(
-          useMaterial3: true,
-          primaryColor: Colors.deepPurpleAccent,
-          brightness: Brightness.dark,
-          indicatorColor: Colors.white,
-          canvasColor: Colors.black,
-          appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light)),
-      themeMode: ThemeMode.dark,
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
-    );
+        scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.unknown
+        }),
+        debugShowCheckedModeBanner: false,
+        title: 'Netflix Clone',
+        darkTheme: ThemeData(
+            useMaterial3: true,
+            primaryColor: Colors.deepPurpleAccent,
+            brightness: Brightness.dark,
+            indicatorColor: Colors.white,
+            canvasColor: Colors.black,
+            appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light)),
+        themeMode: ThemeMode.dark,
+        routerConfig: router);
   }
 }

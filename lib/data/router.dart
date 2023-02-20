@@ -4,7 +4,7 @@ import 'package:netflix_web/screens/home_page.dart';
 import 'package:netflix_web/screens/movies/movies_page.dart';
 import 'package:netflix_web/screens/tvShows/tv_page.dart';
 
-final GoRouter router = GoRouter(routes: [
+final GoRouter router = GoRouter(initialLocation: '/movies/popular', routes: [
   GoRoute(routes: [
     GoRoute(
         path: "movies/popular",
