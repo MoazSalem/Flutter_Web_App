@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:netflix_web/screens/movies/popular_page.dart';
+import 'package:url_strategy/url_strategy.dart';
+import 'data/router.dart';
 
 void main() {
+  setPathUrlStrategy();
   runApp(const MyApp());
 }
 
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
         PointerDeviceKind.mouse,
         PointerDeviceKind.touch,
@@ -29,7 +31,9 @@ class MyApp extends StatelessWidget {
           canvasColor: Colors.black,
           appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light)),
       themeMode: ThemeMode.dark,
-      home: const PopularPage(),
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }
