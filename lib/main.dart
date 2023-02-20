@@ -21,12 +21,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Netflix Clone',
       darkTheme: ThemeData(
-          useMaterial3: true,
-          primarySwatch: Colors.deepPurple,
-          textTheme: const TextTheme(
-              bodyLarge: TextStyle(color: Colors.white),
-              bodyMedium: TextStyle(color: Colors.white),
-              bodySmall: TextStyle(color: Colors.white))),
+        useMaterial3: true,
+        primarySwatch: Colors.deepPurple,
+        textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: Colors.white),
+            bodyMedium: TextStyle(color: Colors.white),
+            bodySmall: TextStyle(color: Colors.white)),
+        scrollbarTheme: const ScrollbarThemeData().copyWith(
+            thumbColor: MaterialStateProperty.all(Colors.deepPurpleAccent.withOpacity(0.5))),
+      ),
       themeMode: ThemeMode.dark,
       home: const MoviesPage(),
     );

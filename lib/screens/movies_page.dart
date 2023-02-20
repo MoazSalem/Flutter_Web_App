@@ -31,6 +31,7 @@ class _MoviesPageState extends State<MoviesPage> {
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
+    ScrollController scrollController = ScrollController();
     return Scaffold(
       drawer: const Drawer(
         backgroundColor: Colors.black,
@@ -44,6 +45,16 @@ class _MoviesPageState extends State<MoviesPage> {
           style:
               TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Center(
+                child: Text(
+              "Page $currentPage",
+              style: const TextStyle(color: Colors.white),
+            )),
+          ),
+        ],
         backgroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -51,84 +62,92 @@ class _MoviesPageState extends State<MoviesPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ListView(
-              children: [
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(12),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.7,
-                    crossAxisCount: currentWidth ~/ 250,
-                  ),
-                  itemCount: moviesList.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return movieWidget(context: context, movie: moviesList[index]);
-                  },
+          : Scrollbar(
+              controller: scrollController,
+              thumbVisibility: true,
+              child: GridView.builder(
+                controller: scrollController,
+                shrinkWrap: false,
+                cacheExtent: 2500,
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(12),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.7,
+                  crossAxisCount: crossAxisCount(currentWidth: currentWidth),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30.0),
-                  child: Center(child: Text("Page $currentPage")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          minimumSize: Size(currentWidth * 0.3, 60),
-                        ),
-                        onPressed: currentPage == 1
-                            ? null
-                            : () async {
-                                currentPage = 1;
-                                setState(() {
-                                  loading = true;
-                                });
-                                getMovies(page: 1);
-                              },
-                        child: const Icon(Icons.home_filled),
-                      ),
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          minimumSize: Size(currentWidth * 0.3, 60),
-                        ),
-                        onPressed: currentPage == 1
-                            ? null
-                            : () async {
-                                currentPage--;
-                                setState(() {
-                                  loading = true;
-                                });
-                                getMovies(page: currentPage);
-                              },
-                        child: const Icon(Icons.arrow_back),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.deepPurpleAccent,
-                          minimumSize: Size(currentWidth * 0.3, 60),
-                        ),
-                        onPressed: () async {
-                          currentPage++;
-                          setState(() {
-                            loading = true;
-                          });
-                          setState(() {});
-                          getMovies(page: currentPage);
-                        },
-                        child: const Icon(Icons.arrow_forward),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                itemCount: moviesList.length,
+                itemBuilder: (BuildContext context, index) {
+                  return movieWidget(context: context, movie: moviesList[index]);
+                },
+              ),
             ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: Size(currentWidth * 0.3, 50),
+              ),
+              onPressed: currentPage == 1
+                  ? null
+                  : () async {
+                      currentPage = 1;
+                      setState(() {
+                        loading = true;
+                      });
+                      getMovies(page: 1);
+                    },
+              child: const Icon(Icons.home_filled),
+            ),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: Size(currentWidth * 0.3, 50),
+              ),
+              onPressed: currentPage == 1
+                  ? null
+                  : () async {
+                      currentPage--;
+                      setState(() {
+                        loading = true;
+                      });
+                      getMovies(page: currentPage);
+                    },
+              child: const Icon(Icons.arrow_back),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.deepPurpleAccent,
+                minimumSize: Size(currentWidth * 0.3, 50),
+              ),
+              onPressed: () async {
+                currentPage++;
+                setState(() {
+                  loading = true;
+                });
+                setState(() {});
+                getMovies(page: currentPage);
+              },
+              child: const Icon(Icons.arrow_forward),
+            )
+          ],
+        ),
+      ),
     );
   }
+}
+
+int crossAxisCount({required currentWidth}) {
+  int count = currentWidth ~/ 250;
+  count == 1
+      ? count = 2
+      : count > 5
+          ? count = 5
+          : null;
+  return count;
 }
