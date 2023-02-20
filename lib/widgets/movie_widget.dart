@@ -19,7 +19,7 @@ Widget movieWidget({required Movie movie, required BuildContext context}) {
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
             radius: 24,
-            backgroundColor: Colors.black87,
+            backgroundColor: Colors.black54,
             child: CircularPercentIndicator(
               animationDuration: 3000,
               curve: Curves.bounceOut,

@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_web/services/movies_service.dart';
-import 'package:netflix_web/widgets/movie_widget.dart';
+import 'package:netflix_web/data/end_points.dart';
+import 'package:netflix_web/widgets/list_widget.dart';
+import 'package:netflix_web/widgets/drawer.dart';
 
 int currentPage = 1;
 
 // This is the main page
-class MoviesPage extends StatefulWidget {
-  const MoviesPage({Key? key}) : super(key: key);
+class PopularPage extends StatefulWidget {
+  const PopularPage({Key? key}) : super(key: key);
 
   @override
-  State<MoviesPage> createState() => _MoviesPageState();
+  State<PopularPage> createState() => _PopularPageState();
 }
 
-class _MoviesPageState extends State<MoviesPage> {
+class _PopularPageState extends State<PopularPage> {
   late List moviesList;
   bool loading = true;
 
   getMovies({required int page}) async {
-    moviesList = await MoviesService().getMovies(page: page);
+    moviesList = await MoviesService()
+        .getMovies(page: page, endPoint: getEndPoint(categoryIndex: 0, typeIndex: 0));
     loading = false;
     setState(() {});
   }
@@ -32,18 +35,16 @@ class _MoviesPageState extends State<MoviesPage> {
   Widget build(BuildContext context) {
     double currentWidth = MediaQuery.of(context).size.width;
     ScrollController scrollController = ScrollController();
+    ThemeData theme = Theme.of(context);
     return Scaffold(
-      drawer: const Drawer(
-        backgroundColor: Colors.black,
-      ),
-      backgroundColor: Colors.black,
+      drawer: drawerWidget(theme: theme),
+      backgroundColor: theme.canvasColor,
       appBar: AppBar(
         centerTitle: true,
         toolbarHeight: 70,
-        title: const Text(
+        title: Text(
           "Popular",
-          style:
-              TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: theme.primaryColor),
         ),
         actions: [
           Padding(
@@ -51,37 +52,17 @@ class _MoviesPageState extends State<MoviesPage> {
             child: Center(
                 child: Text(
               "Page $currentPage",
-              style: const TextStyle(color: Colors.white),
             )),
           ),
         ],
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: theme.canvasColor,
       ),
       body: loading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Scrollbar(
-              controller: scrollController,
-              thumbVisibility: true,
-              child: GridView.builder(
-                controller: scrollController,
-                shrinkWrap: false,
-                cacheExtent: 2500,
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.03, vertical: 10),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.6685,
-                  mainAxisSpacing: 1,
-                  crossAxisCount: crossAxisCount(currentWidth: currentWidth),
-                ),
-                itemCount: moviesList.length,
-                itemBuilder: (BuildContext context, index) {
-                  return movieWidget(context: context, movie: moviesList[index]);
-                },
-              ),
-            ),
+          : listWidget(
+              scrollController: scrollController, currentWidth: currentWidth, list: moviesList),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -90,7 +71,6 @@ class _MoviesPageState extends State<MoviesPage> {
           children: [
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
                 minimumSize: Size(currentWidth * 0.3, 50),
               ),
               onPressed: currentPage == 1
@@ -106,7 +86,6 @@ class _MoviesPageState extends State<MoviesPage> {
             ),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
                 minimumSize: Size(currentWidth * 0.3, 50),
               ),
               onPressed: currentPage == 1
@@ -123,7 +102,7 @@ class _MoviesPageState extends State<MoviesPage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Colors.deepPurpleAccent,
+                backgroundColor: theme.primaryColor,
                 minimumSize: Size(currentWidth * 0.3, 50),
               ),
               onPressed: () async {
@@ -141,14 +120,4 @@ class _MoviesPageState extends State<MoviesPage> {
       ),
     );
   }
-}
-
-int crossAxisCount({required currentWidth}) {
-  int count = currentWidth ~/ 250;
-  count == 1
-      ? count = 2
-      : count > 5
-          ? count = 5
-          : null;
-  return count;
 }

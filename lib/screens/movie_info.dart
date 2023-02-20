@@ -9,23 +9,22 @@ class MovieInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color primary = Colors.deepPurpleAccent;
+    ThemeData theme = Theme.of(context);
     double currentWidth = MediaQuery.of(context).size.width;
     currentWidth > 800 ? currentWidth /= 2 : currentWidth *= 1.2;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.canvasColor,
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(top: 12.0),
         child: FloatingActionButton(
-          backgroundColor: primary,
+          backgroundColor: theme.primaryColor,
           onPressed: () {
             Navigator.of(context).pop();
           },
           mini: true,
           child: const Icon(
             Icons.arrow_back,
-            color: Colors.white,
           ),
         ),
       ),
@@ -54,10 +53,12 @@ class MovieInfo extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: currentWidth * 0.035,
-                    color: Colors.white),
+                    color: theme.textTheme.bodySmall!.color),
                 children: <TextSpan>[
                   const TextSpan(text: "Rating: "),
-                  TextSpan(text: movie.voteAverage.toString(), style: TextStyle(color: primary)),
+                  TextSpan(
+                      text: movie.voteAverage.toString(),
+                      style: TextStyle(color: theme.primaryColor)),
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:netflix_web/screens/movies_page.dart';
+import 'package:flutter/services.dart';
+import 'package:netflix_web/screens/movies/popular_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,17 +22,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Netflix Clone',
       darkTheme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.deepPurple,
-        textTheme: const TextTheme(
-            bodyLarge: TextStyle(color: Colors.white),
-            bodyMedium: TextStyle(color: Colors.white),
-            bodySmall: TextStyle(color: Colors.white)),
-        scrollbarTheme: const ScrollbarThemeData().copyWith(
-            thumbColor: MaterialStateProperty.all(Colors.deepPurpleAccent.withOpacity(0.5))),
-      ),
+          useMaterial3: true,
+          primaryColor: Colors.deepPurpleAccent,
+          brightness: Brightness.dark,
+          indicatorColor: Colors.white,
+          canvasColor: Colors.black,
+          appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light)),
       themeMode: ThemeMode.dark,
-      home: const MoviesPage(),
+      home: const PopularPage(),
     );
   }
 }
