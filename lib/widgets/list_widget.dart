@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:netflix_web/widgets/show_widget.dart';
 import 'movie_widget.dart';
 
 Widget listWidget(
     {required ScrollController scrollController,
     required double currentWidth,
-    required List list}) {
+    required List list,
+    required bool isMovie}) {
   return Scrollbar(
     controller: scrollController,
     thumbVisibility: true,
@@ -22,7 +23,9 @@ Widget listWidget(
       ),
       itemCount: list.length,
       itemBuilder: (BuildContext context, index) {
-        return movieWidget(context: context, movie: list[index]);
+        return isMovie
+            ? movieWidget(context: context, movie: list[index])
+            : showWidget(context: context, show: list[index]);
       },
     ),
   );

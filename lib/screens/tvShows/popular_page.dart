@@ -62,7 +62,10 @@ class _PopularTPageState extends State<PopularTPage> {
               child: CircularProgressIndicator(),
             )
           : listWidget(
-              scrollController: scrollController, currentWidth: currentWidth, list: tvShowsList),
+              scrollController: scrollController,
+              currentWidth: currentWidth,
+              list: tvShowsList,
+              isMovie: false),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

@@ -1,72 +1,69 @@
-class TvShow {
-  int? page;
-  List<TvShows>? tvShows;
-  int? totalPages;
-  int? totalResults;
+class TvShows {
+  TvShows({
+    required this.page,
+    required this.results,
+    required this.totalPages,
+    required this.totalResults,
+  });
+  late final int page;
+  late final List<TvShow> results;
+  late final int totalPages;
+  late final int totalResults;
 
-  TvShow({this.page, this.tvShows, this.totalPages, this.totalResults});
-
-  TvShow.fromJson(Map<String, dynamic> json) {
+  TvShows.fromJson(Map<String, dynamic> json){
     page = json['page'];
-    if (json['results'] != null) {
-      tvShows = <TvShows>[];
-      json['results'].forEach((v) {
-        tvShows!.add(TvShows.fromJson(v));
-      });
-    }
+    results = List.from(json['results']).map((e)=>TvShow.fromJson(e)).toList();
     totalPages = json['total_pages'];
     totalResults = json['total_results'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final data = <String, dynamic>{};
     data['page'] = page;
-    if (tvShows != null) {
-      data['results'] = tvShows!.map((v) => v.toJson()).toList();
-    }
+    data['results'] = results.map((e)=>e.toJson()).toList();
     data['total_pages'] = totalPages;
     data['total_results'] = totalResults;
     return data;
   }
 }
 
-class TvShows {
-  String? backdropPath;
-  String? firstAirDate;
-  List<int>? genreIds;
-  int? id;
-  String? name;
-  List<String>? originCountry;
-  String? originalLanguage;
-  String? originalName;
-  String? overview;
-  double? popularity;
-  String? posterPath;
-  double? voteAverage;
-  int? voteCount;
+class TvShow {
+  TvShow({
+    required this.backdropPath,
+    required this.firstAirDate,
+    required this.genreIds,
+    required this.id,
+    required this.name,
+    required this.originCountry,
+    required this.originalLanguage,
+    required this.originalName,
+    required this.overview,
+    required this.popularity,
+    required this.posterPath,
+    required this.voteAverage,
+    required this.voteCount,
+  });
+  late final String? backdropPath;
+  late final String firstAirDate;
+  late final List<int> genreIds;
+  late final int id;
+  late final String name;
+  late final List<String> originCountry;
+  late final String originalLanguage;
+  late final String originalName;
+  late final String overview;
+  late final double popularity;
+  late final String posterPath;
+  late final double voteAverage;
+  late final int voteCount;
 
-  TvShows(
-      {this.backdropPath,
-      this.firstAirDate,
-      this.genreIds,
-      this.id,
-      this.name,
-      this.originCountry,
-      this.originalLanguage,
-      this.originalName,
-      this.overview,
-      this.popularity,
-      this.posterPath,
-      this.voteAverage,
-      this.voteCount});
-
-  TvShows.fromJson(Map<String, dynamic> json) {
+  TvShow.fromJson(Map<String, dynamic> json){
     backdropPath = json['backdrop_path'];
     firstAirDate = json['first_air_date'];
-    genreIds = json['genre_ids'].cast<int>();
+    genreIds = List.castFrom<dynamic, int>(json['genre_ids']);
     id = json['id'];
     name = json['name'];
-    originCountry = json['origin_country'].cast<String>();
+    originCountry = List.castFrom<dynamic, String>(json['origin_country']);
     originalLanguage = json['original_language'];
     originalName = json['original_name'];
     overview = json['overview'];
@@ -77,7 +74,7 @@ class TvShows {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final data = <String, dynamic>{};
     data['backdrop_path'] = backdropPath;
     data['first_air_date'] = firstAirDate;
     data['genre_ids'] = genreIds;
