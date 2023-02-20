@@ -34,7 +34,7 @@ Widget movieWidget({required Movie movie, required BuildContext context}) {
                     (movie.voteAverage * 10).toString(),
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
                   ),
-                  progressColor: Colors.deepPurpleAccent,
+                  progressColor: progressColor(rating: (movie.voteAverage * 10)),
                 ),
               ),
             )
@@ -43,4 +43,14 @@ Widget movieWidget({required Movie movie, required BuildContext context}) {
       ),
     ),
   );
+}
+
+Color progressColor({required double rating}) {
+  return rating <= 25
+      ? Colors.red
+      : rating > 25 && rating <= 50
+          ? Colors.red.shade300
+          : rating > 50 && rating < 70
+              ? Colors.yellow
+              : Colors.deepPurpleAccent;
 }
