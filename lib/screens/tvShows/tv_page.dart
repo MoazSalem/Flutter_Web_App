@@ -7,20 +7,24 @@ import 'package:netflix_web/widgets/drawer.dart';
 int currentPage = 1;
 
 // This is the main page
-class TopRatedTPage extends StatefulWidget {
-  const TopRatedTPage({Key? key}) : super(key: key);
+class TvPage extends StatefulWidget {
+  final int categoryIndex;
+  final String title;
+
+  const TvPage({Key? key, required this.categoryIndex, required this.title})
+      : super(key: key);
 
   @override
-  State<TopRatedTPage> createState() => _TopRatedTPageState();
+  State<TvPage> createState() => _TvPageState();
 }
 
-class _TopRatedTPageState extends State<TopRatedTPage> {
+class _TvPageState extends State<TvPage> {
   late List tvShowsList;
   bool loading = true;
 
   getMovies({required int page}) async {
-    tvShowsList = await TVService()
-        .getShows(page: page, endPoint: getEndPoint(categoryIndex: 2, typeIndex: 1));
+    tvShowsList = await TVService().getShows(
+        page: page, endPoint: getEndPoint(categoryIndex: widget.categoryIndex, typeIndex: 1));
     loading = false;
     setState(() {});
   }
@@ -43,7 +47,7 @@ class _TopRatedTPageState extends State<TopRatedTPage> {
         centerTitle: true,
         toolbarHeight: 70,
         title: Text(
-          "Top Rated",
+          widget.title,
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: theme.primaryColor),
         ),
         actions: [

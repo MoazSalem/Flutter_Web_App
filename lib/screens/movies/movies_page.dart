@@ -7,20 +7,23 @@ import 'package:netflix_web/widgets/drawer.dart';
 int currentPage = 1;
 
 // This is the main page
-class PopularPage extends StatefulWidget {
-  const PopularPage({Key? key}) : super(key: key);
+class MoviesPage extends StatefulWidget {
+  final int categoryIndex;
+  final String title;
+
+  const MoviesPage({Key? key, required this.categoryIndex, required this.title}) : super(key: key);
 
   @override
-  State<PopularPage> createState() => _PopularPageState();
+  State<MoviesPage> createState() => _MoviesPageState();
 }
 
-class _PopularPageState extends State<PopularPage> {
+class _MoviesPageState extends State<MoviesPage> {
   late List moviesList;
   bool loading = true;
 
   getMovies({required int page}) async {
-    moviesList = await MoviesService()
-        .getMovies(page: page, endPoint: getEndPoint(categoryIndex: 0, typeIndex: 0));
+    moviesList = await MoviesService().getMovies(
+        page: page, endPoint: getEndPoint(categoryIndex: widget.categoryIndex, typeIndex: 0));
     loading = false;
     setState(() {});
   }
@@ -43,7 +46,7 @@ class _PopularPageState extends State<PopularPage> {
         centerTitle: true,
         toolbarHeight: 70,
         title: Text(
-          "Popular",
+          widget.title,
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: theme.primaryColor),
         ),
         actions: [
