@@ -15,19 +15,19 @@ Widget drawerWidget({required ThemeData theme, required BuildContext context}) {
           ),
           children: [
             ListTile(
-                onTap: () => context.go('/movies/popular'),
+                onTap: () => context.go('/movies/popular/${1}'),
                 title: const Text("Popular"),
                 hoverColor: Colors.deepPurple),
             ListTile(
-                onTap: () => context.go('/movies/top-rated'),
+                onTap: () => context.go('/movies/top_rated/${1}'),
                 title: const Text("Top Rated"),
                 hoverColor: Colors.deepPurple),
             ListTile(
-                onTap: () => context.go('/movies/now-playing'),
+                onTap: () => context.go('/movies/now_playing/${1}'),
                 title: const Text("Now Playing"),
                 hoverColor: Colors.deepPurple),
             ListTile(
-                onTap: () => context.go('/movies/upcoming'),
+                onTap: () => context.go('/movies/upcoming/${1}'),
                 title: const Text("Upcoming"),
                 hoverColor: Colors.deepPurple)
           ],
@@ -43,19 +43,19 @@ Widget drawerWidget({required ThemeData theme, required BuildContext context}) {
           ),
           children: [
             ListTile(
-                onTap: () => context.go('/tv/popular'),
+                onTap: () => context.go('/tv/popular/${1}'),
                 title: const Text("Popular"),
                 hoverColor: Colors.deepPurple),
             ListTile(
-                onTap: () => context.go('/tv/top-rated'),
+                onTap: () => context.go('/tv/top_rated/${1}'),
                 title: const Text("Top Rated"),
                 hoverColor: Colors.deepPurple),
             ListTile(
-                onTap: () => context.go('/tv/airing-today'),
+                onTap: () => context.go('/tv/airing_today/${1}'),
                 title: const Text("Airing Today"),
                 hoverColor: Colors.deepPurple),
             ListTile(
-                onTap: () => context.go('/tv/on-the-air'),
+                onTap: () => context.go('/tv/on_the_air/${1}'),
                 title: const Text("On The Air"),
                 hoverColor: Colors.deepPurple)
           ],

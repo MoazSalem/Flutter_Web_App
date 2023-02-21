@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:netflix_web/services/movies_service.dart';
 import 'package:netflix_web/data/end_points.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/drawer.dart';
 
 int currentPage = 1;
+List<String> movieCategories = ["popular", "now_playing", "top_rated", "upcoming"];
 
 // This is the main page
 class MoviesPage extends StatefulWidget {
+  final String? page;
   final int categoryIndex;
   final String title;
 
-  const MoviesPage({Key? key, required this.categoryIndex, required this.title}) : super(key: key);
+  const MoviesPage({Key? key, required this.categoryIndex, required this.title, required this.page})
+      : super(key: key);
 
   @override
   State<MoviesPage> createState() => _MoviesPageState();
@@ -22,20 +26,18 @@ class _MoviesPageState extends State<MoviesPage> {
   bool loading = true;
 
   getMovies({required int page}) async {
+    currentPage = int.parse(widget.page!);
     moviesList = await MoviesService().getMovies(
-        page: page, endPoint: getEndPoint(categoryIndex: widget.categoryIndex, typeIndex: 0));
-    loading = false;
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMovies(page: currentPage);
+        page: page,
+        endPoint: getEndPoint(category: movieCategories[widget.categoryIndex], typeIndex: 0));
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    getMovies(page: currentPage);
     double currentWidth = MediaQuery.of(context).size.width;
     ScrollController scrollController = ScrollController();
     ThemeData theme = Theme.of(context);
@@ -86,7 +88,7 @@ class _MoviesPageState extends State<MoviesPage> {
                       setState(() {
                         loading = true;
                       });
-                      getMovies(page: 1);
+                      context.go("/movies/${movieCategories[widget.categoryIndex]}/${1}");
                     },
               child: const Icon(Icons.home_filled),
             ),
@@ -101,7 +103,7 @@ class _MoviesPageState extends State<MoviesPage> {
                       setState(() {
                         loading = true;
                       });
-                      getMovies(page: currentPage);
+                      context.go("/movies/${movieCategories[widget.categoryIndex]}/$currentPage");
                     },
               child: const Icon(Icons.arrow_back),
             ),
@@ -117,7 +119,7 @@ class _MoviesPageState extends State<MoviesPage> {
                   loading = true;
                 });
                 setState(() {});
-                getMovies(page: currentPage);
+                context.go("/movies/${movieCategories[widget.categoryIndex]}/$currentPage");
               },
               child: const Icon(Icons.arrow_forward),
             )

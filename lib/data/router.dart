@@ -4,55 +4,63 @@ import 'package:netflix_web/screens/home_page.dart';
 import 'package:netflix_web/screens/movies/movies_page.dart';
 import 'package:netflix_web/screens/tvShows/tv_page.dart';
 
-final GoRouter router = GoRouter(initialLocation: '/movies/popular', routes: [
+final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes: [
   GoRoute(routes: [
     GoRoute(
-        path: "movies/popular",
-        builder: (BuildContext context, GoRouterState state) => const MoviesPage(
+        path: "movies/popular/:page",
+        builder: (BuildContext context, GoRouterState state) => MoviesPage(
               categoryIndex: 0,
               title: 'Popular',
+              page: state.params['page'],
             )),
     GoRoute(
-        path: "movies/top-rated",
-        builder: (BuildContext context, GoRouterState state) => const MoviesPage(
+        path: "movies/top_rated/:page",
+        builder: (BuildContext context, GoRouterState state) => MoviesPage(
               categoryIndex: 2,
               title: 'Top Rated',
+              page: state.params['page'],
             )),
     GoRoute(
-        path: "movies/now-playing",
-        builder: (BuildContext context, GoRouterState state) => const MoviesPage(
+        path: "movies/now_playing/:page",
+        builder: (BuildContext context, GoRouterState state) => MoviesPage(
               categoryIndex: 1,
               title: 'Now Playing',
+              page: state.params['page'],
             )),
     GoRoute(
-        path: "movies/upcoming",
-        builder: (BuildContext context, GoRouterState state) => const MoviesPage(
+        path: "movies/upcoming/:page",
+        builder: (BuildContext context, GoRouterState state) => MoviesPage(
               categoryIndex: 3,
               title: 'Upcoming',
+              page: state.params['page'],
             )),
     GoRoute(
-        path: "tv/popular",
-        builder: (BuildContext context, GoRouterState state) => const TvPage(
+        path: "tv/popular/:page",
+        builder: (BuildContext context, GoRouterState state) => TvPage(
               categoryIndex: 0,
               title: 'popular',
+              page: state.params['page'],
             )),
     GoRoute(
-        path: "tv/top-rated",
-        builder: (BuildContext context, GoRouterState state) => const TvPage(
+        path: "tv/top_rated/:page",
+        builder: (BuildContext context, GoRouterState state) => TvPage(
               categoryIndex: 2,
               title: 'Top Rated',
+              page: state.params['page'],
             )),
     GoRoute(
-        path: "tv/airing-today",
-        builder: (BuildContext context, GoRouterState state) => const TvPage(
+        path: "tv/airing_today/:page",
+        builder: (BuildContext context, GoRouterState state) => TvPage(
               categoryIndex: 1,
               title: 'Airing Today',
+              page: state.params['page'],
             )),
     GoRoute(
-        path: "tv/on-the-air",
-        builder: (BuildContext context, GoRouterState state) => const TvPage(
+        path: "tv/on_the_air",
+        builder: (BuildContext context, GoRouterState state) => TvPage(
               categoryIndex: 3,
               title: 'On The Air',
+              page: state.params['page'],
             )),
   ], path: "/", builder: (BuildContext context, GoRouterState state) => const HomePage())
 ]);

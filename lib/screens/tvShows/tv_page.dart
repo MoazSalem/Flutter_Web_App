@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:netflix_web/services/tv_service.dart';
 import 'package:netflix_web/data/end_points.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/drawer.dart';
 
 int currentPage = 1;
+List<String> tvCategories = ["popular", "airing_today", "top_rated", "on_the_air"];
 
 // This is the main page
 class TvPage extends StatefulWidget {
+  final String? page;
   final int categoryIndex;
   final String title;
 
-  const TvPage({Key? key, required this.categoryIndex, required this.title})
+  const TvPage({Key? key, required this.categoryIndex, required this.title, this.page})
       : super(key: key);
 
   @override
@@ -23,20 +26,18 @@ class _TvPageState extends State<TvPage> {
   bool loading = true;
 
   getMovies({required int page}) async {
+    currentPage = int.parse(widget.page!);
     tvShowsList = await TVService().getShows(
-        page: page, endPoint: getEndPoint(categoryIndex: widget.categoryIndex, typeIndex: 1));
-    loading = false;
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMovies(page: currentPage);
+        page: page,
+        endPoint: getEndPoint(category: tvCategories[widget.categoryIndex], typeIndex: 1));
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    getMovies(page: currentPage);
     double currentWidth = MediaQuery.of(context).size.width;
     ScrollController scrollController = ScrollController();
     ThemeData theme = Theme.of(context);
@@ -87,7 +88,7 @@ class _TvPageState extends State<TvPage> {
                       setState(() {
                         loading = true;
                       });
-                      getMovies(page: 1);
+                      context.go("/tv/${tvCategories[widget.categoryIndex]}/${1}");
                     },
               child: const Icon(Icons.home_filled),
             ),
@@ -102,7 +103,7 @@ class _TvPageState extends State<TvPage> {
                       setState(() {
                         loading = true;
                       });
-                      getMovies(page: currentPage);
+                      context.go("/tv/${tvCategories[widget.categoryIndex]}/$currentPage");
                     },
               child: const Icon(Icons.arrow_back),
             ),
@@ -118,7 +119,7 @@ class _TvPageState extends State<TvPage> {
                   loading = true;
                 });
                 setState(() {});
-                getMovies(page: currentPage);
+                context.go("/tv/${tvCategories[widget.categoryIndex]}/$currentPage");
               },
               child: const Icon(Icons.arrow_forward),
             )

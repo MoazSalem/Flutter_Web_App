@@ -47,7 +47,7 @@ class Movie {
   });
 
   late final bool adult;
-  late final String backdropPath;
+  late final String? backdropPath;
   late final List<int> genreIds;
   late final int id;
   late final String originalLanguage;

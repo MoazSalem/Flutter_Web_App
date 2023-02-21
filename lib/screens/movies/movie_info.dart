@@ -34,7 +34,8 @@ class MovieInfo extends StatelessWidget {
             width: double.infinity,
             height: 400,
             child: Image.network(
-                fit: BoxFit.cover, "https://image.tmdb.org/t/p/original/${movie.backdropPath}"),
+                fit: BoxFit.cover,
+                "https://image.tmdb.org/t/p/original/${movie.backdropPath ?? movie.posterPath}"),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
