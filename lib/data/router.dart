@@ -38,7 +38,7 @@ final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes
         path: "tv/popular/:page",
         builder: (BuildContext context, GoRouterState state) => TvPage(
               categoryIndex: 0,
-              title: 'popular',
+              title: 'Popular',
               page: state.params['page'],
             )),
     GoRoute(
@@ -56,7 +56,7 @@ final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes
               page: state.params['page'],
             )),
     GoRoute(
-        path: "tv/on_the_air",
+        path: "tv/on_the_air/:page",
         builder: (BuildContext context, GoRouterState state) => TvPage(
               categoryIndex: 3,
               title: 'On The Air',

@@ -24,12 +24,16 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Netflix Clone',
         darkTheme: ThemeData(
-            useMaterial3: true,
-            primaryColor: Colors.deepPurpleAccent,
-            brightness: Brightness.dark,
-            indicatorColor: Colors.white,
-            canvasColor: Colors.black,
-            appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light)),
+          useMaterial3: true,
+          primaryColor: Colors.deepPurpleAccent,
+          brightness: Brightness.dark,
+          indicatorColor: Colors.white,
+          canvasColor: Colors.black,
+          appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
+          scrollbarTheme: const ScrollbarThemeData().copyWith(
+              thumbVisibility: MaterialStateProperty.all(true),
+              thumbColor: MaterialStateProperty.all(Colors.deepPurpleAccent.withOpacity(0.8))),
+        ),
         themeMode: ThemeMode.dark,
         routerConfig: router);
   }

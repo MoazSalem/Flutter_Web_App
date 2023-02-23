@@ -12,9 +12,9 @@ Widget listWidget(
     thumbVisibility: true,
     child: GridView.builder(
       controller: scrollController,
-      shrinkWrap: false,
-      cacheExtent: 2500,
-      physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
+      cacheExtent: 3500,
+      physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.03, vertical: 10),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 0.6685,
