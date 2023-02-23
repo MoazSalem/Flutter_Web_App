@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix_web/screens/home_page.dart';
 import 'package:netflix_web/screens/movies/movies_page.dart';
-import 'package:netflix_web/screens/tvShows/tv_page.dart';
 import 'package:netflix_web/screens/movies/movie_info.dart';
+import 'package:netflix_web/screens/tvShows/tv_page.dart';
+import 'package:netflix_web/screens/tvShows/tv_info.dart';
 
 final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes: [
   GoRoute(routes: [
@@ -68,6 +69,11 @@ final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes
               categoryIndex: 3,
               title: 'On The Air',
               page: state.params['page'],
+            )),
+    GoRoute(
+        path: "tv/:id",
+        builder: (BuildContext context, GoRouterState state) => TvInfo(
+              id: state.params['id']!,
             )),
   ], path: "/", builder: (BuildContext context, GoRouterState state) => const HomePage())
 ]);

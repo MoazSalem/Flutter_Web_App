@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:netflix_web/models/tv.dart';
-import 'package:netflix_web/screens/tvShows/tv_info.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // This is the widget that is shown per movie in the main page.
 Widget showWidget({required TvShow show, required BuildContext context}) {
   return GestureDetector(
-    onTap: () =>
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => TvInfo(show: show))),
+    onTap: () => context.push('/tv/${show.id}'),
     child: Stack(
       alignment: Alignment.topRight,
       children: [

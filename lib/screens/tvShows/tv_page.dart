@@ -7,6 +7,7 @@ import 'package:netflix_web/widgets/drawer.dart';
 
 int currentPage = 1;
 List<String> tvCategories = ["popular", "airing_today", "top_rated", "on_the_air"];
+List tvShowsList = [];
 
 // This is the main page
 class TvPage extends StatefulWidget {
@@ -22,7 +23,6 @@ class TvPage extends StatefulWidget {
 }
 
 class _TvPageState extends State<TvPage> {
-  late List tvShowsList;
   bool loading = true;
 
   getMovies({required int page}) async {
