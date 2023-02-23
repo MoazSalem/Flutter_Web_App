@@ -3,16 +3,18 @@ import 'package:go_router/go_router.dart';
 import 'package:netflix_web/screens/home_page.dart';
 import 'package:netflix_web/screens/movies/movies_page.dart';
 import 'package:netflix_web/screens/tvShows/tv_page.dart';
+import 'package:netflix_web/screens/movies/movie_info.dart';
 
 final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes: [
   GoRoute(routes: [
     GoRoute(
-        path: "movies/popular/:page",
-        builder: (BuildContext context, GoRouterState state) => MoviesPage(
-              categoryIndex: 0,
-              title: 'Popular',
-              page: state.params['page'],
-            )),
+      path: "movies/popular/:page",
+      builder: (BuildContext context, GoRouterState state) => MoviesPage(
+        categoryIndex: 0,
+        title: 'Popular',
+        page: state.params['page'],
+      ),
+    ),
     GoRoute(
         path: "movies/top_rated/:page",
         builder: (BuildContext context, GoRouterState state) => MoviesPage(
@@ -33,6 +35,11 @@ final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes
               categoryIndex: 3,
               title: 'Upcoming',
               page: state.params['page'],
+            )),
+    GoRoute(
+        path: "movies/:id",
+        builder: (BuildContext context, GoRouterState state) => MovieInfo(
+              id: state.params['id']!,
             )),
     GoRoute(
         path: "tv/popular/:page",

@@ -48,7 +48,7 @@ class Movie {
 
   late final bool adult;
   late final String? backdropPath;
-  late final List<int> genreIds;
+  late final List<dynamic>? genreIds;
   late final int id;
   late final String originalLanguage;
   late final String originalTitle;
@@ -64,7 +64,7 @@ class Movie {
   Movie.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
-    genreIds = List.castFrom<dynamic, int>(json['genre_ids']);
+    genreIds = json['genre_ids'];
     id = json['id'];
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
