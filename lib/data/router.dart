@@ -41,6 +41,7 @@ final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes
         path: "movies/:id",
         builder: (BuildContext context, GoRouterState state) => MovieInfo(
               id: state.params['id']!,
+              page: (state.extra ?? 0) as int,
             )),
     GoRoute(
         path: "tv/popular/:page",
@@ -74,6 +75,7 @@ final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes
         path: "tv/:id",
         builder: (BuildContext context, GoRouterState state) => TvInfo(
               id: state.params['id']!,
+              page: (state.extra ?? 0) as int,
             )),
   ], path: "/", builder: (BuildContext context, GoRouterState state) => const HomePage())
 ]);

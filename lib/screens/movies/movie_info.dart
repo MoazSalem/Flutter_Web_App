@@ -13,8 +13,9 @@ bool loading = true;
 // This page is opened when you press on a movie
 class MovieInfo extends StatefulWidget {
   final String id;
+  final int page;
 
-  const MovieInfo({Key? key, required this.id}) : super(key: key);
+  const MovieInfo({Key? key, required this.id, required this.page}) : super(key: key);
 
   @override
   State<MovieInfo> createState() => _MovieInfoState();
@@ -27,7 +28,8 @@ class _MovieInfoState extends State<MovieInfo> {
     B = NexBloc.get(context);
     scrollController = ScrollController();
     parsedId = int.parse(widget.id);
-    B.getMovie(id: parsedId);
+
+    B.getMovie(id: parsedId, page: widget.page);
   }
 
   @override
@@ -46,7 +48,7 @@ class _MovieInfoState extends State<MovieInfo> {
         return Scaffold(
           backgroundColor: theme.canvasColor,
           floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-          floatingActionButton: B.moviesList.isNotEmpty
+          floatingActionButton: B.allMoviesList.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: FloatingActionButton(
@@ -66,9 +68,11 @@ class _MovieInfoState extends State<MovieInfo> {
               SizedBox(
                 width: double.infinity,
                 height: 400,
-                child: Image.network(
-                    fit: BoxFit.cover,
-                    "https://image.tmdb.org/t/p/original/${B.movie.backdropPath ?? B.movie.posterPath}"),
+                child: B.movie.posterPath != ""
+                    ? Image.network(
+                        fit: BoxFit.cover,
+                        "https://image.tmdb.org/t/p/original/${B.movie.backdropPath ?? B.movie.posterPath}")
+                    : Container(),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),

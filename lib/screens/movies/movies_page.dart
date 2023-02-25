@@ -9,7 +9,6 @@ int currentPage = 1;
 bool loading = false;
 late double currentWidth;
 late ThemeData theme;
-late ScrollController scrollController;
 late NexBloc B;
 
 // This is the main page
@@ -26,13 +25,13 @@ class MoviesPage extends StatefulWidget {
 }
 
 class _MoviesPageState extends State<MoviesPage> {
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     B = NexBloc.get(context);
-    scrollController = ScrollController();
-    currentPage = int.parse(widget.page!);
-    B.getMovies(page: currentPage, categoryIndex: widget.categoryIndex);
+    B.getMovies(page: int.parse(widget.page!), categoryIndex: widget.categoryIndex);
   }
 
   @override
@@ -47,6 +46,7 @@ class _MoviesPageState extends State<MoviesPage> {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
+        currentPage = int.parse(widget.page!);
         return Scaffold(
           drawer: drawerWidget(theme: theme, context: context),
           backgroundColor: theme.canvasColor,
@@ -70,9 +70,10 @@ class _MoviesPageState extends State<MoviesPage> {
                   children: [
                     listWidget(
                         currentWidth: currentWidth,
-                        list: B.moviesList,
+                        list: B.allMoviesList[currentPage] ?? [],
                         isMovie: true,
-                        scrollController: scrollController),
+                        scrollController: scrollController,
+                        page: currentPage),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15.0),
                       child: Center(
@@ -94,7 +95,6 @@ class _MoviesPageState extends State<MoviesPage> {
                                 ? null
                                 : () {
                                     currentPage = 1;
-                                    B.moviesList = [];
                                     context.push(
                                         "/movies/${B.movieCategories[widget.categoryIndex]}/${1}");
                                   },
@@ -108,7 +108,6 @@ class _MoviesPageState extends State<MoviesPage> {
                                 ? null
                                 : () {
                                     currentPage--;
-                                    B.moviesList = [];
                                     context.push(
                                         "/movies/${B.movieCategories[widget.categoryIndex]}/$currentPage");
                                   },
@@ -122,7 +121,6 @@ class _MoviesPageState extends State<MoviesPage> {
                             ),
                             onPressed: () {
                               currentPage++;
-                              B.moviesList = [];
                               context.push(
                                   "/movies/${B.movieCategories[widget.categoryIndex]}/$currentPage");
                             },

@@ -8,7 +8,6 @@ import 'package:netflix_web/bloc/nex_bloc.dart';
 int currentPage = 1;
 late double currentWidth;
 late ThemeData theme;
-late ScrollController scrollController;
 late NexBloc B;
 
 // This is the main page
@@ -25,15 +24,13 @@ class TvPage extends StatefulWidget {
 }
 
 class _TvPageState extends State<TvPage> {
-  bool loading = true;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     B = NexBloc.get(context);
-    scrollController = ScrollController();
-    currentPage = int.parse(widget.page!);
-    B.getShows(page: currentPage, categoryIndex: widget.categoryIndex);
+    B.getShows(page: int.parse(widget.page!), categoryIndex: widget.categoryIndex);
   }
 
   @override
@@ -48,6 +45,7 @@ class _TvPageState extends State<TvPage> {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
+        currentPage = int.parse(widget.page!);
         return Scaffold(
           drawer: drawerWidget(theme: theme, context: context),
           backgroundColor: theme.canvasColor,
@@ -67,9 +65,10 @@ class _TvPageState extends State<TvPage> {
             children: [
               listWidget(
                   currentWidth: currentWidth,
-                  list: B.tvShowsList,
+                  list: B.allTvShowsList[currentPage] ?? [],
                   isMovie: false,
-                  scrollController: scrollController),
+                  scrollController: scrollController,
+                  page: currentPage),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 child: Center(
@@ -91,7 +90,6 @@ class _TvPageState extends State<TvPage> {
                           ? null
                           : () async {
                               currentPage = 1;
-                              B.tvShowsList = [];
                               context.push("/tv/${B.tvCategories[widget.categoryIndex]}/${1}");
                             },
                       child: const Icon(Icons.home_filled),
@@ -104,7 +102,6 @@ class _TvPageState extends State<TvPage> {
                           ? null
                           : () async {
                               currentPage--;
-                              B.tvShowsList = [];
                               context
                                   .push("/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
                             },
@@ -118,7 +115,6 @@ class _TvPageState extends State<TvPage> {
                       ),
                       onPressed: () async {
                         currentPage++;
-                        B.tvShowsList = [];
                         context.push("/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
                       },
                       child: const Icon(Icons.arrow_forward),

@@ -6,7 +6,8 @@ Widget listWidget(
     {required ScrollController scrollController,
     required double currentWidth,
     required List list,
-    required bool isMovie}) {
+    required bool isMovie,
+    required int page}) {
   return Scrollbar(
     controller: scrollController,
     thumbVisibility: true,
@@ -24,8 +25,8 @@ Widget listWidget(
       itemCount: list.length,
       itemBuilder: (BuildContext context, index) {
         return isMovie
-            ? movieWidget(context: context, movie: list[index])
-            : showWidget(context: context, show: list[index]);
+            ? movieWidget(context: context, movie: list[index], page: page)
+            : showWidget(context: context, show: list[index], page: page);
       },
     ),
   );

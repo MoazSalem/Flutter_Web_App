@@ -13,8 +13,9 @@ bool loading = true;
 // This page is opened when you press on a movie
 class TvInfo extends StatefulWidget {
   final String id;
+  final int page;
 
-  const TvInfo({Key? key, required this.id}) : super(key: key);
+  const TvInfo({Key? key, required this.id, required this.page}) : super(key: key);
 
   @override
   State<TvInfo> createState() => _TvInfoState();
@@ -27,7 +28,7 @@ class _TvInfoState extends State<TvInfo> {
     B = NexBloc.get(context);
     scrollController = ScrollController();
     parsedId = int.parse(widget.id);
-    B.getShow(id: parsedId);
+    B.getShow(id: parsedId, page: widget.page);
   }
 
   @override
@@ -46,7 +47,7 @@ class _TvInfoState extends State<TvInfo> {
         return Scaffold(
           backgroundColor: theme.canvasColor,
           floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-          floatingActionButton: B.tvShowsList.isNotEmpty
+          floatingActionButton: B.allTvShowsList.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: FloatingActionButton(
@@ -66,9 +67,11 @@ class _TvInfoState extends State<TvInfo> {
               SizedBox(
                 width: double.infinity,
                 height: 400,
-                child: Image.network(
-                    fit: BoxFit.cover,
-                    "https://image.tmdb.org/t/p/original/${B.show.backdropPath ?? B.show.posterPath}"),
+                child: B.show.posterPath != ""
+                    ? Image.network(
+                        fit: BoxFit.cover,
+                        "https://image.tmdb.org/t/p/original/${B.show.backdropPath ?? B.show.posterPath}")
+                    : Container(),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
