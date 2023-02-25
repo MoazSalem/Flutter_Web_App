@@ -93,3 +93,18 @@ class TvShow {
     return data;
   }
 }
+
+TvShow emptyShow = TvShow(
+    backdropPath: "",
+    firstAirDate: "",
+    genreIds: [],
+    id: 0,
+    name: "",
+    originCountry: [],
+    originalLanguage: "",
+    originalName: "",
+    overview: "",
+    popularity: 0,
+    posterPath: "",
+    voteAverage: 0,
+    voteCount: 0);

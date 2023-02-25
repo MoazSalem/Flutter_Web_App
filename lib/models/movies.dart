@@ -97,3 +97,19 @@ class Movie {
     return data;
   }
 }
+
+Movie emptyMovie = Movie(
+    adult: false,
+    backdropPath: "",
+    genreIds: [],
+    id: 0,
+    originalLanguage: "",
+    originalTitle: "",
+    overview: "",
+    popularity: 0,
+    posterPath: "",
+    releaseDate: "",
+    title: "",
+    video: false,
+    voteAverage: 0,
+    voteCount: 0);
