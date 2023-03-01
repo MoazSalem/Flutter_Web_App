@@ -15,6 +15,8 @@ part 'nex_state.dart';
 class NexBloc extends Bloc<NexEvent, NexState> {
   List<String> movieCategories = ["popular", "now_playing", "top_rated", "upcoming"];
   List<String> tvCategories = ["popular", "airing_today", "top_rated", "on_the_air"];
+  List<Movie> searchedMovies = [];
+  List<TvShow> searchedShows = [];
   Map<int, List<Movie>> allMoviesList = {};
   Map<int, List<TvShow>> allTvShowsList = {};
 
@@ -35,9 +37,14 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getMovie({required int id, int? page}) async {
-    movie = allMoviesList.isNotEmpty
+    movie = page != 0
         ? allMoviesList[page]!.firstWhere((movie) => movie.id == id)
         : await MoviesService().getMovie(id: id);
+    emit(GetMovies());
+  }
+
+  searchMovies({required String query}) async {
+    searchedMovies = await MoviesService().searchMovies(query: query);
     emit(GetMovies());
   }
 
@@ -48,9 +55,14 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getShow({required int id, int? page}) async {
-    show = allTvShowsList.isNotEmpty
+    show = page != 0
         ? allTvShowsList[page]!.firstWhere((show) => show.id == id)
         : await TVService().getShow(id: id);
+    emit(GetMovies());
+  }
+
+  searchShows({required String query}) async {
+    searchedShows = await TVService().searchShows(query: query);
     emit(GetMovies());
   }
 }

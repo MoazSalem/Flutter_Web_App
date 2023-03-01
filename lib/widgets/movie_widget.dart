@@ -11,8 +11,8 @@ Widget movieWidget({required Movie movie, required int page, required BuildConte
       alignment: Alignment.topRight,
       children: [
         SizedBox(
-          child:
-              Image.network(fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${movie.posterPath}"),
+          child: Image.network(
+              fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${movie.posterPath ?? ""}"),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -27,7 +27,7 @@ Widget movieWidget({required Movie movie, required int page, required BuildConte
               percent: (movie.voteAverage / 10),
               animation: true,
               center: Text(
-                (movie.voteAverage * 10).toString(),
+                (movie.voteAverage * 10).toStringAsFixed(0),
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
               ),
               progressColor: progressColor(rating: (movie.voteAverage * 10)),

@@ -55,7 +55,7 @@ class TvShow {
   late final String originalName;
   late final String overview;
   late final double popularity;
-  late final String posterPath;
+  late final String? posterPath;
   late final double voteAverage;
   late final int voteCount;
 

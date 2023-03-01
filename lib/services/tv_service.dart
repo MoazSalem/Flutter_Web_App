@@ -36,4 +36,23 @@ class TVService {
     }
     return show;
   }
+
+  Future<List<TvShow>> searchShows({required String query}) async {
+    String endPoint =
+        "https://api.themoviedb.org/3/search/tv?api_key=$apiKey&language=en-US&query=$query";
+    List<TvShow> tvShows = [];
+    Response response = await get(Uri.parse(endPoint));
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      // movies are called results in the api
+      body["results"].forEach((movieData) {
+        TvShow newShow = TvShow.fromJson(movieData);
+        tvShows.add(newShow);
+      });
+    } else {
+      throw Exception();
+    }
+
+    return tvShows;
+  }
 }

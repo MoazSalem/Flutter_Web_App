@@ -6,6 +6,8 @@ import 'package:netflix_web/widgets/drawer.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 
 int currentPage = 1;
+bool search = false;
+late TextEditingController searchC;
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
@@ -30,6 +32,8 @@ class _TvPageState extends State<TvPage> {
   void initState() {
     super.initState();
     B = NexBloc.get(context);
+    B.allTvShowsList[currentPage] = [];
+    searchC = TextEditingController();
     B.getShows(page: int.parse(widget.page!), categoryIndex: widget.categoryIndex);
   }
 
@@ -58,72 +62,130 @@ class _TvPageState extends State<TvPage> {
                   TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: theme.primaryColor),
             ),
             backgroundColor: theme.canvasColor,
-          ),
-          body: ListView(
-            physics: const BouncingScrollPhysics(),
-            cacheExtent: 3500,
-            children: [
-              listWidget(
-                  currentWidth: currentWidth,
-                  list: B.allTvShowsList[currentPage] ?? [],
-                  isMovie: false,
-                  scrollController: scrollController,
-                  page: currentPage),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                child: Center(
-                    child: Text(
-                  "Page $currentPage",
-                )),
-              ),
+            actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: Size(currentWidth * 0.3, 50),
-                      ),
-                      onPressed: currentPage == 1
-                          ? null
-                          : () async {
-                              currentPage = 1;
-                              context.push("/tv/${B.tvCategories[widget.categoryIndex]}/${1}");
-                            },
-                      child: const Icon(Icons.home_filled),
-                    ),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: Size(currentWidth * 0.3, 50),
-                      ),
-                      onPressed: currentPage == 1
-                          ? null
-                          : () async {
-                              currentPage--;
-                              context
-                                  .push("/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
-                            },
-                      child: const Icon(Icons.arrow_back),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: theme.primaryColor,
-                        minimumSize: Size(currentWidth * 0.3, 50),
-                      ),
-                      onPressed: () async {
-                        currentPage++;
-                        context.push("/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
-                      },
-                      child: const Icon(Icons.arrow_forward),
-                    )
-                  ],
-                ),
-              ),
+                child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        search = !search;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.search,
+                      color: search ? theme.primaryColor : Colors.white,
+                    )),
+              )
             ],
           ),
+          body: B.allTvShowsList[currentPage]!.isEmpty
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView(
+                  physics: const BouncingScrollPhysics(),
+                  cacheExtent: 3500,
+                  children: [
+                    search
+                        ? Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: currentWidth * 0.031),
+                              child: TextFormField(
+                                  controller: searchC,
+                                  onChanged: (query) {
+                                    B.searchShows(query: query);
+                                  },
+                                  autofocus: true,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey.shade300),
+                                        borderRadius: BorderRadius.circular(0)),
+                                    hintText: "Search",
+                                    filled: true,
+                                    fillColor: Theme.of(context).cardColor,
+                                    border:
+                                        OutlineInputBorder(borderRadius: BorderRadius.circular(0)),
+                                  )),
+                            ),
+                          )
+                        : Container(),
+                    listWidget(
+                        currentWidth: currentWidth,
+                        list: search
+                            ? B.searchedShows.isEmpty
+                                ? B.allTvShowsList[currentPage]!
+                                : B.searchedShows
+                            : B.allTvShowsList[currentPage]!,
+                        isMovie: false,
+                        scrollController: scrollController,
+                        page: search ? 0 : currentPage),
+                    search
+                        ? Container()
+                        : Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                                child: Center(
+                                    child: Text(
+                                  "Page $currentPage",
+                                )),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        minimumSize: Size(currentWidth * 0.3, 50),
+                                      ),
+                                      onPressed: currentPage == 1
+                                          ? null
+                                          : () async {
+                                              currentPage = 1;
+                                              context.push(
+                                                  "/tv/${B.tvCategories[widget.categoryIndex]}/${1}");
+                                            },
+                                      child: const Icon(Icons.home_filled),
+                                    ),
+                                    OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        minimumSize: Size(currentWidth * 0.3, 50),
+                                      ),
+                                      onPressed: currentPage == 1
+                                          ? null
+                                          : () async {
+                                              currentPage--;
+                                              context.push(
+                                                  "/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
+                                            },
+                                      child: const Icon(Icons.arrow_back),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: theme.primaryColor,
+                                        minimumSize: Size(currentWidth * 0.3, 50),
+                                      ),
+                                      onPressed: () async {
+                                        currentPage++;
+                                        context.push(
+                                            "/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
+                                      },
+                                      child: const Icon(Icons.arrow_forward),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                  ],
+                ),
         );
       },
     );

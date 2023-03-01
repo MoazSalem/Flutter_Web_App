@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
+import 'package:netflix_web/models/movies.dart';
 
 late ThemeData theme;
 late int parsedId;
@@ -26,9 +27,9 @@ class _MovieInfoState extends State<MovieInfo> {
   void initState() {
     super.initState();
     B = NexBloc.get(context);
+    B.movie = emptyMovie;
     scrollController = ScrollController();
     parsedId = int.parse(widget.id);
-
     B.getMovie(id: parsedId, page: widget.page);
   }
 

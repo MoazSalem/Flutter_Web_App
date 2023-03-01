@@ -11,8 +11,8 @@ Widget showWidget({required TvShow show, required int page, required BuildContex
       alignment: Alignment.topRight,
       children: [
         SizedBox(
-          child:
-              Image.network(fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${show.posterPath}"),
+          child: Image.network(
+              fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${show.posterPath ?? ""}"),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -27,7 +27,7 @@ Widget showWidget({required TvShow show, required int page, required BuildContex
               percent: (show.voteAverage / 10),
               animation: true,
               center: Text(
-                (show.voteAverage * 10).toString(),
+                (show.voteAverage * 10).toStringAsFixed(0),
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
               ),
               progressColor: progressColor(rating: (show.voteAverage * 10)),

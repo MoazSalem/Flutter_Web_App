@@ -36,4 +36,23 @@ class MoviesService {
     }
     return movie;
   }
+
+  Future<List<Movie>> searchMovies({required String query}) async {
+    String endPoint =
+        "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=en-US&query=$query";
+    List<Movie> movies = [];
+    Response response = await get(Uri.parse(endPoint));
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      // movies are called results in the api
+      body["results"].forEach((movieData) {
+        Movie newMovie = Movie.fromJson(movieData);
+        movies.add(newMovie);
+      });
+    } else {
+      throw Exception();
+    }
+
+    return movies;
+  }
 }
