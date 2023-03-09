@@ -33,9 +33,7 @@ class _MoviesPageState extends State<MoviesPage> {
   void initState() {
     super.initState();
     B = NexBloc.get(context);
-    B.allMoviesList[currentPage] = [];
     searchC = TextEditingController();
-    B.getMovies(page: int.parse(widget.page!), categoryIndex: widget.categoryIndex);
   }
 
   @override
@@ -45,12 +43,22 @@ class _MoviesPageState extends State<MoviesPage> {
     theme = Theme.of(context);
   }
 
+  changePage() {
+    B.allMoviesList[currentPage] == null
+        ? {
+            B.allMoviesList[currentPage] = [],
+            B.getMovies(page: currentPage, categoryIndex: widget.categoryIndex),
+          }
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
         currentPage = int.parse(widget.page!);
+        changePage();
         return Scaffold(
           drawer: drawerWidget(theme: theme, context: context),
           backgroundColor: theme.canvasColor,
@@ -150,7 +158,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                           ? null
                                           : () {
                                               currentPage = 1;
-                                              context.push(
+                                              context.go(
                                                   "/movies/${B.movieCategories[widget.categoryIndex]}/${1}");
                                             },
                                       child: const Icon(Icons.home_filled),
@@ -163,7 +171,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                           ? null
                                           : () {
                                               currentPage--;
-                                              context.push(
+                                              context.go(
                                                   "/movies/${B.movieCategories[widget.categoryIndex]}/$currentPage");
                                             },
                                       child: const Icon(Icons.arrow_back),
@@ -176,7 +184,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                       ),
                                       onPressed: () {
                                         currentPage++;
-                                        context.push(
+                                        context.go(
                                             "/movies/${B.movieCategories[widget.categoryIndex]}/$currentPage");
                                       },
                                       child: const Icon(Icons.arrow_forward),

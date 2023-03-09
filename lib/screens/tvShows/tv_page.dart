@@ -32,9 +32,7 @@ class _TvPageState extends State<TvPage> {
   void initState() {
     super.initState();
     B = NexBloc.get(context);
-    B.allTvShowsList[currentPage] = [];
     searchC = TextEditingController();
-    B.getShows(page: int.parse(widget.page!), categoryIndex: widget.categoryIndex);
   }
 
   @override
@@ -44,12 +42,22 @@ class _TvPageState extends State<TvPage> {
     theme = Theme.of(context);
   }
 
+  changePage() {
+    B.allTvShowsList[currentPage] == null
+        ? {
+            B.allTvShowsList[currentPage] = [],
+            B.getShows(page: currentPage, categoryIndex: widget.categoryIndex),
+          }
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
         currentPage = int.parse(widget.page!);
+        changePage();
         return Scaffold(
           drawer: drawerWidget(theme: theme, context: context),
           backgroundColor: theme.canvasColor,
@@ -148,7 +156,7 @@ class _TvPageState extends State<TvPage> {
                                           ? null
                                           : () async {
                                               currentPage = 1;
-                                              context.push(
+                                              context.go(
                                                   "/tv/${B.tvCategories[widget.categoryIndex]}/${1}");
                                             },
                                       child: const Icon(Icons.home_filled),
@@ -161,7 +169,7 @@ class _TvPageState extends State<TvPage> {
                                           ? null
                                           : () async {
                                               currentPage--;
-                                              context.push(
+                                              context.go(
                                                   "/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
                                             },
                                       child: const Icon(Icons.arrow_back),
@@ -174,7 +182,7 @@ class _TvPageState extends State<TvPage> {
                                       ),
                                       onPressed: () async {
                                         currentPage++;
-                                        context.push(
+                                        context.go(
                                             "/tv/${B.tvCategories[widget.categoryIndex]}/$currentPage");
                                       },
                                       child: const Icon(Icons.arrow_forward),
