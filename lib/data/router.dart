@@ -6,8 +6,16 @@ import 'package:netflix_web/screens/movies/movie_info.dart';
 import 'package:netflix_web/screens/tvShows/tv_page.dart';
 import 'package:netflix_web/screens/tvShows/tv_info.dart';
 
-final GoRouter router = GoRouter(initialLocation: '/movies/popular/${1}', routes: [
+import '../screens/movies/genre_page.dart';
+
+final GoRouter router = GoRouter(initialLocation: '/', routes: [
   GoRoute(routes: [
+    GoRoute(
+        path: "movies/:genre/:page",
+        builder: (BuildContext context, GoRouterState state) => MoviesGenrePage(
+              page: state.params['page'],
+              genre: state.params['genre'],
+            )),
     GoRoute(
       path: "movies/popular/:page",
       builder: (BuildContext context, GoRouterState state) => MoviesPage(

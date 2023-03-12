@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
               minWidth: 600,
               defaultScale: true,
               breakpoints: [
-                const ResponsiveBreakpoint.autoScale(800),
-                const ResponsiveBreakpoint.autoScale(1200),
-                const ResponsiveBreakpoint.autoScale(1600),
+                const ResponsiveBreakpoint.autoScale(800, scaleFactor: 0.8),
+                const ResponsiveBreakpoint.autoScale(1200, scaleFactor: 0.8),
+                const ResponsiveBreakpoint.autoScale(1600, scaleFactor: 0.8),
               ],
               background: Container(color: Colors.black)),
           scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {

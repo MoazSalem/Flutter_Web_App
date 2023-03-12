@@ -55,4 +55,23 @@ class MoviesService {
 
     return movies;
   }
+
+  Future<List<Movie>> getGenre({required int page, required String genre}) async {
+    String endPoint =
+        "https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&language=en-US&sort_by=popularity.desc&page=$page&with_genres=$genre";
+    List<Movie> movies = [];
+    Response response = await get(Uri.parse(endPoint));
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      // movies are called results in the api
+      body["results"].forEach((movieData) {
+        Movie newMovie = Movie.fromJson(movieData);
+        movies.add(newMovie);
+      });
+    } else {
+      throw Exception();
+    }
+
+    return movies;
+  }
 }

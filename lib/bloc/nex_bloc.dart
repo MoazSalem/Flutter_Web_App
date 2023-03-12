@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_web/data/categories.dart';
 import 'package:netflix_web/models/movies.dart';
 import 'package:netflix_web/models/tv.dart';
+import 'package:netflix_web/models/popular.dart';
 import 'package:netflix_web/data/end_points.dart';
 import 'package:netflix_web/services/movies_service.dart';
 import 'package:netflix_web/services/tv_service.dart';
+import 'package:netflix_web/services/popular.dart';
 
 part 'nex_event.dart';
 
@@ -15,9 +18,12 @@ part 'nex_state.dart';
 class NexBloc extends Bloc<NexEvent, NexState> {
   List<String> movieCategories = ["popular", "now_playing", "top_rated", "upcoming"];
   List<String> tvCategories = ["popular", "airing_today", "top_rated", "on_the_air"];
+  List<String> categoriesNames = moviesCategoriesN;
   List<Movie> searchedMovies = [];
   List<TvShow> searchedShows = [];
+  List<Results> popular = [];
   Map<int, List<Movie>> allMoviesList = {};
+  Map<int, List<Movie>> genreMoviesList = {};
   Map<int, List<TvShow>> allTvShowsList = {};
 
   // For Some Reason Flutter doesn't wait for the late initialization in web so just initialize it
@@ -28,6 +34,16 @@ class NexBloc extends Bloc<NexEvent, NexState> {
 
   NexBloc() : super(NexInitial()) {
     on<NexEvent>((event, emit) {});
+  }
+
+  getPopular() async {
+    popular = await PopularService().getPopular();
+    emit(GetMovies());
+  }
+
+  getMoviesGenre({required int page, required String genre}) async {
+    genreMoviesList[page] = await MoviesService().getGenre(page: page, genre: genre);
+    emit(GetMovies());
   }
 
   getMovies({required int page, required int categoryIndex}) async {
