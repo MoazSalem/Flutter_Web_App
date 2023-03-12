@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'data/router.dart';
 
@@ -19,6 +20,16 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => NexBloc(),
       child: MaterialApp.router(
+          builder: (context, child) => ResponsiveWrapper.builder(child,
+              maxWidth: 1600,
+              minWidth: 600,
+              defaultScale: true,
+              breakpoints: [
+                const ResponsiveBreakpoint.autoScale(800),
+                const ResponsiveBreakpoint.autoScale(1200),
+                const ResponsiveBreakpoint.autoScale(1600),
+              ],
+              background: Container(color: Colors.black)),
           scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
             PointerDeviceKind.mouse,
             PointerDeviceKind.touch,

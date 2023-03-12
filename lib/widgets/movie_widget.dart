@@ -15,20 +15,20 @@ Widget movieWidget({required Movie movie, required int page, required BuildConte
               fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${movie.posterPath ?? ""}"),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: CircleAvatar(
-            radius: 24,
+            radius: 30,
             backgroundColor: Colors.black54,
             child: CircularPercentIndicator(
               animationDuration: 3000,
               curve: Curves.bounceOut,
-              radius: 24.0,
-              lineWidth: 3.0,
+              radius: 30.0,
+              lineWidth: 4.0,
               percent: (movie.voteAverage / 10),
               animation: true,
               center: Text(
                 (movie.voteAverage * 10).toStringAsFixed(0),
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
               ),
               progressColor: progressColor(rating: (movie.voteAverage * 10)),
             ),

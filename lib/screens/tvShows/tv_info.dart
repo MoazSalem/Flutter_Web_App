@@ -8,7 +8,6 @@ late ThemeData theme;
 late int parsedId;
 late ScrollController scrollController;
 late NexBloc B;
-late double currentWidth;
 bool loading = true;
 
 // This page is opened when you press on a movie
@@ -34,18 +33,11 @@ class _TvInfoState extends State<TvInfo> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    currentWidth = MediaQuery.of(context).size.width;
-    currentWidth > 800 ? currentWidth /= 2 : currentWidth *= 1.2;
-    theme = Theme.of(context);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
+        theme = Theme.of(context);
         return Scaffold(
           backgroundColor: theme.canvasColor,
           floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -79,8 +71,8 @@ class _TvInfoState extends State<TvInfo> {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
                 child: Text(
                   B.show.name,
-                  style: TextStyle(
-                    fontSize: currentWidth * 0.05,
+                  style: const TextStyle(
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -91,7 +83,7 @@ class _TvInfoState extends State<TvInfo> {
                   text: TextSpan(
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: currentWidth * 0.035,
+                        fontSize: 16,
                         color: theme.textTheme.bodySmall!.color),
                     children: <TextSpan>[
                       const TextSpan(text: "Rating: "),
@@ -107,18 +99,18 @@ class _TvInfoState extends State<TvInfo> {
               const SizedBox(
                 height: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
+              const Padding(
+                padding: EdgeInsets.all(10.0),
                 child: Text(
                   "Overview:",
-                  style: TextStyle(fontSize: currentWidth * 0.035, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
                   B.show.overview,
-                  style: TextStyle(fontSize: currentWidth * 0.03, fontWeight: FontWeight.w300),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
                 ),
               ),
             ],
