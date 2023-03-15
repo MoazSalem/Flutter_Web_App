@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_web/data/categories.dart';
+import 'package:netflix_web/models/cast.dart';
 import 'package:netflix_web/models/movies.dart';
+import 'package:netflix_web/models/reviews.dart';
 import 'package:netflix_web/models/tv.dart';
 import 'package:netflix_web/models/popular.dart';
 import 'package:netflix_web/data/end_points.dart';
@@ -29,6 +31,8 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   // For Some Reason Flutter doesn't wait for the late initialization in web so just initialize it
   Movie movie = emptyMovie;
   TvShow show = emptyShow;
+  List<Reviews> reviews = [];
+  List<Cast> casts = [];
 
   static NexBloc get(context) => BlocProvider.of(context);
 
@@ -52,10 +56,9 @@ class NexBloc extends Bloc<NexEvent, NexState> {
     emit(GetMovies());
   }
 
-  getMovie({required int id, int? page}) async {
-    movie = page != 0
-        ? allMoviesList[page]!.firstWhere((movie) => movie.id == id)
-        : await MoviesService().getMovie(id: id);
+  getMovie({required int id}) async {
+    casts = await MoviesService().getCast(id: id);
+    movie = await MoviesService().getMovie(id: id);
     emit(GetMovies());
   }
 
@@ -70,10 +73,8 @@ class NexBloc extends Bloc<NexEvent, NexState> {
     emit(GetMovies());
   }
 
-  getShow({required int id, int? page}) async {
-    show = page != 0
-        ? allTvShowsList[page]!.firstWhere((show) => show.id == id)
-        : await TVService().getShow(id: id);
+  getShow({required int id}) async {
+    show = await TVService().getShow(id: id);
     emit(GetMovies());
   }
 

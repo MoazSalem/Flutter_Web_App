@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../widgets/drawer.dart';
 
@@ -80,6 +81,27 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
+                        Positioned(
+                          bottom: 10.0,
+                          right: 10.0,
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.black54,
+                            child: CircularPercentIndicator(
+                              animationDuration: 3000,
+                              curve: Curves.bounceOut,
+                              radius: 30.0,
+                              lineWidth: 4.0,
+                              percent: (item.voteAverage! / 10),
+                              animation: true,
+                              center: Text(
+                                (item.voteAverage! * 10).toStringAsFixed(0),
+                                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                              ),
+                              progressColor: progressColor(rating: (item.voteAverage! * 10)),
+                            ),
+                          ),
+                        )
                       ],
                     )),
               ),
@@ -127,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                           return Container(
                             width: 6.0,
                             height: 6.0,
-                            margin: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 4.0),
+                            margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 4.0),
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: (Theme.of(context).brightness == Brightness.dark
@@ -138,35 +160,39 @@ class _HomePageState extends State<HomePage> {
                         }).toList(),
                       ),
                     ]),
-                    GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: list.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 2,
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 20,
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (BuildContext context, index) => GestureDetector(
-                              onTap: () {
-                                index == 0
-                                    ? context.push('/movies/popular/1')
-                                    : context.push('/tv/popular/1');
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: theme.primaryColor),
-                                width: 60,
-                                child: Center(
-                                    child: Text(
-                                  list[index],
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                )),
-                              ),
-                            )),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: GridView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: list.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 20,
+                            crossAxisCount: 2,
+                          ),
+                          itemBuilder: (BuildContext context, index) => GestureDetector(
+                                onTap: () {
+                                  index == 0
+                                      ? context.push('/movies/popular/1')
+                                      : context.push('/tv/popular/1');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: theme.primaryColor),
+                                  width: 60,
+                                  child: Center(
+                                      child: Text(
+                                    list[index],
+                                    style:
+                                        const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  )),
+                                ),
+                              )),
+                    ),
                     GridView.builder(
                         padding: const EdgeInsets.all(20),
                         physics: const NeverScrollableScrollPhysics(),
@@ -180,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         itemBuilder: (BuildContext context, index) => GestureDetector(
                               onTap: () {
-                                context.push('/movies/${B.categoriesNames[index]}/1');
+                                //context.push('/movies/${B.categoriesNames[index]}/1');
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -200,4 +226,14 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+}
+
+Color progressColor({required double rating}) {
+  return rating <= 25
+      ? Colors.red
+      : rating > 25 && rating <= 50
+          ? Colors.red.shade300
+          : rating > 50 && rating < 70
+              ? Colors.yellow
+              : Colors.deepPurpleAccent;
 }

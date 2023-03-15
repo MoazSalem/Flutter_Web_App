@@ -11,12 +11,6 @@ import '../screens/movies/genre_page.dart';
 final GoRouter router = GoRouter(initialLocation: '/', routes: [
   GoRoute(routes: [
     GoRoute(
-        path: "movies/:genre/:page",
-        builder: (BuildContext context, GoRouterState state) => MoviesGenrePage(
-              page: state.params['page'],
-              genre: state.params['genre'],
-            )),
-    GoRoute(
       path: "movies/popular/:page",
       builder: (BuildContext context, GoRouterState state) => MoviesPage(
         categoryIndex: 0,
@@ -49,7 +43,12 @@ final GoRouter router = GoRouter(initialLocation: '/', routes: [
         path: "movies/:id",
         builder: (BuildContext context, GoRouterState state) => MovieInfo(
               id: state.params['id']!,
-              page: (state.extra ?? 0) as int,
+            )),
+    GoRoute(
+        path: "movies/:genre/:page",
+        builder: (BuildContext context, GoRouterState state) => MoviesGenrePage(
+              page: state.params['page'],
+              genre: state.params['genre'],
             )),
     GoRoute(
         path: "tv/popular/:page",
@@ -83,7 +82,6 @@ final GoRouter router = GoRouter(initialLocation: '/', routes: [
         path: "tv/:id",
         builder: (BuildContext context, GoRouterState state) => TvInfo(
               id: state.params['id']!,
-              page: (state.extra ?? 0) as int,
             )),
   ], path: "/", builder: (BuildContext context, GoRouterState state) => const HomePage())
 ]);

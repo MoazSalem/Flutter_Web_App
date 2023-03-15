@@ -12,7 +12,19 @@ Widget showWidget({required TvShow show, required int page, required BuildContex
       children: [
         SizedBox(
           child: Image.network(
-              fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${show.posterPath ?? ""}"),
+            fit: BoxFit.fill,
+            "https://image.tmdb.org/t/p/w500${show.posterPath ?? ""}",
+            errorBuilder: (context, error, stackTrace) {
+              return const SizedBox(
+                width: 300,
+                height: 600,
+                child: Icon(
+                  Icons.question_mark_rounded,
+                  size: 300,
+                ),
+              );
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

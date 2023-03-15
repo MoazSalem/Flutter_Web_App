@@ -6,30 +6,29 @@ import 'package:netflix_web/models/tv.dart';
 
 late ThemeData theme;
 late int parsedId;
-late ScrollController scrollController;
 late NexBloc B;
-bool loading = true;
 
 // This page is opened when you press on a movie
 class TvInfo extends StatefulWidget {
   final String id;
-  final int page;
 
-  const TvInfo({Key? key, required this.id, required this.page}) : super(key: key);
+  const TvInfo({Key? key, required this.id}) : super(key: key);
 
   @override
   State<TvInfo> createState() => _TvInfoState();
 }
 
 class _TvInfoState extends State<TvInfo> {
+  final ScrollController scrollController = ScrollController();
+  bool loading = true;
+
   @override
   void initState() {
     super.initState();
     B = NexBloc.get(context);
     B.show = emptyShow;
-    scrollController = ScrollController();
     parsedId = int.parse(widget.id);
-    B.getShow(id: parsedId, page: widget.page);
+    B.getShow(id: parsedId);
   }
 
   @override
@@ -64,7 +63,18 @@ class _TvInfoState extends State<TvInfo> {
                 child: B.show.posterPath != ""
                     ? Image.network(
                         fit: BoxFit.cover,
-                        "https://image.tmdb.org/t/p/original/${B.show.backdropPath ?? B.show.posterPath}")
+                        "https://image.tmdb.org/t/p/original/${B.show.backdropPath ?? B.show.posterPath}",
+                        errorBuilder: (context, error, stackTrace) {
+                          return const SizedBox(
+                            width: 300,
+                            height: 600,
+                            child: Icon(
+                              Icons.question_mark_rounded,
+                              size: 300,
+                            ),
+                          );
+                        },
+                      )
                     : Container(),
               ),
               Padding(

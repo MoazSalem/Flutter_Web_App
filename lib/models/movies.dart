@@ -39,7 +39,9 @@ class Movie {
     required this.overview,
     required this.popularity,
     required this.posterPath,
+    required this.status,
     required this.releaseDate,
+    required this.runtime,
     required this.title,
     required this.video,
     required this.voteAverage,
@@ -55,7 +57,9 @@ class Movie {
   late final String overview;
   late final double popularity;
   late final String? posterPath;
+  late final String? status;
   late final String releaseDate;
+  late final int? runtime;
   late final String title;
   late final bool video;
   late final double voteAverage;
@@ -72,6 +76,8 @@ class Movie {
     popularity = json['popularity'];
     posterPath = json['poster_path'];
     releaseDate = json['release_date'];
+    runtime = json['runtime'];
+    status = json['status'];
     title = json['title'];
     video = json['video'];
     voteAverage = json['vote_average'].toDouble();
@@ -90,6 +96,8 @@ class Movie {
     data['popularity'] = popularity;
     data['poster_path'] = posterPath;
     data['release_date'] = releaseDate;
+    data['runtime'] = runtime;
+    data['status'] = status;
     data['title'] = title;
     data['video'] = video;
     data['vote_average'] = voteAverage;
@@ -112,4 +120,6 @@ Movie emptyMovie = Movie(
     title: "",
     video: false,
     voteAverage: 0,
-    voteCount: 0);
+    voteCount: 0,
+    status: '',
+    runtime: 0);

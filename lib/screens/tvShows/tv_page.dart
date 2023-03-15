@@ -6,8 +6,6 @@ import 'package:netflix_web/widgets/drawer.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 
 int currentPage = 1;
-bool search = false;
-late TextEditingController searchC;
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
@@ -26,13 +24,14 @@ class TvPage extends StatefulWidget {
 }
 
 class _TvPageState extends State<TvPage> {
-  ScrollController scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
+  final TextEditingController searchC = TextEditingController();
+  bool search = false;
 
   @override
   void initState() {
     super.initState();
     B = NexBloc.get(context);
-    searchC = TextEditingController();
   }
 
   @override

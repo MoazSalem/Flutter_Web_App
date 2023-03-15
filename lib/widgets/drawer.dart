@@ -5,6 +5,10 @@ Widget drawerWidget({required ThemeData theme, required BuildContext context}) {
   return Drawer(
     backgroundColor: Colors.black,
     child: ListView(children: [
+      ListTile(
+          onTap: () => context.pushReplacement('/'),
+          title: const Text("Home", style: TextStyle(fontWeight: FontWeight.bold)),
+          hoverColor: Colors.deepPurple),
       Theme(
         data: theme.copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(

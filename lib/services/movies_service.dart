@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:netflix_web/models/cast.dart';
 import 'package:netflix_web/models/movies.dart';
 import 'package:netflix_web/private.dart';
 
@@ -35,6 +36,24 @@ class MoviesService {
       throw Exception();
     }
     return movie;
+  }
+
+  Future<List<Cast>> getCast({required int id}) async {
+    String endPoint =
+        "https://api.themoviedb.org/3/movie/$id/credits?api_key=$apiKey&language=en-US";
+    List<Cast> casts = [];
+    Response response = await get(Uri.parse(endPoint));
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      body["cast"].forEach((castData) {
+        Cast newCast = Cast.fromJson(castData);
+        casts.add(newCast);
+      });
+    } else {
+      throw Exception();
+    }
+
+    return casts;
   }
 
   Future<List<Movie>> searchMovies({required String query}) async {

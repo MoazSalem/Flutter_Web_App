@@ -12,7 +12,19 @@ Widget movieWidget({required Movie movie, required int page, required BuildConte
       children: [
         SizedBox(
           child: Image.network(
-              fit: BoxFit.fill, "https://image.tmdb.org/t/p/w500${movie.posterPath ?? ""}"),
+            fit: BoxFit.fill,
+            "https://image.tmdb.org/t/p/w500${movie.posterPath ?? ""}",
+            errorBuilder: (context, error, stackTrace) {
+              return const SizedBox(
+                width: 300,
+                height: 600,
+                child: Icon(
+                  Icons.question_mark_rounded,
+                  size: 300,
+                ),
+              );
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(12.0),
