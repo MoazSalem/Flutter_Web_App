@@ -1,14 +1,14 @@
-import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:auto_animated/auto_animated.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/models/movies.dart';
 import 'package:netflix_web/widgets/suggestion_widget.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import '../../widgets/actor_widget.dart';
-import '../../widgets/categoryWidget.dart';
-import '../../widgets/review_widget.dart';
+import 'package:netflix_web/widgets/actor_widget.dart';
+import 'package:netflix_web/widgets/categoryWidget.dart';
+import 'package:netflix_web/widgets/review_widget.dart';
 
 late ThemeData theme;
 late NexBloc B;
@@ -213,7 +213,7 @@ class _MovieInfoState extends State<MovieInfo> {
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
                             child: Text(
-                              "Movie Cast:",
+                              "Movies Cast:",
                               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -388,5 +388,8 @@ class _MovieInfoState extends State<MovieInfo> {
 String runtimeToHours(int minutes) {
   var d = Duration(minutes: minutes);
   List<String> parts = d.toString().split(':');
-  return '${parts[0]}h ${parts[1].padLeft(2, '0')}m';
+  var firstPart = parts[0] != "0" ? "${parts[0]}h " : "";
+  return '$firstPart${parts[1].padLeft(2, '0')}m' == "00m"
+      ? "Unknown"
+      : '$firstPart${parts[1].padLeft(2, '0')}m';
 }

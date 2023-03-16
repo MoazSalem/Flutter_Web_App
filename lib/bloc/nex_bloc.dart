@@ -24,22 +24,21 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   List<String> tvCategories = ["popular", "airing_today", "top_rated", "on_the_air"];
   List<String> categoriesNames = moviesCategoriesN;
   List<Movie> searchedMovies = [];
-  List<TvShow> searchedShows = [];
+  List<TvShows> searchedShows = [];
   List<Results> popular = [];
   Map<int, List<Movie>> allMoviesList = {};
   Map<int, List<Movie>> genreMoviesList = {};
-  Map<int, List<TvShow>> allTvShowsList = {};
+  Map<int, List<TvShows>> allTvShowsList = {};
 
   // For Some Reason Flutter doesn't wait for the late initialization in web so just initialize it
   Movie movie = emptyMovie;
-  TvShow show = emptyShow;
+  TvShows show = TvShows();
 
   List<Results> suggestions = [];
   List<Results> similar = [];
   List<Reviews> reviews = [];
   List<Cast> casts = [];
   Video trailer = emptyVideo;
-  double duration = 0;
   late YoutubePlayerController videoController;
 
   static NexBloc get(context) => BlocProvider.of(context);
@@ -70,13 +69,12 @@ class NexBloc extends Bloc<NexEvent, NexState> {
     casts = await MoviesService().getCast(id: id);
     suggestions = await MoviesService().getSuggestions(id: id);
     similar = await MoviesService().getSuggestions(id: id, type: 1);
-    await getReviews(pageNum: 1, id: id);
+    await getMovieReviews(pageNum: 1, id: id);
     await videoController.cueVideoById(videoId: trailer.key!);
-    duration = await videoController.duration;
     emit(GetMovies());
   }
 
-  getReviews({required int id, required int pageNum}) async {
+  getMovieReviews({required int id, required int pageNum}) async {
     reviews = await MoviesService().getReviews(id: id, pageNum: pageNum);
     emit(GetMovies());
   }
@@ -94,6 +92,17 @@ class NexBloc extends Bloc<NexEvent, NexState> {
 
   getShow({required int id}) async {
     show = await TVService().getShow(id: id);
+    trailer = await TVService().getVideos(id: id);
+    casts = await TVService().getCast(id: id);
+    suggestions = await TVService().getSuggestions(id: id);
+    similar = await TVService().getSuggestions(id: id, type: 1);
+    await getTvReviews(pageNum: 1, id: id);
+    await videoController.cueVideoById(videoId: trailer.key!);
+    emit(GetMovies());
+  }
+
+  getTvReviews({required int id, required int pageNum}) async {
+    reviews = await TVService().getReviews(id: id, pageNum: pageNum);
     emit(GetMovies());
   }
 

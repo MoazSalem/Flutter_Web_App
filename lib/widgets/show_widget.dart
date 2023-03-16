@@ -4,7 +4,7 @@ import 'package:netflix_web/models/tv.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // This is the widget that is shown per movie in the main page.
-Widget showWidget({required TvShow show, required int page, required BuildContext context}) {
+Widget showWidget({required TvShows show, required int page, required BuildContext context}) {
   return GestureDetector(
     onTap: () => context.push('/tv/${show.id}'),
     child: Stack(
@@ -36,13 +36,13 @@ Widget showWidget({required TvShow show, required int page, required BuildContex
               curve: Curves.bounceOut,
               radius: 24.0,
               lineWidth: 3.0,
-              percent: (show.voteAverage / 10),
+              percent: (show.voteAverage! / 10),
               animation: true,
               center: Text(
-                (show.voteAverage * 10).toStringAsFixed(0),
+                (show.voteAverage! * 10).toStringAsFixed(0),
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
               ),
-              progressColor: progressColor(rating: (show.voteAverage * 10)),
+              progressColor: progressColor(rating: (show.voteAverage! * 10)),
             ),
           ),
         )

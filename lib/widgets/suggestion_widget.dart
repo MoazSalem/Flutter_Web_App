@@ -71,7 +71,7 @@ Widget suggestionWidget({
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "${suggestions[index].title!} ${suggestions[index].releaseDate!.split("-")[0]}",
+                      "${suggestions[index].title ?? suggestions[index].name} ${(suggestions[index].releaseDate ?? suggestions[index].firstAirDate).split("-")[0]}",
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
