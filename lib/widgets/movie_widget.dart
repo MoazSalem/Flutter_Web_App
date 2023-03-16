@@ -6,7 +6,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 // This is the widget that is shown per movie in the main page.
 Widget movieWidget({required Movie movie, required int page, required BuildContext context}) {
   return GestureDetector(
-    onTap: () => context.push('/movies/${movie.id}', extra: page),
+    onTap: () => context.push('/movies/${movie.id}'),
     child: Stack(
       alignment: Alignment.topRight,
       children: [

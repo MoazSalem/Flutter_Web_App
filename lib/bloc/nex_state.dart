@@ -10,3 +10,5 @@ class Start extends NexState {}
 class GetMovies extends NexState {}
 
 class SetLoading extends NexState {}
+
+class Change extends NexState {}

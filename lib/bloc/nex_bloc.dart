@@ -9,9 +9,11 @@ import 'package:netflix_web/models/reviews.dart';
 import 'package:netflix_web/models/tv.dart';
 import 'package:netflix_web/models/popular.dart';
 import 'package:netflix_web/data/end_points.dart';
+import 'package:netflix_web/models/videos.dart';
 import 'package:netflix_web/services/movies_service.dart';
 import 'package:netflix_web/services/tv_service.dart';
 import 'package:netflix_web/services/popular.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 part 'nex_event.dart';
 
@@ -31,8 +33,14 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   // For Some Reason Flutter doesn't wait for the late initialization in web so just initialize it
   Movie movie = emptyMovie;
   TvShow show = emptyShow;
+
+  List<Results> suggestions = [];
+  List<Results> similar = [];
   List<Reviews> reviews = [];
   List<Cast> casts = [];
+  Video trailer = emptyVideo;
+  double duration = 0;
+  late YoutubePlayerController videoController;
 
   static NexBloc get(context) => BlocProvider.of(context);
 
@@ -57,8 +65,19 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getMovie({required int id}) async {
-    casts = await MoviesService().getCast(id: id);
     movie = await MoviesService().getMovie(id: id);
+    trailer = await MoviesService().getVideos(id: id);
+    casts = await MoviesService().getCast(id: id);
+    suggestions = await MoviesService().getSuggestions(id: id);
+    similar = await MoviesService().getSuggestions(id: id, type: 1);
+    await getReviews(pageNum: 1, id: id);
+    await videoController.cueVideoById(videoId: trailer.key!);
+    duration = await videoController.duration;
+    emit(GetMovies());
+  }
+
+  getReviews({required int id, required int pageNum}) async {
+    reviews = await MoviesService().getReviews(id: id, pageNum: pageNum);
     emit(GetMovies());
   }
 
@@ -81,5 +100,9 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   searchShows({required String query}) async {
     searchedShows = await TVService().searchShows(query: query);
     emit(GetMovies());
+  }
+
+  onChanges() {
+    emit(Change());
   }
 }

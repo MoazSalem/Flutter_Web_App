@@ -50,6 +50,7 @@ class Movie {
 
   late final bool adult;
   late final String? backdropPath;
+  late final List<Genres>? genres;
   late final List<dynamic>? genreIds;
   late final int id;
   late final String originalLanguage;
@@ -68,6 +69,9 @@ class Movie {
   Movie.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
+    genres = json['genres'] != null
+        ? List.from(json['genres']).map((e) => Genres.fromJson(e)).toList()
+        : null;
     genreIds = json['genre_ids'];
     id = json['id'];
     originalLanguage = json['original_language'];
@@ -88,6 +92,7 @@ class Movie {
     final data = <String, dynamic>{};
     data['adult'] = adult;
     data['backdrop_path'] = backdropPath;
+    data['genres'] = genres?.map((e) => e.toJson()).toList();
     data['genre_ids'] = genreIds;
     data['id'] = id;
     data['original_language'] = originalLanguage;
@@ -102,6 +107,28 @@ class Movie {
     data['video'] = video;
     data['vote_average'] = voteAverage;
     data['vote_count'] = voteCount;
+    return data;
+  }
+}
+
+class Genres {
+  Genres({
+    required this.id,
+    required this.name,
+  });
+
+  late final int id;
+  late final String name;
+
+  Genres.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }

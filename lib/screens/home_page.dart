@@ -9,6 +9,7 @@ import '../widgets/drawer.dart';
 
 late NexBloc B;
 late ThemeData theme;
+late double width;
 List<String> list = ["Go To Movies", "Go To Tv"];
 
 class HomePage extends StatefulWidget {
@@ -110,6 +111,7 @@ class _HomePageState extends State<HomePage> {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
+        width = MediaQuery.of(context).size.width;
         return Scaffold(
           backgroundColor: Colors.black,
           drawer: drawerWidget(theme: theme, context: context),
@@ -136,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                         options: CarouselOptions(
                             autoPlay: true,
                             enlargeCenterPage: true,
-                            aspectRatio: MediaQuery.of(context).size.width < 1600 ? 2.0 : 2.4,
+                            aspectRatio: width < 1600 ? 2.0 : 2.4,
                             onPageChanged: (index, reason) {
                               setState(() {
                                 _current = index;
@@ -161,12 +163,13 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ]),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
+                      padding: const EdgeInsets.only(top: 12.0, bottom: 20),
                       child: GridView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: list.length,
+                          cacheExtent: 20,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio: 2,
                             mainAxisSpacing: 20,
@@ -194,10 +197,11 @@ class _HomePageState extends State<HomePage> {
                               )),
                     ),
                     GridView.builder(
-                        padding: const EdgeInsets.all(20),
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: B.categoriesNames.length,
+                        cacheExtent: 20,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: 2,
                           mainAxisSpacing: 20,
@@ -219,7 +223,8 @@ class _HomePageState extends State<HomePage> {
                                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                 )),
                               ),
-                            ))
+                            )),
+                    const SizedBox(height: 20),
                   ],
                 ),
         );
