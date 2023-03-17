@@ -122,14 +122,14 @@ class _MovieInfoState extends State<MovieInfo> {
                                 ),
                                 Text(runtimeToHours(B.movie.runtime!),
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w100, fontSize: 18, color: grey)),
+                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: Text("-"),
                                 ),
                                 Text(B.movie.releaseDate.split('-')[0],
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w100, fontSize: 18, color: grey)),
+                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
                               ],
                             ),
                           ),
@@ -187,7 +187,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                           ? "/10 (${(B.movie.voteCount / 1000).toStringAsFixed(2)}K)"
                                           : "/10 (${B.movie.voteCount})",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w100, fontSize: 18, color: grey)),
+                                          fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
                                 ],
                               )),
                           const SizedBox(height: 10),

@@ -130,21 +130,21 @@ class _TvInfoState extends State<TvInfo> {
                                 ),
                                 Text("${B.show.numberOfEpisodes} Episodes",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w100, fontSize: 18, color: grey)),
+                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: Text("-"),
                                 ),
                                 Text(runtimeToHours(B.show.episodeRunTime!),
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w100, fontSize: 18, color: grey)),
+                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: Text("-"),
                                 ),
                                 Text(B.show.firstAirDate!.split('-')[0],
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w100, fontSize: 18, color: grey)),
+                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
                               ],
                             ),
                           ),
@@ -199,7 +199,7 @@ class _TvInfoState extends State<TvInfo> {
                                           ? "/10 (${(B.show.voteCount! / 1000).toStringAsFixed(2)}K)"
                                           : "/10 (${B.show.voteCount})",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w100, fontSize: 18, color: grey)),
+                                          fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
                                 ],
                               )),
                           const SizedBox(height: 10),

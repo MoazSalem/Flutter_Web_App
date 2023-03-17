@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-Widget appBar({required BuildContext context}) {
+Widget appBar({required BuildContext context, bool showSearch = true, bool movie = true}) {
   return Row(
     mainAxisSize: MainAxisSize.max,
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       // placeholder to center the title
-      const CircleAvatar(
-        radius: 18,
-        backgroundColor: Colors.transparent,
-      ),
+      showSearch
+          ? const CircleAvatar(
+              radius: 18,
+              backgroundColor: Colors.transparent,
+            )
+          : Container(),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: ElevatedButton(
@@ -52,18 +54,20 @@ Widget appBar({required BuildContext context}) {
           ),
         ),
       ),
-      InkWell(
-        borderRadius: BorderRadius.circular(30),
-        onTap: () {},
-        child: CircleAvatar(
-          radius: 18,
-          backgroundColor: Colors.deepPurpleAccent.withOpacity(0.2),
-          child: const Icon(
-            Icons.search,
-            size: 18,
-          ),
-        ),
-      )
+      showSearch
+          ? InkWell(
+              borderRadius: BorderRadius.circular(30),
+              onTap: () => context.go('/${movie ? "movies" : "tv"}/search'),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.deepPurpleAccent.withOpacity(0.2),
+                child: const Icon(
+                  Icons.search,
+                  size: 18,
+                ),
+              ),
+            )
+          : Container(),
     ],
   );
 }

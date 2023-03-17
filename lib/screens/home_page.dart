@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             centerTitle: true,
             toolbarHeight: 90,
-            title: appBar(context: context),
+            title: appBar(context: context, showSearch: false),
             backgroundColor: theme.canvasColor,
           ),
           body: B.popular.isEmpty

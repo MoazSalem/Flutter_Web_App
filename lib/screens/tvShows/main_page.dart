@@ -40,7 +40,7 @@ class _MainTvState extends State<MainTv> {
               centerTitle: true,
               toolbarHeight: 90,
               automaticallyImplyLeading: false,
-              title: appBar(context: context),
+              title: appBar(context: context, movie: false),
               backgroundColor: theme.canvasColor,
             ),
             backgroundColor: Colors.black,
@@ -64,11 +64,11 @@ class _MainTvState extends State<MainTv> {
                         shrinkWrap: true,
                         itemCount: list.length,
                         cacheExtent: 20,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: 2,
                           mainAxisSpacing: 20,
                           crossAxisSpacing: 20,
-                          crossAxisCount: 2,
+                          crossAxisCount: width <= 700 ? 2 : 4,
                         ),
                         itemBuilder: (BuildContext context, index) => GestureDetector(
                               onTap: () {
@@ -80,9 +80,15 @@ class _MainTvState extends State<MainTv> {
                                     color: theme.primaryColor),
                                 width: 60,
                                 child: Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: FittedBox(
                                     child: Text(
-                                  list[index],
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                      list[index],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 20),
+                                    ),
+                                  ),
                                 )),
                               ),
                             )),
@@ -101,11 +107,11 @@ class _MainTvState extends State<MainTv> {
                       shrinkWrap: true,
                       itemCount: B.tvGenres.length,
                       cacheExtent: 20,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 2,
                         mainAxisSpacing: 20,
                         crossAxisSpacing: 20,
-                        crossAxisCount: 4,
+                        crossAxisCount: width <= 700 ? 3 : 4,
                       ),
                       itemBuilder: (BuildContext context, index) => GestureDetector(
                             onTap: () {

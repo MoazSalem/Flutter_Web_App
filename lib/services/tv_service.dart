@@ -134,4 +134,22 @@ class TVService {
 
     return tvShows;
   }
+
+  Future<List<TvShows>> getGenre({required int page, required int genre}) async {
+    String endPoint =
+        "https://api.themoviedb.org/3/discover/tv?api_key=$apiKey&language=en-US&sort_by=popularity.desc&page=$page&with_genres=$genre";
+    List<TvShows> tvShows = [];
+    Response response = await get(Uri.parse(endPoint));
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      body["results"].forEach((showData) {
+        TvShows newShow = TvShows.fromJson(showData);
+        tvShows.add(newShow);
+      });
+    } else {
+      throw Exception();
+    }
+
+    return tvShows;
+  }
 }

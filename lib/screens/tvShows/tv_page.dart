@@ -65,7 +65,7 @@ class _TvPageState extends State<TvPage> {
             centerTitle: true,
             toolbarHeight: 90,
             automaticallyImplyLeading: false,
-            title: appBar(context: context),
+            title: appBar(context: context, movie: false),
             backgroundColor: theme.canvasColor,
           ),
           body: B.tvShowsList.isEmpty

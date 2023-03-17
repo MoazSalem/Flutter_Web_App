@@ -28,7 +28,8 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   List<TvShows> searchedShows = [];
   List<Results> popular = [];
   List<Movie> moviesList = [];
-  List<Movie> genreList = [];
+  List<Movie> movieGenreList = [];
+  List<TvShows> tvGenreList = [];
   List<TvShows> tvShowsList = [];
 
   // For Some Reason Flutter doesn't wait for the late initialization in web so just initialize it
@@ -54,7 +55,7 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getMoviesGenre({required int page, required int genre}) async {
-    genreList = await MoviesService().getGenre(page: page, genre: genre);
+    movieGenreList = await MoviesService().getGenre(page: page, genre: genre);
     emit(GetMovies());
   }
 
@@ -109,6 +110,11 @@ class NexBloc extends Bloc<NexEvent, NexState> {
 
   searchShows({required String query}) async {
     searchedShows = await TVService().searchShows(query: query);
+    emit(GetMovies());
+  }
+
+  getTvsGenre({required int page, required int genre}) async {
+    tvGenreList = await TVService().getGenre(page: page, genre: genre);
     emit(GetMovies());
   }
 

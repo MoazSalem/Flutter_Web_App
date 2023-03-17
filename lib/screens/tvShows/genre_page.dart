@@ -11,17 +11,17 @@ late ThemeData theme;
 late NexBloc B;
 
 // This is the main page
-class MoviesGenrePage extends StatefulWidget {
+class TvGenrePage extends StatefulWidget {
   final String? page;
   final String? genre;
 
-  const MoviesGenrePage({Key? key, required this.genre, required this.page}) : super(key: key);
+  const TvGenrePage({Key? key, required this.genre, required this.page}) : super(key: key);
 
   @override
-  State<MoviesGenrePage> createState() => _MoviesGenrePageState();
+  State<TvGenrePage> createState() => _TvGenrePageState();
 }
 
-class _MoviesGenrePageState extends State<MoviesGenrePage> {
+class _TvGenrePageState extends State<TvGenrePage> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController searchC = TextEditingController();
   bool loading = false;
@@ -46,8 +46,8 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
     loadedPage != currentPage
         ? {
             loadedPage = int.parse(widget.page!),
-            B.movieGenreList = [],
-            B.getMoviesGenre(page: currentPage, genre: moviesCategories[widget.genre!]!),
+            B.tvGenreList = [],
+            B.getTvsGenre(page: currentPage, genre: tvCategories[widget.genre!]!),
           }
         : null;
   }
@@ -68,7 +68,7 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
             title: appBar(context: context),
             backgroundColor: theme.canvasColor,
           ),
-          body: B.movieGenreList.isEmpty
+          body: B.tvGenreList.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
@@ -105,8 +105,8 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                         : Container(),
                     listWidget(
                         currentWidth: currentWidth,
-                        list: B.movieGenreList,
-                        isMovie: true,
+                        list: B.tvGenreList,
+                        isMovie: false,
                         scrollController: scrollController,
                         page: search ? 0 : currentPage),
                     search

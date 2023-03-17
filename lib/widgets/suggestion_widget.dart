@@ -61,7 +61,7 @@ Widget suggestionWidget({
                               ? "/10 (${(suggestions[index].voteCount! / 1000).toStringAsFixed(2)}K)"
                               : "/10 (${suggestions[index].voteCount})",
                           style: TextStyle(
-                              fontWeight: FontWeight.w100,
+                              fontWeight: FontWeight.w300,
                               fontSize: 12,
                               color: Colors.grey.shade400)),
                     ],
