@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
-import 'package:netflix_web/widgets/drawer.dart';
+import 'package:netflix_web/widgets/app_bar.dart';
 
 late double currentWidth;
 late ThemeData theme;
@@ -61,32 +61,13 @@ class _MoviesPageState extends State<MoviesPage> {
         currentPage = int.parse(widget.page!);
         changePage();
         return Scaffold(
-          drawer: drawerWidget(theme: theme, context: context),
           backgroundColor: theme.canvasColor,
           appBar: AppBar(
             centerTitle: true,
-            toolbarHeight: 70,
-            title: Text(
-              widget.title,
-              style:
-                  TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: theme.primaryColor),
-            ),
+            toolbarHeight: 90,
+            automaticallyImplyLeading: false,
+            title: appBar(context: context),
             backgroundColor: theme.canvasColor,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        search = !search;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.search,
-                      color: search ? theme.primaryColor : Colors.white,
-                    )),
-              )
-            ],
           ),
           body: B.moviesList.isEmpty
               ? const Center(

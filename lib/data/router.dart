@@ -16,7 +16,7 @@ final GoRouter router = GoRouter(initialLocation: '/', routes: [
         builder: (BuildContext context, GoRouterState state) => const MainMovies(),
         routes: [
           GoRoute(
-              path: "categories/:genre/:page",
+              path: "genres/:genre/:page",
               builder: (BuildContext context, GoRouterState state) => MoviesGenrePage(
                     page: state.params['page'],
                     genre: state.params['genre'],

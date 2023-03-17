@@ -22,7 +22,8 @@ part 'nex_state.dart';
 class NexBloc extends Bloc<NexEvent, NexState> {
   List<String> movieCategories = ["popular", "top_rated", "now_playing", "upcoming"];
   List<String> tvCategories = ["popular", "top_rated", "airing_today", "on_the_air"];
-  List<String> categoriesNames = moviesCategoriesN;
+  List<String> moviesGenres = moviesCategoriesN;
+  List<String> tvGenres = tvCategoriesN;
   List<Movie> searchedMovies = [];
   List<TvShows> searchedShows = [];
   List<Results> popular = [];

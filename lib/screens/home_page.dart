@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
-import 'package:netflix_web/widgets/drawer.dart';
 import 'package:netflix_web/widgets/suggestion_widget.dart';
+import 'package:netflix_web/widgets/app_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -111,15 +111,10 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.black,
-          drawer: drawerWidget(theme: theme, context: context),
           appBar: AppBar(
             centerTitle: true,
-            toolbarHeight: 70,
-            title: Text(
-              "Netflix",
-              style:
-                  TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: theme.primaryColor),
-            ),
+            toolbarHeight: 90,
+            title: appBar(context: context),
             backgroundColor: theme.canvasColor,
           ),
           body: B.popular.isEmpty

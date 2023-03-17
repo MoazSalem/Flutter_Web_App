@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
-import 'package:netflix_web/widgets/list_widget.dart';
-import 'package:netflix_web/widgets/drawer.dart';
 import 'package:netflix_web/data/categories.dart';
+import 'package:netflix_web/widgets/app_bar.dart';
+import 'package:netflix_web/widgets/list_widget.dart';
 
 late double currentWidth;
 late ThemeData theme;
@@ -60,32 +60,13 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
         currentPage = int.parse(widget.page!);
         changePage();
         return Scaffold(
-          drawer: drawerWidget(theme: theme, context: context),
           backgroundColor: theme.canvasColor,
           appBar: AppBar(
             centerTitle: true,
-            toolbarHeight: 70,
-            title: Text(
-              widget.genre!,
-              style:
-                  TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: theme.primaryColor),
-            ),
+            toolbarHeight: 90,
+            automaticallyImplyLeading: false,
+            title: appBar(context: context),
             backgroundColor: theme.canvasColor,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        search = !search;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.search,
-                      color: search ? theme.primaryColor : Colors.white,
-                    )),
-              )
-            ],
           ),
           body: B.genreList.isEmpty
               ? const Center(
@@ -154,7 +135,7 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                                           ? null
                                           : () {
                                               currentPage = 1;
-                                              context.go("/movies/categories/${widget.genre}/${1}");
+                                              context.go("/movies/genres/${widget.genre}/${1}");
                                             },
                                       child: const Icon(Icons.home_filled),
                                     ),
@@ -167,7 +148,7 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                                           : () {
                                               currentPage--;
                                               context.go(
-                                                  "/movies/categories/${widget.genre}/$currentPage");
+                                                  "/movies/genres/${widget.genre}/$currentPage");
                                             },
                                       child: const Icon(Icons.arrow_back),
                                     ),
@@ -180,7 +161,7 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                                       onPressed: () {
                                         currentPage++;
                                         context
-                                            .go("/movies/categories/${widget.genre}/$currentPage");
+                                            .go("/movies/genres/${widget.genre}/$currentPage");
                                       },
                                       child: const Icon(Icons.arrow_forward),
                                     )

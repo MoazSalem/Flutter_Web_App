@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
+import 'package:netflix_web/widgets/app_bar.dart';
 
 class MainMovies extends StatefulWidget {
   const MainMovies({Key? key}) : super(key: key);
@@ -35,6 +36,13 @@ class _MainMoviesState extends State<MainMovies> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              toolbarHeight: 90,
+              automaticallyImplyLeading: false,
+              title: appBar(context: context),
+              backgroundColor: theme.canvasColor,
+            ),
             backgroundColor: Colors.black,
             body: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -43,11 +51,11 @@ class _MainMoviesState extends State<MainMovies> {
                   const Padding(
                     padding: EdgeInsets.all(12.0),
                     child: Text(
-                      "Movies :",
+                      "Movie Categories :",
                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.only(top: 12.0, bottom: 20),
                     child: GridView.builder(
@@ -82,7 +90,7 @@ class _MainMoviesState extends State<MainMovies> {
                   const Padding(
                     padding: EdgeInsets.all(12.0),
                     child: Text(
-                      "Categories :",
+                      "Movie Genres :",
                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -91,7 +99,7 @@ class _MainMoviesState extends State<MainMovies> {
                       padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: B.categoriesNames.length,
+                      itemCount: B.moviesGenres.length,
                       cacheExtent: 20,
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 2,
@@ -101,8 +109,7 @@ class _MainMoviesState extends State<MainMovies> {
                       ),
                       itemBuilder: (BuildContext context, index) => GestureDetector(
                             onTap: () {
-                              context.go(
-                                  '/movies/categories/${B.categoriesNames[index].toLowerCase()}/1');
+                              context.go('/movies/genres/${B.moviesGenres[index].toLowerCase()}/1');
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -113,7 +120,7 @@ class _MainMoviesState extends State<MainMovies> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: FittedBox(
                                   child: Text(
-                                    B.categoriesNames[index],
+                                    B.moviesGenres[index],
                                     style:
                                         const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                   ),
