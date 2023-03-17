@@ -10,9 +10,6 @@ import 'package:netflix_web/widgets/actor_widget.dart';
 import 'package:netflix_web/widgets/categoryWidget.dart';
 import 'package:netflix_web/widgets/review_widget.dart';
 
-late ThemeData theme;
-late NexBloc B;
-
 // This page is opened when you press on a movie
 class MovieInfo extends StatefulWidget {
   final String id;
@@ -24,6 +21,8 @@ class MovieInfo extends StatefulWidget {
 }
 
 class _MovieInfoState extends State<MovieInfo> {
+  late ThemeData theme;
+  late NexBloc B;
   final ScrollController scrollController = ScrollController();
   final Color grey = Colors.grey.shade400;
   bool loading = true;

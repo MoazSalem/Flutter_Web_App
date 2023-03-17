@@ -4,12 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/app_bar.dart';
-
-import '../../data/categories.dart';
-
-late double currentWidth;
-late ThemeData theme;
-late NexBloc B;
+import 'package:netflix_web/data/categories.dart';
 
 // This is the main page
 class MoviesPage extends StatefulWidget {
@@ -23,10 +18,10 @@ class MoviesPage extends StatefulWidget {
 }
 
 class _MoviesPageState extends State<MoviesPage> {
+  late double currentWidth;
+  late ThemeData theme;
+  late NexBloc B;
   final ScrollController scrollController = ScrollController();
-  final TextEditingController searchC = TextEditingController();
-  bool loading = false;
-  bool search = false;
   int currentPage = 1;
   int loadedPage = 0;
 
@@ -86,102 +81,69 @@ class _MoviesPageState extends State<MoviesPage> {
                   physics: const BouncingScrollPhysics(),
                   cacheExtent: 3500,
                   children: [
-                    search
-                        ? Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: currentWidth * 0.031),
-                              child: TextFormField(
-                                  controller: searchC,
-                                  onChanged: (query) {
-                                    B.searchMovies(query: query);
-                                  },
-                                  autofocus: true,
-                                  maxLines: 1,
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey.shade300),
-                                        borderRadius: BorderRadius.circular(0)),
-                                    hintText: "Search",
-                                    filled: true,
-                                    fillColor: Theme.of(context).cardColor,
-                                    border:
-                                        OutlineInputBorder(borderRadius: BorderRadius.circular(0)),
-                                  )),
-                            ),
-                          )
-                        : Container(),
                     listWidget(
                         currentWidth: currentWidth,
-                        list: search
-                            ? B.searchedMovies.isEmpty
-                                ? B.moviesList
-                                : B.searchedMovies
-                            : B.moviesList,
+                        list: B.moviesList,
                         isMovie: true,
                         scrollController: scrollController,
-                        page: search ? 0 : currentPage),
-                    search
-                        ? Container()
-                        : Column(
+                        page: currentPage),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15.0),
+                          child: Center(
+                              child: Text(
+                            "Page $currentPage",
+                          )),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 16.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                                child: Center(
-                                    child: Text(
-                                  "Page $currentPage",
-                                )),
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                ),
+                                onPressed: currentPage == 1
+                                    ? null
+                                    : () {
+                                        currentPage = 1;
+                                        context.go("/movies/${widget.category}/${1}");
+                                      },
+                                child: const Icon(Icons.home_filled),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0, top: 8.0, bottom: 16.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        minimumSize: Size(currentWidth * 0.3, 50),
-                                      ),
-                                      onPressed: currentPage == 1
-                                          ? null
-                                          : () {
-                                              currentPage = 1;
-                                              context.go("/movies/${widget.category}/${1}");
-                                            },
-                                      child: const Icon(Icons.home_filled),
-                                    ),
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        minimumSize: Size(currentWidth * 0.3, 50),
-                                      ),
-                                      onPressed: currentPage == 1
-                                          ? null
-                                          : () {
-                                              currentPage--;
-                                              context.go("/movies/${widget.category}/$currentPage");
-                                            },
-                                      child: const Icon(Icons.arrow_back),
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: theme.primaryColor,
-                                        minimumSize: Size(currentWidth * 0.3, 50),
-                                      ),
-                                      onPressed: () {
-                                        currentPage++;
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                ),
+                                onPressed: currentPage == 1
+                                    ? null
+                                    : () {
+                                        currentPage--;
                                         context.go("/movies/${widget.category}/$currentPage");
                                       },
-                                      child: const Icon(Icons.arrow_forward),
-                                    )
-                                  ],
-                                ),
+                                child: const Icon(Icons.arrow_back),
                               ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: theme.primaryColor,
+                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                ),
+                                onPressed: () {
+                                  currentPage++;
+                                  context.go("/movies/${widget.category}/$currentPage");
+                                },
+                                child: const Icon(Icons.arrow_forward),
+                              )
                             ],
                           ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
         );

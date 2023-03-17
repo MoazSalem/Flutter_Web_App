@@ -4,12 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/widgets/app_bar.dart';
-
-import '../../data/categories.dart';
-
-late double currentWidth;
-late ThemeData theme;
-late NexBloc B;
+import 'package:netflix_web/data/categories.dart';
 
 // This is the main page
 class TvPage extends StatefulWidget {
@@ -23,9 +18,10 @@ class TvPage extends StatefulWidget {
 }
 
 class _TvPageState extends State<TvPage> {
+  late double currentWidth;
+  late ThemeData theme;
+  late NexBloc B;
   final ScrollController scrollController = ScrollController();
-  final TextEditingController searchC = TextEditingController();
-  bool search = false;
   int currentPage = 1;
   int loadedPage = 0;
 
@@ -85,101 +81,68 @@ class _TvPageState extends State<TvPage> {
                   physics: const BouncingScrollPhysics(),
                   cacheExtent: 3500,
                   children: [
-                    search
-                        ? Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: currentWidth * 0.031),
-                              child: TextFormField(
-                                  controller: searchC,
-                                  onChanged: (query) {
-                                    B.searchShows(query: query);
-                                  },
-                                  autofocus: true,
-                                  maxLines: 1,
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey.shade300),
-                                        borderRadius: BorderRadius.circular(0)),
-                                    hintText: "Search",
-                                    filled: true,
-                                    fillColor: Theme.of(context).cardColor,
-                                    border:
-                                        OutlineInputBorder(borderRadius: BorderRadius.circular(0)),
-                                  )),
-                            ),
-                          )
-                        : Container(),
                     listWidget(
                         currentWidth: currentWidth,
-                        list: search
-                            ? B.searchedShows.isEmpty
-                                ? B.tvShowsList
-                                : B.searchedShows
-                            : B.tvShowsList,
+                        list: B.tvShowsList,
                         isMovie: false,
                         scrollController: scrollController,
-                        page: search ? 0 : currentPage),
-                    search
-                        ? Container()
-                        : Column(
+                        page: currentPage),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15.0),
+                          child: Center(
+                              child: Text(
+                            "Page $currentPage",
+                          )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                                child: Center(
-                                    child: Text(
-                                  "Page $currentPage",
-                                )),
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                ),
+                                onPressed: currentPage == 1
+                                    ? null
+                                    : () async {
+                                        currentPage = 1;
+                                        context.go("/tv/${widget.category}/${1}");
+                                      },
+                                child: const Icon(Icons.home_filled),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        minimumSize: Size(currentWidth * 0.3, 50),
-                                      ),
-                                      onPressed: currentPage == 1
-                                          ? null
-                                          : () async {
-                                              currentPage = 1;
-                                              context.go("/tv/${widget.category}/${1}");
-                                            },
-                                      child: const Icon(Icons.home_filled),
-                                    ),
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        minimumSize: Size(currentWidth * 0.3, 50),
-                                      ),
-                                      onPressed: currentPage == 1
-                                          ? null
-                                          : () async {
-                                              currentPage--;
-                                              context.go("/tv/${widget.category}/$currentPage");
-                                            },
-                                      child: const Icon(Icons.arrow_back),
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: theme.primaryColor,
-                                        minimumSize: Size(currentWidth * 0.3, 50),
-                                      ),
-                                      onPressed: () async {
-                                        currentPage++;
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                ),
+                                onPressed: currentPage == 1
+                                    ? null
+                                    : () async {
+                                        currentPage--;
                                         context.go("/tv/${widget.category}/$currentPage");
                                       },
-                                      child: const Icon(Icons.arrow_forward),
-                                    )
-                                  ],
-                                ),
+                                child: const Icon(Icons.arrow_back),
                               ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: theme.primaryColor,
+                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                ),
+                                onPressed: () async {
+                                  currentPage++;
+                                  context.go("/tv/${widget.category}/$currentPage");
+                                },
+                                child: const Icon(Icons.arrow_forward),
+                              )
                             ],
                           ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
         );

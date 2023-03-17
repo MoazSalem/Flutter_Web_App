@@ -44,8 +44,8 @@ class _HomePageState extends State<HomePage> {
         .map((item) => GestureDetector(
               onTap: () {
                 item.name == null
-                    ? context.push('/movies/${item.id}')
-                    : context.push('/tv/${item.id}');
+                    ? context.go('/movies/${item.id}')
+                    : context.go('/tv/${item.id}');
               },
               child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5.0)),

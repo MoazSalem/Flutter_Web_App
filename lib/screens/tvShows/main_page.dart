@@ -73,7 +73,7 @@ class _MainTvState extends State<MainTv> {
                         ),
                         itemBuilder: (BuildContext context, index) => GestureDetector(
                               onTap: () {
-                                context.push('/tv/${tvCategories[index]}/1');
+                                context.go('/tv/${tvCategories[index]}/1');
                               },
                               child: Container(
                                 decoration: BoxDecoration(

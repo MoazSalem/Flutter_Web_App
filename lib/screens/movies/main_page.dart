@@ -73,7 +73,7 @@ class _MainMoviesState extends State<MainMovies> {
                         ),
                         itemBuilder: (BuildContext context, index) => GestureDetector(
                               onTap: () {
-                                context.push('/movies/${movieCategories[index]}/1');
+                                context.go('/movies/${movieCategories[index]}/1');
                               },
                               child: Container(
                                 decoration: BoxDecoration(
