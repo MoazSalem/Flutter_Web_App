@@ -6,6 +6,7 @@ import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/drawer.dart';
 
 int currentPage = 1;
+int loadedPage = 0;
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
@@ -43,9 +44,10 @@ class _MoviesPageState extends State<MoviesPage> {
   }
 
   changePage() {
-    B.allMoviesList[currentPage] == null
+    loadedPage != currentPage
         ? {
-            B.allMoviesList[currentPage] = [],
+            loadedPage = int.parse(widget.page!),
+            B.moviesList = [],
             B.getMovies(page: currentPage, categoryIndex: widget.categoryIndex),
           }
         : null;
@@ -86,7 +88,7 @@ class _MoviesPageState extends State<MoviesPage> {
               )
             ],
           ),
-          body: B.allMoviesList[currentPage]!.isEmpty
+          body: B.moviesList.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
@@ -125,9 +127,9 @@ class _MoviesPageState extends State<MoviesPage> {
                         currentWidth: currentWidth,
                         list: search
                             ? B.searchedMovies.isEmpty
-                                ? B.allMoviesList[currentPage]!
+                                ? B.moviesList
                                 : B.searchedMovies
-                            : B.allMoviesList[currentPage]!,
+                            : B.moviesList,
                         isMovie: true,
                         scrollController: scrollController,
                         page: search ? 0 : currentPage),

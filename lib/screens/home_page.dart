@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         itemBuilder: (BuildContext context, index) => GestureDetector(
                               onTap: () {
-                                //context.push('/movies/${B.categoriesNames[index]}/1');
+                                context.go('/movies/${B.categoriesNames[index].toLowerCase()}/1');
                               },
                               child: Container(
                                 decoration: BoxDecoration(

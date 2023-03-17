@@ -6,6 +6,7 @@ import 'package:netflix_web/widgets/drawer.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 
 int currentPage = 1;
+int loadedPage = 0;
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
@@ -42,9 +43,10 @@ class _TvPageState extends State<TvPage> {
   }
 
   changePage() {
-    B.allTvShowsList[currentPage] == null
+    loadedPage != currentPage
         ? {
-            B.allTvShowsList[currentPage] = [],
+            loadedPage = int.parse(widget.page!),
+            B.tvShowsList = [],
             B.getShows(page: currentPage, categoryIndex: widget.categoryIndex),
           }
         : null;
@@ -85,7 +87,7 @@ class _TvPageState extends State<TvPage> {
               )
             ],
           ),
-          body: B.allTvShowsList[currentPage]!.isEmpty
+          body: B.tvShowsList.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
@@ -124,9 +126,9 @@ class _TvPageState extends State<TvPage> {
                         currentWidth: currentWidth,
                         list: search
                             ? B.searchedShows.isEmpty
-                                ? B.allTvShowsList[currentPage]!
+                                ? B.tvShowsList
                                 : B.searchedShows
-                            : B.allTvShowsList[currentPage]!,
+                            : B.tvShowsList,
                         isMovie: false,
                         scrollController: scrollController,
                         page: search ? 0 : currentPage),

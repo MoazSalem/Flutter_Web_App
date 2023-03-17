@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/drawer.dart';
+import 'package:netflix_web/data/categories.dart';
 
-int currentPage = 1;
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
@@ -26,6 +26,8 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
   final TextEditingController searchC = TextEditingController();
   bool loading = false;
   bool search = false;
+  int currentPage = 1;
+  int loadedPage = 0;
 
   @override
   void initState() {
@@ -41,10 +43,11 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
   }
 
   changePage() {
-    B.genreMoviesList[currentPage] == null
+    loadedPage != currentPage
         ? {
-            B.genreMoviesList[currentPage] = [],
-            B.getMoviesGenre(page: currentPage, genre: widget.genre!),
+            loadedPage = int.parse(widget.page!),
+            B.genreList = [],
+            B.getMoviesGenre(page: currentPage, genre: moviesCategories[widget.genre!]!),
           }
         : null;
   }
@@ -84,7 +87,7 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
               )
             ],
           ),
-          body: B.genreMoviesList[currentPage]!.isEmpty
+          body: B.genreList.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
@@ -121,7 +124,7 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                         : Container(),
                     listWidget(
                         currentWidth: currentWidth,
-                        list: B.genreMoviesList[currentPage]!,
+                        list: B.genreList,
                         isMovie: true,
                         scrollController: scrollController,
                         page: search ? 0 : currentPage),

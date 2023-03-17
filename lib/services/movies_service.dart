@@ -136,7 +136,7 @@ class MoviesService {
     return movies;
   }
 
-  Future<List<Movie>> getGenre({required int page, required String genre}) async {
+  Future<List<Movie>> getGenre({required int page, required int genre}) async {
     String endPoint =
         "https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&language=en-US&sort_by=popularity.desc&page=$page&with_genres=$genre";
     List<Movie> movies = [];

@@ -26,9 +26,9 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   List<Movie> searchedMovies = [];
   List<TvShows> searchedShows = [];
   List<Results> popular = [];
-  Map<int, List<Movie>> allMoviesList = {};
-  Map<int, List<Movie>> genreMoviesList = {};
-  Map<int, List<TvShows>> allTvShowsList = {};
+  List<Movie> moviesList = [];
+  List<Movie> genreList = [];
+  List<TvShows> tvShowsList = [];
 
   // For Some Reason Flutter doesn't wait for the late initialization in web so just initialize it
   Movie movie = emptyMovie;
@@ -52,13 +52,13 @@ class NexBloc extends Bloc<NexEvent, NexState> {
     emit(GetMovies());
   }
 
-  getMoviesGenre({required int page, required String genre}) async {
-    genreMoviesList[page] = await MoviesService().getGenre(page: page, genre: genre);
+  getMoviesGenre({required int page, required int genre}) async {
+    genreList = await MoviesService().getGenre(page: page, genre: genre);
     emit(GetMovies());
   }
 
   getMovies({required int page, required int categoryIndex}) async {
-    allMoviesList[page] = await MoviesService().getMovies(
+    moviesList = await MoviesService().getMovies(
         page: page, endPoint: getEndPoint(category: movieCategories[categoryIndex], typeIndex: 0));
     emit(GetMovies());
   }
@@ -85,7 +85,7 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getShows({required int page, required int categoryIndex}) async {
-    allTvShowsList[page] = await TVService().getShows(
+    tvShowsList = await TVService().getShows(
         page: page, endPoint: getEndPoint(category: tvCategories[categoryIndex], typeIndex: 1));
     emit(GetMovies());
   }

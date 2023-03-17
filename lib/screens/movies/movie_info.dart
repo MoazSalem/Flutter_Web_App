@@ -272,7 +272,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                     const Padding(
                                       padding: EdgeInsets.all(10.0),
                                       child: Text(
-                                        "Similar Movies:",
+                                        "Might Also Interest You:",
                                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                                       ),
                                     ),
