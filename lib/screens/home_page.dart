@@ -1,16 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
-import '../widgets/drawer.dart';
-
-late NexBloc B;
-late ThemeData theme;
-late double width;
-List<String> list = ["Go To Movies", "Go To Tv"];
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:netflix_web/bloc/nex_bloc.dart';
+import 'package:netflix_web/widgets/drawer.dart';
+import 'package:netflix_web/widgets/suggestion_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +15,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late NexBloc B;
+  late ThemeData theme;
+  late double width;
   int _current = 0;
   final TextEditingController searchC = TextEditingController();
   final CarouselController _controller = CarouselController();
@@ -29,12 +27,15 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     B = NexBloc.get(context);
     B.getPopular();
+    B.getMovies(page: 1, categoryIndex: 0);
+    B.getShows(page: 1, categoryIndex: 0);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     theme = Theme.of(context);
+    width = MediaQuery.of(context).size.width;
   }
 
   @override
@@ -46,72 +47,68 @@ class _HomePageState extends State<HomePage> {
                     ? context.push('/movies/${item.id}')
                     : context.push('/tv/${item.id}');
               },
-              child: Container(
-                margin: const EdgeInsets.all(5.0),
-                child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                          child: Image.network(
-                              "https://image.tmdb.org/t/p/original/${item.backdropPath}",
-                              fit: BoxFit.cover),
-                        ),
-                        Positioned(
-                          bottom: 0.0,
-                          left: 0.0,
-                          right: 0.0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
+              child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                        child: Image.network(
+                            "https://image.tmdb.org/t/p/original/${item.backdropPath}",
+                            fit: BoxFit.cover),
+                      ),
+                      Positioned(
+                        bottom: 0.0,
+                        left: 0.0,
+                        right: 0.0,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                            child: Text(
-                              '${item.name ?? item.title}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                          child: Text(
+                            '${item.name ?? item.title}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 10.0,
-                          right: 10.0,
-                          child: CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Colors.black54,
-                            child: CircularPercentIndicator(
-                              animationDuration: 3000,
-                              curve: Curves.bounceOut,
-                              radius: 30.0,
-                              lineWidth: 4.0,
-                              percent: (item.voteAverage! / 10),
-                              animation: true,
-                              center: Text(
-                                (item.voteAverage! * 10).toStringAsFixed(0),
-                                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
-                              ),
-                              progressColor: progressColor(rating: (item.voteAverage! * 10)),
+                      ),
+                      Positioned(
+                        bottom: 10.0,
+                        right: 10.0,
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.black54,
+                          child: CircularPercentIndicator(
+                            animationDuration: 3000,
+                            curve: Curves.bounceOut,
+                            radius: 30.0,
+                            lineWidth: 4.0,
+                            percent: (item.voteAverage! / 10),
+                            animation: true,
+                            center: Text(
+                              (item.voteAverage! * 10).toStringAsFixed(0),
+                              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                             ),
+                            progressColor: progressColor(rating: (item.voteAverage! * 10)),
                           ),
-                        )
-                      ],
-                    )),
-              ),
+                        ),
+                      )
+                    ],
+                  )),
             ))
         .toList();
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
-        width = MediaQuery.of(context).size.width;
         return Scaffold(
           backgroundColor: Colors.black,
           drawer: drawerWidget(theme: theme, context: context),
@@ -163,68 +160,82 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ]),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12.0, bottom: 20),
-                      child: GridView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: list.length,
-                          cacheExtent: 20,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 20,
-                            crossAxisCount: 2,
-                          ),
-                          itemBuilder: (BuildContext context, index) => GestureDetector(
-                                onTap: () {
-                                  index == 0
-                                      ? context.push('/movies/popular/1')
-                                      : context.push('/tv/popular/1');
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: theme.primaryColor),
-                                  width: 60,
-                                  child: Center(
-                                      child: Text(
-                                    list[index],
-                                    style:
-                                        const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                  )),
-                                ),
-                              )),
-                    ),
-                    GridView.builder(
-                        padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: B.categoriesNames.length,
-                        cacheExtent: 20,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 2,
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 20,
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (BuildContext context, index) => GestureDetector(
-                              onTap: () {
-                                context.go('/movies/${B.categoriesNames[index].toLowerCase()}/1');
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: theme.cardColor),
-                                width: 60,
-                                child: Center(
-                                    child: Text(
-                                  B.categoriesNames[index],
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                )),
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(30)),
+                            onTap: () => context.go('/movies'),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Text(
+                                    "Movies ",
+                                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 20,
+                                  )
+                                ],
                               ),
-                            )),
-                    const SizedBox(height: 20),
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+                              child: SizedBox(
+                                height: 400,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: B.moviesList.length,
+                                    itemBuilder: (BuildContext context, int index) =>
+                                        GestureDetector(
+                                          onTap: () =>
+                                              context.go('/movies/${B.moviesList[index].id}'),
+                                          child: suggestionWidget(
+                                              index: index, suggestions: B.moviesList),
+                                        )),
+                              )),
+                          InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(30)),
+                            onTap: () => context.go('/tv'),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Text(
+                                    "Tv Shows ",
+                                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 20,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+                              child: SizedBox(
+                                height: 400,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: B.tvShowsList.length,
+                                    itemBuilder: (BuildContext context, int index) =>
+                                        GestureDetector(
+                                          onTap: () => context.go('/tv/${B.tvShowsList[index].id}'),
+                                          child: suggestionWidget(
+                                              index: index, suggestions: B.tvShowsList),
+                                        )),
+                              )),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
         );

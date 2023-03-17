@@ -5,8 +5,6 @@ import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/drawer.dart';
 
-int currentPage = 1;
-int loadedPage = 0;
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
@@ -29,6 +27,8 @@ class _MoviesPageState extends State<MoviesPage> {
   final TextEditingController searchC = TextEditingController();
   bool loading = false;
   bool search = false;
+  int currentPage = 1;
+  int loadedPage = 0;
 
   @override
   void initState() {

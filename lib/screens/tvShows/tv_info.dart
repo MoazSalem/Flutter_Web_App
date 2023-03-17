@@ -209,7 +209,7 @@ class _TvInfoState extends State<TvInfo> {
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
                                 child: Text(
-                                  "Trailer:",
+                                  "Trailer :",
                                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -223,7 +223,7 @@ class _TvInfoState extends State<TvInfo> {
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
                                 child: Text(
-                                  "Shows Cast:",
+                                  "Shows Cast :",
                                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -252,7 +252,7 @@ class _TvInfoState extends State<TvInfo> {
                                         const Padding(
                                           padding: EdgeInsets.all(10.0),
                                           child: Text(
-                                            "Recommendations:",
+                                            "Recommendations :",
                                             style: TextStyle(
                                                 fontSize: 24, fontWeight: FontWeight.bold),
                                           ),
@@ -284,7 +284,7 @@ class _TvInfoState extends State<TvInfo> {
                                         const Padding(
                                           padding: EdgeInsets.all(10.0),
                                           child: Text(
-                                            "Might Also Interest You:",
+                                            "Might Also Interest You :",
                                             style: TextStyle(
                                                 fontSize: 24, fontWeight: FontWeight.bold),
                                           ),
@@ -315,7 +315,7 @@ class _TvInfoState extends State<TvInfo> {
                                         const Padding(
                                           padding: EdgeInsets.all(10.0),
                                           child: Text(
-                                            "Reviews:",
+                                            "Reviews :",
                                             style: TextStyle(
                                                 fontSize: 24, fontWeight: FontWeight.bold),
                                           ),
@@ -356,35 +356,39 @@ class _TvInfoState extends State<TvInfo> {
                                                   ? 2
                                                   : 1,
                                         ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            InkWell(
-                                              borderRadius: BorderRadius.circular(20),
-                                              onTap: () {
-                                                seeMore = !seeMore;
-                                                B.onChanges();
-                                              },
-                                              child: SizedBox(
-                                                height: 50,
-                                                width: 200,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(seeMore ? "Show Less " : " See More "),
-                                                    Icon(
-                                                      seeMore
-                                                          ? Icons.arrow_upward
-                                                          : Icons.arrow_downward,
-                                                      size: 14,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )
+                                        B.reviews.length > 1
+                                            ? Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  InkWell(
+                                                    borderRadius: BorderRadius.circular(20),
+                                                    onTap: () {
+                                                      seeMore = !seeMore;
+                                                      B.onChanges();
+                                                    },
+                                                    child: SizedBox(
+                                                      height: 50,
+                                                      width: 200,
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Text(seeMore
+                                                              ? "Show Less "
+                                                              : " See More "),
+                                                          Icon(
+                                                            seeMore
+                                                                ? Icons.arrow_upward
+                                                                : Icons.arrow_downward,
+                                                            size: 14,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            : Container()
                                       ],
                                     )
                                   : Container()

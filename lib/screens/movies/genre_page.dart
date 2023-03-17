@@ -154,7 +154,7 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                                           ? null
                                           : () {
                                               currentPage = 1;
-                                              context.go("/movies/${widget.genre}/${1}");
+                                              context.go("/movies/categories/${widget.genre}/${1}");
                                             },
                                       child: const Icon(Icons.home_filled),
                                     ),
@@ -166,7 +166,8 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                                           ? null
                                           : () {
                                               currentPage--;
-                                              context.go("/movies/${widget.genre}/$currentPage");
+                                              context.go(
+                                                  "/movies/categories/${widget.genre}/$currentPage");
                                             },
                                       child: const Icon(Icons.arrow_back),
                                     ),
@@ -178,7 +179,8 @@ class _MoviesGenrePageState extends State<MoviesGenrePage> {
                                       ),
                                       onPressed: () {
                                         currentPage++;
-                                        context.go("/movies/${widget.genre}/$currentPage");
+                                        context
+                                            .go("/movies/categories/${widget.genre}/$currentPage");
                                       },
                                       child: const Icon(Icons.arrow_forward),
                                     )

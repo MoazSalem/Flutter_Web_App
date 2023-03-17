@@ -290,12 +290,14 @@ class TvShows {
   String? overview;
   double? popularity;
   String? posterPath;
+  String? releaseDate;
   List<TvShowsProductionCompanies?>? productionCompanies;
   List<TvShowsProductionCountries?>? productionCountries;
   List<TvShowsSeasons?>? seasons;
   List<TvShowsSpokenLanguages?>? spokenLanguages;
   String? status;
   String? tagline;
+  String? title;
   String? type;
   double? voteAverage;
   int? voteCount;
@@ -331,6 +333,8 @@ class TvShows {
     this.status,
     this.tagline,
     this.type,
+    this.releaseDate,
+    this.title,
     this.voteAverage,
     this.voteCount,
   });

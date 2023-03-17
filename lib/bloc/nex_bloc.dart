@@ -20,8 +20,8 @@ part 'nex_event.dart';
 part 'nex_state.dart';
 
 class NexBloc extends Bloc<NexEvent, NexState> {
-  List<String> movieCategories = ["popular", "now_playing", "top_rated", "upcoming"];
-  List<String> tvCategories = ["popular", "airing_today", "top_rated", "on_the_air"];
+  List<String> movieCategories = ["popular", "top_rated", "now_playing", "upcoming"];
+  List<String> tvCategories = ["popular", "top_rated", "airing_today", "on_the_air"];
   List<String> categoriesNames = moviesCategoriesN;
   List<Movie> searchedMovies = [];
   List<TvShows> searchedShows = [];

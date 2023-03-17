@@ -5,8 +5,6 @@ import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/drawer.dart';
 import 'package:netflix_web/bloc/nex_bloc.dart';
 
-int currentPage = 1;
-int loadedPage = 0;
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
@@ -28,6 +26,8 @@ class _TvPageState extends State<TvPage> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController searchC = TextEditingController();
   bool search = false;
+  int currentPage = 1;
+  int loadedPage = 0;
 
   @override
   void initState() {
