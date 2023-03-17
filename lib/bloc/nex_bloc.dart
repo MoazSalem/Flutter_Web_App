@@ -20,16 +20,12 @@ part 'nex_event.dart';
 part 'nex_state.dart';
 
 class NexBloc extends Bloc<NexEvent, NexState> {
-  List<String> movieCategories = ["popular", "top_rated", "now_playing", "upcoming"];
-  List<String> tvCategories = ["popular", "top_rated", "airing_today", "on_the_air"];
   List<String> moviesGenres = moviesCategoriesN;
   List<String> tvGenres = tvCategoriesN;
   List<Movie> searchedMovies = [];
   List<TvShows> searchedShows = [];
   List<Results> popular = [];
   List<Movie> moviesList = [];
-  List<Movie> movieGenreList = [];
-  List<TvShows> tvGenreList = [];
   List<TvShows> tvShowsList = [];
 
   // For Some Reason Flutter doesn't wait for the late initialization in web so just initialize it
@@ -55,13 +51,13 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getMoviesGenre({required int page, required int genre}) async {
-    movieGenreList = await MoviesService().getGenre(page: page, genre: genre);
+    moviesList = await MoviesService().getGenre(page: page, genre: genre);
     emit(GetMovies());
   }
 
-  getMovies({required int page, required int categoryIndex}) async {
-    moviesList = await MoviesService().getMovies(
-        page: page, endPoint: getEndPoint(category: movieCategories[categoryIndex], typeIndex: 0));
+  getMovies({required int page, required String category}) async {
+    moviesList = await MoviesService()
+        .getMovies(page: page, endPoint: getEndPoint(category: category, typeIndex: 0));
     emit(GetMovies());
   }
 
@@ -86,9 +82,9 @@ class NexBloc extends Bloc<NexEvent, NexState> {
     emit(GetMovies());
   }
 
-  getShows({required int page, required int categoryIndex}) async {
-    tvShowsList = await TVService().getShows(
-        page: page, endPoint: getEndPoint(category: tvCategories[categoryIndex], typeIndex: 1));
+  getShows({required int page, required String category}) async {
+    tvShowsList = await TVService()
+        .getShows(page: page, endPoint: getEndPoint(category: category, typeIndex: 1));
     emit(GetMovies());
   }
 
@@ -114,7 +110,7 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getTvsGenre({required int page, required int genre}) async {
-    tvGenreList = await TVService().getGenre(page: page, genre: genre);
+    tvShowsList = await TVService().getGenre(page: page, genre: genre);
     emit(GetMovies());
   }
 

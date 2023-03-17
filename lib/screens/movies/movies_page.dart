@@ -5,18 +5,18 @@ import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/widgets/list_widget.dart';
 import 'package:netflix_web/widgets/app_bar.dart';
 
+import '../../data/categories.dart';
+
 late double currentWidth;
 late ThemeData theme;
 late NexBloc B;
 
 // This is the main page
 class MoviesPage extends StatefulWidget {
-  final String? page;
-  final int categoryIndex;
-  final String title;
+  final String page;
+  final String category;
 
-  const MoviesPage({Key? key, required this.categoryIndex, required this.title, required this.page})
-      : super(key: key);
+  const MoviesPage({Key? key, required this.category, required this.page}) : super(key: key);
 
   @override
   State<MoviesPage> createState() => _MoviesPageState();
@@ -46,9 +46,18 @@ class _MoviesPageState extends State<MoviesPage> {
   changePage() {
     loadedPage != currentPage
         ? {
-            loadedPage = int.parse(widget.page!),
-            B.moviesList = [],
-            B.getMovies(page: currentPage, categoryIndex: widget.categoryIndex),
+            if ({"popular", "top_rated", "now_playing", "upcoming"}.contains(widget.category))
+              {
+                loadedPage = int.parse(widget.page),
+                B.moviesList = [],
+                B.getMovies(page: currentPage, category: widget.category),
+              }
+            else
+              {
+                loadedPage = int.parse(widget.page),
+                B.moviesList = [],
+                B.getMoviesGenre(page: currentPage, genre: moviesCategories[widget.category]!),
+              }
           }
         : null;
   }
@@ -58,7 +67,7 @@ class _MoviesPageState extends State<MoviesPage> {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
-        currentPage = int.parse(widget.page!);
+        currentPage = int.parse(widget.page);
         changePage();
         return Scaffold(
           backgroundColor: theme.canvasColor,
@@ -140,8 +149,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                           ? null
                                           : () {
                                               currentPage = 1;
-                                              context.go(
-                                                  "/movies/${B.movieCategories[widget.categoryIndex]}/${1}");
+                                              context.go("/movies/${widget.category}/${1}");
                                             },
                                       child: const Icon(Icons.home_filled),
                                     ),
@@ -153,8 +161,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                           ? null
                                           : () {
                                               currentPage--;
-                                              context.go(
-                                                  "/movies/${B.movieCategories[widget.categoryIndex]}/$currentPage");
+                                              context.go("/movies/${widget.category}/$currentPage");
                                             },
                                       child: const Icon(Icons.arrow_back),
                                     ),
@@ -166,8 +173,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                       ),
                                       onPressed: () {
                                         currentPage++;
-                                        context.go(
-                                            "/movies/${B.movieCategories[widget.categoryIndex]}/$currentPage");
+                                        context.go("/movies/${widget.category}/$currentPage");
                                       },
                                       child: const Icon(Icons.arrow_forward),
                                     )

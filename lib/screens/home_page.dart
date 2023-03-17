@@ -27,8 +27,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     B = NexBloc.get(context);
     B.getPopular();
-    B.getMovies(page: 1, categoryIndex: 0);
-    B.getShows(page: 1, categoryIndex: 0);
+    B.getMovies(page: 1, category: "popular");
+    B.getShows(page: 1, category: "popular");
   }
 
   @override

@@ -16,6 +16,7 @@ class _MainTvState extends State<MainTv> {
   late ThemeData theme;
   late double width;
   List<String> list = ["Popular", "Top Rated", "Airing Today", "On The Air"];
+  List<String> tvCategories = ["popular", "top_rated", "airing_today", "on_the_air"];
 
   @override
   void initState() {
@@ -72,7 +73,7 @@ class _MainTvState extends State<MainTv> {
                         ),
                         itemBuilder: (BuildContext context, index) => GestureDetector(
                               onTap: () {
-                                context.push('/tv/${B.movieCategories[index]}/1');
+                                context.push('/tv/${tvCategories[index]}/1');
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -115,7 +116,7 @@ class _MainTvState extends State<MainTv> {
                       ),
                       itemBuilder: (BuildContext context, index) => GestureDetector(
                             onTap: () {
-                              context.go('/tv/genres/${B.tvGenres[index].toLowerCase()}/1');
+                              context.go('/tv/${B.tvGenres[index].toLowerCase()}/1');
                             },
                             child: Container(
                               decoration: BoxDecoration(

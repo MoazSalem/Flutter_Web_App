@@ -16,6 +16,7 @@ class _MainMoviesState extends State<MainMovies> {
   late ThemeData theme;
   late double width;
   List<String> list = ["Popular", "Top Rated", "Now Playing", "Upcoming"];
+  List<String> movieCategories = ["popular", "top_rated", "now_playing", "upcoming"];
 
   @override
   void initState() {
@@ -72,7 +73,7 @@ class _MainMoviesState extends State<MainMovies> {
                         ),
                         itemBuilder: (BuildContext context, index) => GestureDetector(
                               onTap: () {
-                                context.push('/movies/${B.movieCategories[index]}/1');
+                                context.push('/movies/${movieCategories[index]}/1');
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -115,7 +116,7 @@ class _MainMoviesState extends State<MainMovies> {
                       ),
                       itemBuilder: (BuildContext context, index) => GestureDetector(
                             onTap: () {
-                              context.go('/movies/genres/${B.moviesGenres[index].toLowerCase()}/1');
+                              context.go('/movies/${B.moviesGenres[index].toLowerCase()}/1');
                             },
                             child: Container(
                               decoration: BoxDecoration(
