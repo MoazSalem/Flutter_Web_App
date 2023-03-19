@@ -31,12 +31,19 @@ Widget appBar({required BuildContext context, bool showSearch = true, bool movie
           ),
         ),
       ),
-      Text("Netflix",
-          style: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
-          )),
+      InkWell(
+        borderRadius: BorderRadius.circular(30),
+        onTap: () => context.go('/'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+          child: Text("Netflix",
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              )),
+        ),
+      ),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: ElevatedButton(

@@ -84,9 +84,7 @@ class _TvPageState extends State<TvPage> {
                     listWidget(
                         currentWidth: currentWidth,
                         list: B.tvShowsList,
-                        isMovie: false,
-                        scrollController: scrollController,
-                        page: currentPage),
+                        scrollController: scrollController,),
                     Column(
                       children: [
                         Padding(

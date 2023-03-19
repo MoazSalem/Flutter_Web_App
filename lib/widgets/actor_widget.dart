@@ -37,7 +37,7 @@ Widget actorWidget({required B, required int index}) {
           Flexible(
             child: Text(
               "${B.casts[index].character?.split("/")[0]}",
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10, color: grey),
+              style: TextStyle(fontSize: 10, color: grey),
             ),
           ),
           B.casts[index].character!.split("/").length > 1
@@ -46,15 +46,14 @@ Widget actorWidget({required B, required int index}) {
                     FittedBox(
                       child: Text(
                         "${B.casts[index].character?.split("/")[1]}",
-                        style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10, color: grey),
+                        style: TextStyle(fontSize: 10, color: grey),
                       ),
                     ),
                     B.casts[index].character!.split("/").length > 2
                         ? FittedBox(
                             child: Text(
                               "${B.casts[index].character?.split("/")[2]}",
-                              style:
-                                  TextStyle(fontWeight: FontWeight.w300, fontSize: 10, color: grey),
+                              style: TextStyle(fontSize: 10, color: grey),
                             ),
                           )
                         : Container(),

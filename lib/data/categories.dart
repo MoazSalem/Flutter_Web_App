@@ -14,7 +14,7 @@ Map<String, int> moviesCategories = {
   "mystery": 9648,
   "romance": 10749,
   "science fiction": 878,
-  "tV Movie": 10770,
+  "tv movie": 10770,
   "thriller": 53,
   "war": 10752,
   "western": 37
@@ -32,7 +32,7 @@ Map<String, int> tvCategories = {
   "mystery": 9648,
   "news": 10763,
   "reality": 10764,
-  "sci-Fi & fantasy": 10765,
+  "sci-fi & fantasy": 10765,
   "soap": 10766,
   "talk": 10767,
   "war & politics": 10768,

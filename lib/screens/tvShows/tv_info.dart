@@ -7,7 +7,7 @@ import 'package:netflix_web/bloc/nex_bloc.dart';
 import 'package:netflix_web/models/tv.dart';
 import 'package:netflix_web/widgets/suggestion_widget.dart';
 import 'package:netflix_web/widgets/actor_widget.dart';
-import 'package:netflix_web/widgets/categoryWidget.dart';
+import 'package:netflix_web/widgets/categories_widget.dart';
 import 'package:netflix_web/widgets/review_widget.dart';
 
 // This page is opened when you press on a tv show
@@ -128,22 +128,19 @@ class _TvInfoState extends State<TvInfo> {
                                   child: Text("-"),
                                 ),
                                 Text("${B.show.numberOfEpisodes} Episodes",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
+                                    style: TextStyle(fontSize: 18, color: grey)),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: Text("-"),
                                 ),
                                 Text(runtimeToHours(B.show.episodeRunTime!),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
+                                    style: TextStyle(fontSize: 18, color: grey)),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: Text("-"),
                                 ),
                                 Text(B.show.firstAirDate!.split('-')[0],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
+                                    style: TextStyle(fontSize: 18, color: grey)),
                               ],
                             ),
                           ),
@@ -160,7 +157,8 @@ class _TvInfoState extends State<TvInfo> {
                                             BuildContext context,
                                             int index,
                                           ) =>
-                                              categoryWidget(index: index, movie: B.show))),
+                                              categoriesWidget(
+                                                  index: index, movie: B.show, context: context))),
                                 )
                               : Container(),
                           const SizedBox(
@@ -197,8 +195,7 @@ class _TvInfoState extends State<TvInfo> {
                                       B.show.voteCount! > 1000
                                           ? "/10 (${(B.show.voteCount! / 1000).toStringAsFixed(2)}K)"
                                           : "/10 (${B.show.voteCount})",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w300, fontSize: 18, color: grey)),
+                                      style: TextStyle(fontSize: 18, color: grey)),
                                 ],
                               )),
                           const SizedBox(height: 10),
@@ -214,9 +211,17 @@ class _TvInfoState extends State<TvInfo> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: YoutubePlayer(
-                                  controller: B.videoController,
-                                  aspectRatio: 16 / 9,
+                                child: Center(
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      maxHeight: 1200,
+                                      maxWidth: 1200,
+                                    ),
+                                    child: YoutubePlayer(
+                                      controller: B.videoController,
+                                      aspectRatio: 16 / 9,
+                                    ),
+                                  ),
                                 ),
                               ),
                               const Padding(

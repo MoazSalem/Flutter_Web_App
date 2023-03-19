@@ -82,11 +82,10 @@ class _MoviesPageState extends State<MoviesPage> {
                   cacheExtent: 3500,
                   children: [
                     listWidget(
-                        currentWidth: currentWidth,
-                        list: B.moviesList,
-                        isMovie: true,
-                        scrollController: scrollController,
-                        page: currentPage),
+                      currentWidth: currentWidth,
+                      list: B.moviesList,
+                      scrollController: scrollController,
+                    ),
                     Column(
                       children: [
                         Padding(

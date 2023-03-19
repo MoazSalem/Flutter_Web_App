@@ -81,9 +81,8 @@ class _SearchPageState extends State<SearchPage> {
                     : listWidget(
                         currentWidth: width,
                         list: widget.movie ? B.searchedMovies : B.searchedShows,
-                        isMovie: widget.movie ? true : false,
                         scrollController: scrollController,
-                        page: 0),
+                      ),
               ]),
         );
       },
