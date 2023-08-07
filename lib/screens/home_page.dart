@@ -123,34 +123,44 @@ class _HomePageState extends State<HomePage> {
               : ListView(
                   children: [
                     Column(children: [
-                      CarouselSlider(
-                        items: imageSliders,
-                        carouselController: _controller,
-                        options: CarouselOptions(
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                            aspectRatio: width < 1600 ? 2.0 : 2.4,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _current = index;
-                              });
-                            }),
+                      SizedBox(
+                        height: width < 600 ? 240 : width < 800 ? 280 : width < 1800 ? 400 : 500,
+                        child: CarouselSlider(
+                          items: imageSliders,
+                          carouselController: _controller,
+                          options: CarouselOptions(
+                              autoPlay: true,
+                              clipBehavior: Clip.none,
+                              enlargeCenterPage: true,
+                              padEnds: true,
+                              aspectRatio: width < 1400 ? 2.0 : 2.0,
+                              viewportFraction: 0.9,
+                              enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _current = index;
+                                });
+                              }),
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: B.popular.asMap().entries.map((entry) {
-                          return Container(
-                            width: 6.0,
-                            height: 6.0,
-                            margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 4.0),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: (Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black)
-                                    .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                          );
-                        }).toList(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: B.popular.asMap().entries.map((entry) {
+                            return Container(
+                              width: 6.0,
+                              height: 6.0,
+                              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: (Theme.of(context).brightness == Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black)
+                                      .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ]),
                     Padding(
@@ -168,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Text(
                                     "Movies ",
-                                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
@@ -203,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Text(
                                     "Tv Shows ",
-                                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
