@@ -40,14 +40,14 @@ class MyApp extends StatelessWidget {
           title: 'TMDB Web',
           darkTheme: ThemeData(
             useMaterial3: true,
-            primaryColor: Colors.deepPurpleAccent,
+            primaryColor: const Color(0xff039ac3),
             brightness: Brightness.dark,
             indicatorColor: Colors.white,
             canvasColor: Colors.black,
             appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
             scrollbarTheme: const ScrollbarThemeData().copyWith(
                 thumbVisibility: MaterialStateProperty.all(true),
-                thumbColor: MaterialStateProperty.all(Colors.deepPurpleAccent.withOpacity(0.8))),
+                thumbColor: MaterialStateProperty.all(const Color(0xff039ac3).withOpacity(0.5))),
           ),
           themeMode: ThemeMode.dark,
           routerConfig: router),

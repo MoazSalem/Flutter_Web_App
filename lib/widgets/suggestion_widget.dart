@@ -32,7 +32,7 @@ Widget suggestionWidget({
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
                 color: Colors.white12),
-            height: 110,
+            height: 120,
             width: 160,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,7 @@ Widget suggestionWidget({
                     children: [
                       const Icon(
                         Icons.star,
-                        color: Colors.deepPurpleAccent,
+                        color: Color(0xff8fcea2),
                         size: 16,
                       ),
                       const SizedBox(
@@ -55,12 +55,12 @@ Widget suggestionWidget({
                               .toStringAsFixed(1)
                               .replaceFirst(RegExp(r'\.?'), ''),
                           style: const TextStyle(
-                              color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                              color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500)),
                       Text(
                           suggestions[index].voteCount! > 1000
                               ? "/10 (${(suggestions[index].voteCount! / 1000).toStringAsFixed(2)}K)"
                               : "/10 (${suggestions[index].voteCount})",
-                          style: TextStyle(fontSize: 12, color: Colors.grey.shade400)),
+                          style: TextStyle(fontSize: 14, color: Colors.grey.shade400)),
                     ],
                   ),
                 ),
@@ -69,7 +69,9 @@ Widget suggestionWidget({
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "${suggestions[index].title ?? suggestions[index].name} (${(suggestions[index].releaseDate ?? suggestions[index].firstAirDate).split("-")[0]})",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),

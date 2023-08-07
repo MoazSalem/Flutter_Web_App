@@ -71,14 +71,15 @@ Widget movieWidget({required movie, required BuildContext context}) {
               animationDuration: 3000,
               curve: Curves.bounceOut,
               radius: 30.0,
-              lineWidth: 4.0,
+              lineWidth: 5.0,
               percent: (movie.voteAverage / 10),
               animation: true,
               center: Text(
                 (movie.voteAverage * 10).toStringAsFixed(0),
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
               ),
               progressColor: progressColor(rating: (movie.voteAverage * 10)),
+              backgroundColor: Colors.white24,
             ),
           ),
         )
@@ -94,5 +95,5 @@ Color progressColor({required double rating}) {
           ? Colors.red.shade300
           : rating > 50 && rating < 70
               ? Colors.yellow
-              : Colors.deepPurpleAccent;
+              : const Color(0xff8fcea2);
 }

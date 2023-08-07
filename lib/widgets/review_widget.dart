@@ -9,11 +9,12 @@ Widget reviewWidget({required B, required int index}) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0, bottom: 5.0),
             child: Row(
               children: [
                 CircleAvatar(
-                    radius: 26,
+                    backgroundColor: const Color(0xff0d9bc6),
+                    radius: 30,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: SizedBox(
@@ -35,7 +36,7 @@ Widget reviewWidget({required B, required int index}) {
                               height: 60,
                               child: Icon(
                                 Icons.person,
-                                size: 30,
+                                size: 36,
                               ),
                             );
                           },
@@ -48,12 +49,15 @@ Widget reviewWidget({required B, required int index}) {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      child: Text(
+                        "A Review From ${B.reviews[index].author!}",
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                     Row(
                       children: [
-                        Text(
-                          "A Review From ${B.reviews[index].author!}",
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
+                        Text("Written on ${B.reviews[index].createdAt!.split("T")[0]}"),
                         B.reviews[index].authorDetails!.rating == null
                             ? Container()
                             : Padding(
@@ -69,7 +73,7 @@ Widget reviewWidget({required B, required int index}) {
                                           const Icon(
                                             Icons.star,
                                             size: 18,
-                                            color: Colors.deepPurpleAccent,
+                                            color: Color(0xff8fcea2),
                                           ),
                                           const SizedBox(
                                             width: 5,
@@ -85,8 +89,7 @@ Widget reviewWidget({required B, required int index}) {
                                 ),
                               )
                       ],
-                    ),
-                    Text("Written on ${B.reviews[index].createdAt!.split("T")[0]}")
+                    )
                   ],
                 ),
               ],
@@ -99,7 +102,7 @@ Widget reviewWidget({required B, required int index}) {
               expandText: 'Read More',
               collapseText: '... Show Less',
               maxLines: 3,
-              linkColor: Colors.deepPurpleAccent,
+              linkColor: const Color(0xff8fcea2),
             ),
           ),
           const SizedBox(

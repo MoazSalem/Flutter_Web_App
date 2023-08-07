@@ -13,7 +13,7 @@ Widget categoriesWidget({required movie, required int index, required BuildConte
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
-            color: Colors.deepPurpleAccent,
+            color: const Color(0xff039ac3),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(

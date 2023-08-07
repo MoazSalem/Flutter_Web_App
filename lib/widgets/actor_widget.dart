@@ -4,11 +4,12 @@ Widget actorWidget({required B, required int index}) {
   Color grey = Colors.grey.shade400;
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Container(
+    child: SizedBox(
       width: 120,
       child: Column(
         children: [
           CircleAvatar(
+            backgroundColor: const Color(0xff0d9bc6),
               radius: 50,
               child: ClipOval(
                 child: Image.network(

@@ -21,7 +21,6 @@ class MovieInfo extends StatefulWidget {
 }
 
 class _MovieInfoState extends State<MovieInfo> {
-  late ThemeData theme;
   late NexBloc B;
   final ScrollController scrollController = ScrollController();
   final Color grey = Colors.grey.shade400;
@@ -59,13 +58,12 @@ class _MovieInfoState extends State<MovieInfo> {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
-        theme = Theme.of(context);
         changeMovie();
         return Scaffold(
-          backgroundColor: theme.canvasColor,
+          backgroundColor: Theme.of(context).canvasColor,
           body: B.movie == emptyMovie
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Color(0xff8fcea2),),
                 )
               : ListView(
                   children: [
@@ -111,7 +109,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                 Text(B.movie.status!,
                                     style: TextStyle(
                                         color: B.movie.status == "Released"
-                                            ? theme.primaryColor
+                                            ? const Color(0xff8fcea2)
                                             : Colors.red,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18)),
@@ -164,9 +162,9 @@ class _MovieInfoState extends State<MovieInfo> {
                               padding: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.star,
-                                    color: theme.primaryColor,
+                                    color: Color(0xff8fcea2),
                                   ),
                                   const SizedBox(
                                     width: 10,

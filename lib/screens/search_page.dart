@@ -46,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
             centerTitle: true,
             toolbarHeight: 90,
             automaticallyImplyLeading: false,
-            title: appBar(context: context, showSearch: false),
+            title: appBar(context: context, search: false),
             backgroundColor: theme.canvasColor,
           ),
           body: ListView(

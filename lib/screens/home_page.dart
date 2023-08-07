@@ -43,9 +43,7 @@ class _HomePageState extends State<HomePage> {
     final List<Widget> imageSliders = B.popular
         .map((item) => GestureDetector(
               onTap: () {
-                item.name == null
-                    ? context.go('/movies/${item.id}')
-                    : context.go('/tv/${item.id}');
+                item.name == null ? context.go('/movies/${item.id}') : context.go('/tv/${item.id}');
               },
               child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5.0)),
@@ -91,14 +89,15 @@ class _HomePageState extends State<HomePage> {
                             animationDuration: 3000,
                             curve: Curves.bounceOut,
                             radius: 30.0,
-                            lineWidth: 4.0,
+                            lineWidth: 5.0,
                             percent: (item.voteAverage! / 10),
                             animation: true,
                             center: Text(
                               (item.voteAverage! * 10).toStringAsFixed(0),
-                              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
                             ),
                             progressColor: progressColor(rating: (item.voteAverage! * 10)),
+                            backgroundColor: Colors.white24,
                           ),
                         ),
                       )
@@ -162,11 +161,11 @@ class _HomePageState extends State<HomePage> {
                           InkWell(
                             borderRadius: const BorderRadius.all(Radius.circular(30)),
                             onTap: () => context.go('/movies'),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(12.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: const [
+                                children: [
                                   Text(
                                     "Movies ",
                                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -197,11 +196,11 @@ class _HomePageState extends State<HomePage> {
                           InkWell(
                             borderRadius: const BorderRadius.all(Radius.circular(30)),
                             onTap: () => context.go('/tv'),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(12.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: const [
+                                children: [
                                   Text(
                                     "Tv Shows ",
                                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -246,5 +245,5 @@ Color progressColor({required double rating}) {
           ? Colors.red.shade300
           : rating > 50 && rating < 70
               ? Colors.yellow
-              : Colors.deepPurpleAccent;
+              : Colors.greenAccent;
 }
