@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:netflix_web/bloc/nex_bloc.dart';
-import 'package:netflix_web/widgets/suggestion_widget.dart';
-import 'package:netflix_web/widgets/app_bar.dart';
+import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/widgets/suggestion_widget.dart';
+import 'package:tmdb_web/widgets/app_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

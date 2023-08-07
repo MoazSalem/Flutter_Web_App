@@ -1,4 +1,4 @@
-package com.e7na.netflix_web
+package com.moazsalem.tmdb_web
 
 import io.flutter.embedding.android.FlutterActivity
 

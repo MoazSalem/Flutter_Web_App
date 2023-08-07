@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:netflix_web/bloc/nex_bloc.dart';
-import 'package:netflix_web/widgets/list_widget.dart';
-import 'package:netflix_web/widgets/app_bar.dart';
-import 'package:netflix_web/data/categories.dart';
+import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/widgets/list_widget.dart';
+import 'package:tmdb_web/widgets/app_bar.dart';
+import 'package:tmdb_web/data/categories.dart';
 
 // This is the main page
 class MoviesPage extends StatefulWidget {

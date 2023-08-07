@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'package:netflix_web/bloc/nex_bloc.dart';
-import 'package:netflix_web/models/tv.dart';
-import 'package:netflix_web/widgets/suggestion_widget.dart';
-import 'package:netflix_web/widgets/actor_widget.dart';
-import 'package:netflix_web/widgets/categories_widget.dart';
-import 'package:netflix_web/widgets/review_widget.dart';
+import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/models/tv.dart';
+import 'package:tmdb_web/widgets/suggestion_widget.dart';
+import 'package:tmdb_web/widgets/actor_widget.dart';
+import 'package:tmdb_web/widgets/categories_widget.dart';
+import 'package:tmdb_web/widgets/review_widget.dart';
 
 // This page is opened when you press on a tv show
 class TvInfo extends StatefulWidget {

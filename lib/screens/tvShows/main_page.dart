@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:netflix_web/bloc/nex_bloc.dart';
-import 'package:netflix_web/widgets/app_bar.dart';
+import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/widgets/app_bar.dart';
 
 class MainTv extends StatefulWidget {
   const MainTv({Key? key}) : super(key: key);

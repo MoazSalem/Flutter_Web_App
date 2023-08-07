@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:netflix_web/models/tv.dart';
-import 'package:netflix_web/private.dart';
+import 'package:tmdb_web/models/tv.dart';
+import 'package:tmdb_web/private.dart';
 
 import '../models/cast.dart';
 import '../models/popular.dart';

@@ -2,8 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:netflix_web/bloc/nex_bloc.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:responsive_framework/breakpoint.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:tmdb_web/bloc/nex_bloc.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'data/router.dart';
 
@@ -20,17 +21,15 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => NexBloc(),
       child: MaterialApp.router(
-          builder: (context, child) => ResponsiveWrapper.builder(child,
-              maxWidth: 1600,
-              minWidth: 600,
-              defaultScale: true,
-              breakpoints: [
-                const ResponsiveBreakpoint.autoScale(600, scaleFactor: 0.8),
-                const ResponsiveBreakpoint.autoScale(800, scaleFactor: 0.8),
-                const ResponsiveBreakpoint.autoScale(1200, scaleFactor: 0.8),
-                const ResponsiveBreakpoint.autoScale(1600, scaleFactor: 0.8),
-              ],
-              background: Container(color: Colors.black)),
+          builder: (context, child) => ResponsiveBreakpoints.builder(
+                child: child!,
+                breakpoints: [
+                  const Breakpoint(start: 0, end: 600),
+                  const Breakpoint(start: 600, end: 800),
+                  const Breakpoint(start: 800, end: 1200),
+                  const Breakpoint(start: 1000, end: 1600),
+                ],
+              ),
           scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
             PointerDeviceKind.mouse,
             PointerDeviceKind.touch,
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
             PointerDeviceKind.unknown
           }),
           debugShowCheckedModeBanner: false,
-          title: 'Netflix Clone',
+          title: 'TMDB Web',
           darkTheme: ThemeData(
             useMaterial3: true,
             primaryColor: Colors.deepPurpleAccent,

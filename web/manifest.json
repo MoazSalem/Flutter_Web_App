@@ -1,11 +1,11 @@
 {
-    "name": "netflix_web",
-    "short_name": "netflix_web",
+    "name": "tmdb_web",
+    "short_name": "tmdb_web",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "netflix_web example",
+    "description": "tmdb_web, web flutter app for tmdb",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

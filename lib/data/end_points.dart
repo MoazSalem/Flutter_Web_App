@@ -1,4 +1,4 @@
-import 'package:netflix_web/private.dart';
+import 'package:tmdb_web/private.dart';
 
 List<String> types = ["movie", "tv"];
 

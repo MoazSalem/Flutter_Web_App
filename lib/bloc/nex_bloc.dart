@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:netflix_web/data/categories.dart';
-import 'package:netflix_web/models/cast.dart';
-import 'package:netflix_web/models/movies.dart';
-import 'package:netflix_web/models/reviews.dart';
-import 'package:netflix_web/models/tv.dart';
-import 'package:netflix_web/models/popular.dart';
-import 'package:netflix_web/data/end_points.dart';
-import 'package:netflix_web/models/videos.dart';
-import 'package:netflix_web/services/movies_service.dart';
-import 'package:netflix_web/services/tv_service.dart';
-import 'package:netflix_web/services/popular.dart';
+import 'package:tmdb_web/data/categories.dart';
+import 'package:tmdb_web/models/cast.dart';
+import 'package:tmdb_web/models/movies.dart';
+import 'package:tmdb_web/models/reviews.dart';
+import 'package:tmdb_web/models/tv.dart';
+import 'package:tmdb_web/models/popular.dart';
+import 'package:tmdb_web/data/end_points.dart';
+import 'package:tmdb_web/models/videos.dart';
+import 'package:tmdb_web/services/movies_service.dart';
+import 'package:tmdb_web/services/tv_service.dart';
+import 'package:tmdb_web/services/popular.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 part 'nex_event.dart';

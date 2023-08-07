@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:netflix_web/models/cast.dart';
-import 'package:netflix_web/models/movies.dart';
-import 'package:netflix_web/models/popular.dart';
-import 'package:netflix_web/models/reviews.dart';
-import 'package:netflix_web/models/videos.dart';
-import 'package:netflix_web/private.dart';
+import 'package:tmdb_web/models/cast.dart';
+import 'package:tmdb_web/models/movies.dart';
+import 'package:tmdb_web/models/popular.dart';
+import 'package:tmdb_web/models/reviews.dart';
+import 'package:tmdb_web/models/videos.dart';
+import 'package:tmdb_web/private.dart';
 
 // This is used to get the data from the rest api endpoint
 class MoviesService {

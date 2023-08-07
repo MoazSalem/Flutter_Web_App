@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.e7na.netflix_web">
+    package="com.moazsalem.tmdb_web">
    <application
-        android:label="netflix_web"
+        android:label="tmdb_web"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
