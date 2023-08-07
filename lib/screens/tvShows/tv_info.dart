@@ -1,7 +1,10 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:auto_animated/auto_animated.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:tmdb_web/bloc/nex_bloc.dart';
 import 'package:tmdb_web/models/tv.dart';
@@ -24,6 +27,7 @@ class _TvInfoState extends State<TvInfo> {
   late NexBloc B;
   final ScrollController scrollController = ScrollController();
   final Color grey = Colors.grey.shade400;
+  bool videoPressed = false;
   bool loading = true;
   bool seeMore = false;
   int parsedId = 0;
@@ -199,43 +203,65 @@ class _TvInfoState extends State<TvInfo> {
                                 ],
                               )),
                           const SizedBox(height: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
-                                child: Text(
-                                  "Trailer :",
-                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                      maxHeight: 1200,
-                                      maxWidth: 1200,
+                          B.trailer.key != ""
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+                                      child: Text(
+                                        "Trailer :",
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
                                     ),
-                                    child: YoutubePlayer(
-                                      controller: B.videoController,
-                                      aspectRatio: 16 / 9,
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Center(
+                                        child: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            maxHeight: 1200,
+                                            maxWidth: 1200,
+                                          ),
+                                          child: Stack(children: [
+                                            YoutubePlayer(
+                                              controller: B.videoController,
+                                              aspectRatio: 16 / 9,
+                                            ),
+                                            PointerInterceptor(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  videoPressed
+                                                      ? B.videoController.pauseVideo()
+                                                      : B.videoController.playVideo();
+                                                  videoPressed = !videoPressed;
+                                                },
+                                                child: const AspectRatio(
+                                                  aspectRatio: 16 / 8,
+                                                ),
+                                              ),
+                                            ),
+                                          ]),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
-                                child: Text(
-                                  "Shows Cast :",
-                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              B.casts.isNotEmpty
-                                  ? Padding(
+                                  ],
+                                )
+                              : Container(),
+                          B.casts.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+                                      child: Text(
+                                        "Shows Cast :",
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: SizedBox(
                                         height: 185,
@@ -245,159 +271,151 @@ class _TvInfoState extends State<TvInfo> {
                                             itemBuilder: (BuildContext context, int index) =>
                                                 actorWidget(index: index, B: B)),
                                       ),
-                                    )
-                                  : const Center(
-                                      child: CircularProgressIndicator(),
                                     ),
-                              B.suggestions.isNotEmpty
-                                  ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Text(
-                                            "Recommendations :",
-                                            style: TextStyle(
-                                                fontSize: 24, fontWeight: FontWeight.bold),
+                                  ],
+                                )
+                              : Container(),
+                          B.suggestions.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Recommendations :",
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 20),
+                                        child: SizedBox(
+                                          height: 400,
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: B.suggestions.length,
+                                              itemBuilder: (BuildContext context, int index) =>
+                                                  GestureDetector(
+                                                    onTap: () => context
+                                                        .go('/tv/${B.suggestions[index].id}'),
+                                                    child: suggestionWidget(
+                                                        index: index, suggestions: B.suggestions),
+                                                  )),
+                                        )),
+                                  ],
+                                )
+                              : Container(),
+                          B.similar.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Might Also Interest You :",
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 20),
+                                        child: SizedBox(
+                                          height: 400,
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: B.similar.length,
+                                              itemBuilder: (BuildContext context, int index) =>
+                                                  GestureDetector(
+                                                    onTap: () =>
+                                                        context.go('/tv/${B.similar[index].id}'),
+                                                    child: suggestionWidget(
+                                                        index: index, suggestions: B.similar),
+                                                  )),
+                                        )),
+                                  ],
+                                )
+                              : Container(),
+                          B.reviews.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Reviews :",
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    LiveList.options(
+                                      options: const LiveOptions(
+                                          showItemInterval: Duration(milliseconds: 50),
+                                          showItemDuration: Duration(milliseconds: 200),
+                                          reAnimateOnVisibility: false),
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (
+                                        BuildContext context,
+                                        int index,
+                                        Animation<double> animation,
+                                      ) =>
+                                          FadeTransition(
+                                        opacity: Tween<double>(
+                                          begin: 0,
+                                          end: 1,
+                                        ).animate(animation),
+                                        // And slide transition
+                                        child: SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: const Offset(0, -0.1),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          // Paste you Widget
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: reviewWidget(B: B, index: index),
                                           ),
                                         ),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0, horizontal: 20),
-                                            child: SizedBox(
-                                              height: 400,
-                                              child: ListView.builder(
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: B.suggestions.length,
-                                                  itemBuilder: (BuildContext context, int index) =>
-                                                      GestureDetector(
-                                                        onTap: () => context
-                                                            .go('/tv/${B.suggestions[index].id}'),
-                                                        child: suggestionWidget(
-                                                            index: index,
-                                                            suggestions: B.suggestions),
-                                                      )),
-                                            )),
-                                      ],
-                                    )
-                                  : Container(),
-                              B.similar.isNotEmpty
-                                  ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Text(
-                                            "Might Also Interest You :",
-                                            style: TextStyle(
-                                                fontSize: 24, fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0, horizontal: 20),
-                                            child: SizedBox(
-                                              height: 400,
-                                              child: ListView.builder(
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: B.similar.length,
-                                                  itemBuilder: (BuildContext context, int index) =>
-                                                      GestureDetector(
-                                                        onTap: () => context
-                                                            .go('/tv/${B.similar[index].id}'),
-                                                        child: suggestionWidget(
-                                                            index: index, suggestions: B.similar),
-                                                      )),
-                                            )),
-                                      ],
-                                    )
-                                  : Container(),
-                              B.reviews.isNotEmpty
-                                  ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Text(
-                                            "Reviews :",
-                                            style: TextStyle(
-                                                fontSize: 24, fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        LiveList.options(
-                                          options: const LiveOptions(
-                                              showItemInterval: Duration(milliseconds: 50),
-                                              showItemDuration: Duration(milliseconds: 200),
-                                              reAnimateOnVisibility: false),
-                                          physics: const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (
-                                            BuildContext context,
-                                            int index,
-                                            Animation<double> animation,
-                                          ) =>
-                                              FadeTransition(
-                                            opacity: Tween<double>(
-                                              begin: 0,
-                                              end: 1,
-                                            ).animate(animation),
-                                            // And slide transition
-                                            child: SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: const Offset(0, -0.1),
-                                                end: Offset.zero,
-                                              ).animate(animation),
-                                              // Paste you Widget
-                                              child: GestureDetector(
-                                                onTap: () {},
-                                                child: reviewWidget(B: B, index: index),
-                                              ),
-                                            ),
-                                          ),
-                                          itemCount: seeMore
-                                              ? B.reviews.length
-                                              : B.reviews.length > 1
-                                                  ? 2
-                                                  : 1,
-                                        ),
-                                        B.reviews.length > 2
-                                            ? Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  InkWell(
-                                                    borderRadius: BorderRadius.circular(20),
-                                                    onTap: () {
-                                                      seeMore = !seeMore;
-                                                      B.onChanges();
-                                                    },
-                                                    child: SizedBox(
-                                                      height: 50,
-                                                      width: 200,
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Text(seeMore
-                                                              ? "Show Less "
-                                                              : " See More "),
-                                                          Icon(
-                                                            seeMore
-                                                                ? Icons.arrow_upward
-                                                                : Icons.arrow_downward,
-                                                            size: 14,
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
+                                      ),
+                                      itemCount: seeMore
+                                          ? B.reviews.length
+                                          : B.reviews.length > 1
+                                              ? 2
+                                              : 1,
+                                    ),
+                                    B.reviews.length > 2
+                                        ? Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                borderRadius: BorderRadius.circular(20),
+                                                onTap: () {
+                                                  seeMore = !seeMore;
+                                                  B.onChanges();
+                                                },
+                                                child: SizedBox(
+                                                  height: 50,
+                                                  width: 200,
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(seeMore ? "Show Less " : " See More "),
+                                                      Icon(
+                                                        seeMore
+                                                            ? Icons.arrow_upward
+                                                            : Icons.arrow_downward,
+                                                        size: 14,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
                                               )
-                                            : Container()
-                                      ],
-                                    )
-                                  : Container()
-                            ],
-                          ),
+                                            ],
+                                          )
+                                        : Container()
+                                  ],
+                                )
+                              : Container()
                         ],
                       ),
                     ),

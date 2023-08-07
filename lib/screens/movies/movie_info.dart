@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:auto_animated/auto_animated.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:tmdb_web/bloc/nex_bloc.dart';
 import 'package:tmdb_web/models/movies.dart';
@@ -24,6 +25,7 @@ class _MovieInfoState extends State<MovieInfo> {
   late NexBloc B;
   final ScrollController scrollController = ScrollController();
   final Color grey = Colors.grey.shade400;
+  bool videoPressed = false;
   bool loading = true;
   bool seeMore = false;
   int parsedId = 0;
@@ -63,7 +65,9 @@ class _MovieInfoState extends State<MovieInfo> {
           backgroundColor: Theme.of(context).canvasColor,
           body: B.movie == emptyMovie
               ? const Center(
-                  child: CircularProgressIndicator(color: Color(0xff8fcea2),),
+                  child: CircularProgressIndicator(
+                    color: Color(0xff8fcea2),
+                  ),
                 )
               : ListView(
                   children: [
@@ -141,7 +145,8 @@ class _MovieInfoState extends State<MovieInfo> {
                                             BuildContext context,
                                             int index,
                                           ) =>
-                                              categoriesWidget(index: index, movie: B.movie, context: context))),
+                                              categoriesWidget(
+                                                  index: index, movie: B.movie, context: context))),
                                 )
                               : Container(),
                           const SizedBox(
@@ -185,58 +190,78 @@ class _MovieInfoState extends State<MovieInfo> {
                                 ],
                               )),
                           const SizedBox(height: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
-                                child: Text(
-                                  "Trailer :",
-                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                      maxHeight: 1200,
-                                      maxWidth: 1200,
+                          B.trailer.key != ""
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+                                      child: Text(
+                                        "Trailer :",
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
                                     ),
-                                    child: YoutubePlayer(
-                                      controller: B.videoController,
-                                      aspectRatio: 16 / 9,
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Center(
+                                        child: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            maxHeight: 1200,
+                                            maxWidth: 1200,
+                                          ),
+                                          child: Stack(children: [
+                                            YoutubePlayer(
+                                              controller: B.videoController,
+                                              aspectRatio: 16 / 9,
+                                            ),
+                                            PointerInterceptor(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  videoPressed
+                                                      ? B.videoController.pauseVideo()
+                                                      : B.videoController.playVideo();
+                                                  videoPressed = !videoPressed;
+                                                },
+                                                child: const AspectRatio(
+                                                  aspectRatio: 16 / 8,
+                                                ),
+                                              ),
+                                            ),
+                                          ]),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
-                            child: Text(
-                              "Movies Cast :",
-                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          B.casts.isNotEmpty
-                              ? Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: SizedBox(
-                                    height: 185,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: B.casts.length,
-                                        itemBuilder: (BuildContext context, int index) =>
-                                            actorWidget(index: index, B: B)),
-                                  ),
+                                  ],
                                 )
-                              : const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
+                              : Container(),
+                          B.casts.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+                                      child: Text(
+                                        "Movies Cast :",
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: SizedBox(
+                                        height: 185,
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: B.casts.length,
+                                            itemBuilder: (BuildContext context, int index) =>
+                                                actorWidget(index: index, B: B)),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Container(),
                           B.suggestions.isNotEmpty
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
