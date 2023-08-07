@@ -67,7 +67,10 @@ class _SearchPageState extends State<SearchPage> {
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.shade300),
+                              borderSide: const BorderSide(color: Color(0xff8fcea2)),
+                              borderRadius: BorderRadius.circular(0)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color:  Color(0xff09b5e1),),
                               borderRadius: BorderRadius.circular(0)),
                           hintText: "Search",
                           filled: true,

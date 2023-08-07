@@ -15,6 +15,7 @@ class _MainMoviesState extends State<MainMovies> {
   late NexBloc B;
   late ThemeData theme;
   late double width;
+  late double fontSize;
   List<String> list = ["Popular", "Top Rated", "Now Playing", "Upcoming"];
   List<String> movieCategories = ["popular", "top_rated", "now_playing", "upcoming"];
 
@@ -29,6 +30,13 @@ class _MainMoviesState extends State<MainMovies> {
     super.didChangeDependencies();
     theme = Theme.of(context);
     width = MediaQuery.of(context).size.width;
+    fontSize = width < 700
+        ? width * 0.04
+        : width < 800
+            ? width * 0.025
+            : width < 1400
+                ? width * 0.02
+                : width * 0.015;
   }
 
   @override
@@ -51,9 +59,18 @@ class _MainMoviesState extends State<MainMovies> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: Text(
-                      "Movie Categories :",
-                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Movie Categories ",
+                          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 20,
+                        )
+                      ],
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -71,10 +88,11 @@ class _MainMoviesState extends State<MainMovies> {
                           crossAxisSpacing: 20,
                           crossAxisCount: width <= 700 ? 2 : 4,
                         ),
-                        itemBuilder: (BuildContext context, index) => GestureDetector(
+                        itemBuilder: (BuildContext context, index) => InkWell(
                               onTap: () {
                                 context.go('/movies/${movieCategories[index]}/1');
                               },
+                              borderRadius: BorderRadius.circular(10),
                               child: Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
@@ -86,8 +104,8 @@ class _MainMoviesState extends State<MainMovies> {
                                   child: FittedBox(
                                     child: Text(
                                       list[index],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 20),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: fontSize),
                                     ),
                                   ),
                                 )),
@@ -96,9 +114,18 @@ class _MainMoviesState extends State<MainMovies> {
                   ),
                   const Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: Text(
-                      "Movie Genres :",
-                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Movie Genres ",
+                          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 20,
+                        )
+                      ],
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -114,13 +141,15 @@ class _MainMoviesState extends State<MainMovies> {
                         crossAxisSpacing: 20,
                         crossAxisCount: width <= 700 ? 3 : 4,
                       ),
-                      itemBuilder: (BuildContext context, index) => GestureDetector(
+                      itemBuilder: (BuildContext context, index) => InkWell(
                             onTap: () {
                               context.go('/movies/${B.moviesGenres[index].toLowerCase()}/1');
                             },
+                            borderRadius: BorderRadius.circular(10),
                             child: Container(
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10), color: theme.cardColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.blue.withOpacity(0.1)),
                               width: 60,
                               child: Center(
                                   child: Padding(
@@ -129,7 +158,7 @@ class _MainMoviesState extends State<MainMovies> {
                                   child: Text(
                                     B.moviesGenres[index],
                                     style:
-                                        const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
                                   ),
                                 ),
                               )),

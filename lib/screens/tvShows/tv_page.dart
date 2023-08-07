@@ -82,9 +82,10 @@ class _TvPageState extends State<TvPage> {
                   cacheExtent: 3500,
                   children: [
                     listWidget(
-                        currentWidth: currentWidth,
-                        list: B.tvShowsList,
-                        scrollController: scrollController,),
+                      currentWidth: currentWidth,
+                      list: B.tvShowsList,
+                      scrollController: scrollController,
+                    ),
                     Column(
                       children: [
                         Padding(
@@ -110,7 +111,10 @@ class _TvPageState extends State<TvPage> {
                                         currentPage = 1;
                                         context.go("/tv/${widget.category}/${1}");
                                       },
-                                child: const Icon(Icons.home_filled),
+                                child: const Icon(
+                                  Icons.home_filled,
+                                  color: Color(0xff8fcea2),
+                                ),
                               ),
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
@@ -122,7 +126,10 @@ class _TvPageState extends State<TvPage> {
                                         currentPage--;
                                         context.go("/tv/${widget.category}/$currentPage");
                                       },
-                                child: const Icon(Icons.arrow_back),
+                                child: const Icon(
+                                  Icons.arrow_back,
+                                  color: Color(0xff8fcea2),
+                                ),
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(

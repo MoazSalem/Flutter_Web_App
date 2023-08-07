@@ -344,7 +344,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                               ? 2
                                               : 1,
                                     ),
-                                    B.reviews.length > 1
+                                    B.reviews.length > 2
                                         ? Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment: MainAxisAlignment.center,

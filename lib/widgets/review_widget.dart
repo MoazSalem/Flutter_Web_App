@@ -5,6 +5,7 @@ Widget reviewWidget({required B, required int index}) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: Card(
+      color: const Color(0xff039ac3).withOpacity(0.1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

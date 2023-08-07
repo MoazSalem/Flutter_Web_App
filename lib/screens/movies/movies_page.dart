@@ -112,7 +112,10 @@ class _MoviesPageState extends State<MoviesPage> {
                                         currentPage = 1;
                                         context.go("/movies/${widget.category}/${1}");
                                       },
-                                child: const Icon(Icons.home_filled),
+                                child: const Icon(
+                                  Icons.home_filled,
+                                  color: Color(0xff8fcea2),
+                                ),
                               ),
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
@@ -124,7 +127,10 @@ class _MoviesPageState extends State<MoviesPage> {
                                         currentPage--;
                                         context.go("/movies/${widget.category}/$currentPage");
                                       },
-                                child: const Icon(Icons.arrow_back),
+                                child: const Icon(
+                                  Icons.arrow_back,
+                                  color: Color(0xff8fcea2),
+                                ),
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(

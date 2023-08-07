@@ -21,7 +21,6 @@ class TvInfo extends StatefulWidget {
 }
 
 class _TvInfoState extends State<TvInfo> {
-  late ThemeData theme;
   late NexBloc B;
   final ScrollController scrollController = ScrollController();
   final Color grey = Colors.grey.shade400;
@@ -59,13 +58,14 @@ class _TvInfoState extends State<TvInfo> {
     return BlocConsumer<NexBloc, NexState>(
       listener: (context, state) {},
       builder: (context, state) {
-        theme = Theme.of(context);
         changeShow();
         return Scaffold(
-          backgroundColor: theme.canvasColor,
+          backgroundColor: Theme.of(context).canvasColor,
           body: B.show.name == null
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Color(0xff09b5e1),
+                  ),
                 )
               : ListView(
                   children: [
@@ -109,20 +109,20 @@ class _TvInfoState extends State<TvInfo> {
                             child: Row(
                               children: [
                                 Text("${B.show.status}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
-                                        color: theme.primaryColor)),
+                                        color: Color(0xff8fcea2))),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: Text("-"),
                                 ),
                                 Text(
                                     "${B.show.numberOfSeasons} Season${B.show.numberOfSeasons! > 1 ? "s" : ""}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
-                                        color: theme.primaryColor)),
+                                        color: Color(0xff8fcea2))),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: Text("-"),
@@ -176,9 +176,9 @@ class _TvInfoState extends State<TvInfo> {
                               padding: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.star,
-                                    color: theme.primaryColor,
+                                    color: Color(0xff8fcea2),
                                   ),
                                   const SizedBox(
                                     width: 10,
@@ -360,7 +360,7 @@ class _TvInfoState extends State<TvInfo> {
                                                   ? 2
                                                   : 1,
                                         ),
-                                        B.reviews.length > 1
+                                        B.reviews.length > 2
                                             ? Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment: MainAxisAlignment.center,
