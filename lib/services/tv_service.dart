@@ -28,6 +28,23 @@ class TVService {
     return tvShows;
   }
 
+  Future<List<TvShows>> getTrendingShows({required int page}) async {
+    String endPoint = "https://api.themoviedb.org/3/trending/tv/day?api_key=483524ab522b9d55a9907172fd58fea4&language=en-US&page=$page";
+    List<TvShows> tvShows = [];
+    Response response = await get(Uri.parse(endPoint));
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      body["results"].forEach((tvShowData) {
+        TvShows newTvShow = TvShows.fromJson(tvShowData);
+        tvShows.add(newTvShow);
+      });
+    } else {
+      throw Exception();
+    }
+
+    return tvShows;
+  }
+
   Future<TvShows> getShow({required int id}) async {
     String endPoint = "https://api.themoviedb.org/3/tv/$id?api_key=$apiKey&language=en-US";
     late TvShows show;

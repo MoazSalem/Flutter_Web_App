@@ -83,8 +83,10 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   }
 
   getShows({required int page, required String category}) async {
-    tvShowsList = await TVService()
-        .getShows(page: page, endPoint: getEndPoint(category: category, typeIndex: 1));
+    tvShowsList = category == "popular"
+        ? await TVService().getTrendingShows(page: page)
+        : await TVService()
+            .getShows(page: page, endPoint: getEndPoint(category: category, typeIndex: 1));
     emit(GetMovies());
   }
 
