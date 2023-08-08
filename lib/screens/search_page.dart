@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tmdb_web/bloc/nex_bloc.dart';
 import 'package:tmdb_web/widgets/app_bar.dart';
 import 'package:tmdb_web/widgets/list_widget.dart';
@@ -18,7 +19,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   late NexBloc B;
-  late ThemeData theme;
   late double width;
   final ScrollController scrollController = ScrollController();
 
@@ -31,7 +31,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    theme = Theme.of(context);
     width = MediaQuery.of(context).size.width;
   }
 
@@ -47,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
             toolbarHeight: 90,
             automaticallyImplyLeading: false,
             title: appBar(context: context, search: false),
-            backgroundColor: theme.canvasColor,
+            backgroundColor: Theme.of(context).canvasColor,
           ),
           body: ListView(
               physics: const BouncingScrollPhysics(),
@@ -56,7 +55,7 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 Center(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: width * 0.031),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5.w),
                     child: TextFormField(
                         controller: widget.movie ? moviesSearch : tvSearch,
                         onChanged: (query) {
@@ -70,7 +69,9 @@ class _SearchPageState extends State<SearchPage> {
                               borderSide: const BorderSide(color: Color(0xff8fcea2)),
                               borderRadius: BorderRadius.circular(0)),
                           focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color:  Color(0xff09b5e1),),
+                              borderSide: const BorderSide(
+                                color: Color(0xff09b5e1),
+                              ),
                               borderRadius: BorderRadius.circular(0)),
                           hintText: "Search",
                           filled: true,
@@ -81,10 +82,13 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 (widget.movie ? B.searchedMovies.isEmpty : B.searchedShows.isEmpty)
                     ? const SizedBox(height: 400, child: Center(child: Text("No Results")))
-                    : listWidget(
-                        currentWidth: width,
-                        list: widget.movie ? B.searchedMovies : B.searchedShows,
-                        scrollController: scrollController,
+                    : Padding(
+                        padding: EdgeInsets.all(2.w),
+                        child: listWidget(
+                          currentWidth: width,
+                          list: widget.movie ? B.searchedMovies : B.searchedShows,
+                          scrollController: scrollController,
+                        ),
                       ),
               ]),
         );

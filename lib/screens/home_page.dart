@@ -17,7 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late NexBloc B;
-  late ThemeData theme;
   late double width;
   int _current = 0;
   final TextEditingController searchC = TextEditingController();
@@ -32,10 +31,10 @@ class _HomePageState extends State<HomePage> {
     B.getShows(page: 1, category: "popular");
   }
 
+  // This is left to update the ui when the size changes
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    theme = Theme.of(context);
     width = MediaQuery.of(context).size.width;
   }
 
@@ -120,7 +119,7 @@ class _HomePageState extends State<HomePage> {
             centerTitle: true,
             toolbarHeight: 90,
             title: appBar(context: context, showSearch: false),
-            backgroundColor: theme.canvasColor,
+            backgroundColor: Theme.of(context).canvasColor,
           ),
           body: B.popular.isEmpty
               ? const Center(
@@ -198,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
-                                    size: 5.w > 20 ? 20 : 5.w,
+                                    size: 4.w > 20 ? 20 : 4.w,
                                   )
                                 ],
                               ),
@@ -236,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
-                                    size: 5.w > 20 ? 20 : 5.w,
+                                    size: 4.w > 20 ? 20 : 4.w,
                                   )
                                 ],
                               ),

@@ -73,7 +73,7 @@ Widget appBar(
                   TextButton(
                     onPressed: () => context.go('/tv'),
                     child: const SizedBox(
-                      width: 70,
+                      width: 80,
                       height: 35,
                       child: Center(
                         child: Text("Tv Shows",
