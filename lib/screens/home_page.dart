@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tmdb_web/bloc/nex_bloc.dart';
 import 'package:tmdb_web/widgets/suggestion_widget.dart';
 import 'package:tmdb_web/widgets/app_bar.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -71,9 +72,9 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                           child: Text(
                             '${item.name ?? item.title}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20.0,
+                              fontSize: 5.w > 20 ? 20 : 5.w,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -82,22 +83,27 @@ class _HomePageState extends State<HomePage> {
                       Positioned(
                         bottom: 10.0,
                         right: 10.0,
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.black54,
-                          child: CircularPercentIndicator(
-                            animationDuration: 3000,
-                            curve: Curves.bounceOut,
-                            radius: 30.0,
-                            lineWidth: 5.0,
-                            percent: (item.voteAverage! / 10),
-                            animation: true,
-                            center: Text(
-                              (item.voteAverage! * 10).toStringAsFixed(0),
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+                        child: SizedBox(
+                          width: 10.w > 70 ? 70 : 10.w,
+                          child: FittedBox(
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.black54,
+                              child: CircularPercentIndicator(
+                                animationDuration: 3000,
+                                curve: Curves.bounceOut,
+                                radius: 30.0,
+                                lineWidth: 5.0,
+                                percent: (item.voteAverage! / 10),
+                                animation: true,
+                                center: Text(
+                                  (item.voteAverage! * 10).toStringAsFixed(0),
+                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+                                ),
+                                progressColor: progressColor(rating: (item.voteAverage! * 10)),
+                                backgroundColor: Colors.white24,
+                              ),
                             ),
-                            progressColor: progressColor(rating: (item.voteAverage! * 10)),
-                            backgroundColor: Colors.white24,
                           ),
                         ),
                       )
@@ -124,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Column(children: [
                       SizedBox(
-                        height: width < 600 ? 240 : width < 800 ? 280 : width < 1800 ? 400 : 500,
+                        height: 100.w > 800 ? 50.h : 30.h,
                         child: CarouselSlider(
                           items: imageSliders,
                           carouselController: _controller,
@@ -144,22 +150,31 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: B.popular.asMap().entries.map((entry) {
-                            return Container(
-                              width: 6.0,
-                              height: 6.0,
-                              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: (Theme.of(context).brightness == Brightness.dark
-                                          ? Colors.white
-                                          : Colors.black)
-                                      .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                            );
-                          }).toList(),
+                        padding: EdgeInsets.only(top: 100.w > 400 ? 5.h : 2.h),
+                        child: SizedBox(
+                          width: 50.w > 500 ? 500 : 50.w,
+                          child: FittedBox(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: B.popular.asMap().entries.map((entry) {
+                                return InkWell(
+                                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                  onTap: () => _controller.animateToPage(entry.key),
+                                  child: Container(
+                                    width: 6.0,
+                                    height: 6.0,
+                                    margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: (Theme.of(context).brightness == Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black)
+                                            .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
                         ),
                       ),
                     ]),
@@ -171,18 +186,19 @@ class _HomePageState extends State<HomePage> {
                           InkWell(
                             borderRadius: const BorderRadius.all(Radius.circular(30)),
                             onTap: () => context.go('/movies'),
-                            child: const Padding(
-                              padding: EdgeInsets.all(12.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
                                     "Movies ",
-                                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 5.w > 26 ? 26 : 5.w, fontWeight: FontWeight.bold),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
-                                    size: 20,
+                                    size: 5.w > 20 ? 20 : 5.w,
                                   )
                                 ],
                               ),
@@ -191,33 +207,36 @@ class _HomePageState extends State<HomePage> {
                           Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
                               child: SizedBox(
-                                height: 400,
+                                height: 70.w > 400 ? 400 : 70.w,
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: B.moviesList.length,
-                                    itemBuilder: (BuildContext context, int index) =>
-                                        GestureDetector(
+                                    itemBuilder: (BuildContext context, int index) => InkWell(
+                                          borderRadius: const BorderRadius.all(Radius.circular(30)),
                                           onTap: () =>
                                               context.go('/movies/${B.moviesList[index].id}'),
-                                          child: suggestionWidget(
-                                              index: index, suggestions: B.moviesList),
+                                          child: FittedBox(
+                                            child: suggestionWidget(
+                                                index: index, suggestions: B.moviesList),
+                                          ),
                                         )),
                               )),
                           InkWell(
                             borderRadius: const BorderRadius.all(Radius.circular(30)),
                             onTap: () => context.go('/tv'),
-                            child: const Padding(
-                              padding: EdgeInsets.all(12.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
                                     "Tv Shows ",
-                                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 5.w > 26 ? 26 : 5.w, fontWeight: FontWeight.bold),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
-                                    size: 20,
+                                    size: 5.w > 20 ? 20 : 5.w,
                                   )
                                 ],
                               ),
@@ -226,15 +245,17 @@ class _HomePageState extends State<HomePage> {
                           Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
                               child: SizedBox(
-                                height: 400,
+                                height: 70.w > 400 ? 400 : 70.w,
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: B.tvShowsList.length,
-                                    itemBuilder: (BuildContext context, int index) =>
-                                        GestureDetector(
+                                    itemBuilder: (BuildContext context, int index) => InkWell(
+                                          borderRadius: const BorderRadius.all(Radius.circular(30)),
                                           onTap: () => context.go('/tv/${B.tvShowsList[index].id}'),
-                                          child: suggestionWidget(
-                                              index: index, suggestions: B.tvShowsList),
+                                          child: FittedBox(
+                                            child: suggestionWidget(
+                                                index: index, suggestions: B.tvShowsList),
+                                          ),
                                         )),
                               )),
                         ],

@@ -240,14 +240,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
-  responsive_framework:
+  responsive_sizer:
     dependency: "direct main"
     description:
-      name: responsive_framework
-      sha256: "97d4a8b9468c0ecaafe8566645d70cc59480e4b03704a1b936396e68775e2c34"
+      name: responsive_sizer
+      sha256: "206d1f77f65ed8394ef2a526583e38e874ee36f036f3fe9aefb0f58ecba9bef9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "3.2.0"
   simple_gradient_text:
     dependency: "direct main"
     description:
@@ -455,4 +455,4 @@ packages:
     version: "2.0.2"
 sdks:
   dart: ">=3.0.0 <4.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.3.0"
