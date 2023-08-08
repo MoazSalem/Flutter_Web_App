@@ -82,14 +82,10 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 (widget.movie ? B.searchedMovies.isEmpty : B.searchedShows.isEmpty)
                     ? const SizedBox(height: 400, child: Center(child: Text("No Results")))
-                    : Padding(
-                        padding: EdgeInsets.all(2.w),
-                        child: listWidget(
-                          currentWidth: width,
-                          list: widget.movie ? B.searchedMovies : B.searchedShows,
-                          scrollController: scrollController,
-                        ),
-                      ),
+                    : listWidget(
+                      list: widget.movie ? B.searchedMovies : B.searchedShows,
+                      scrollController: scrollController,
+                    ),
               ]),
         );
       },

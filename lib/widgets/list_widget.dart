@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-Widget listWidget(
-    {required List list,
-    required ScrollController scrollController,
-    required double currentWidth}) {
+Widget listWidget({required List list, required ScrollController scrollController}) {
   return Scrollbar(
     controller: scrollController,
     thumbVisibility: true,
@@ -14,11 +12,11 @@ Widget listWidget(
       shrinkWrap: true,
       cacheExtent: 3500,
       physics: const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.03, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 0.6685,
         mainAxisSpacing: 1,
-        crossAxisCount: crossAxisCount(currentWidth: currentWidth),
+        crossAxisCount: crossAxisCount(currentWidth: 100.w),
       ),
       itemCount: list.length,
       itemBuilder: (BuildContext context, index) {
@@ -34,7 +32,9 @@ int crossAxisCount({required currentWidth}) {
       ? count = 2
       : count > 5
           ? count = 5
-          : null;
+          : count == 0
+              ? count = 1
+              : null;
   return count;
 }
 
@@ -54,9 +54,11 @@ Widget movieWidget({required movie, required BuildContext context}) {
               return const SizedBox(
                 width: 300,
                 height: 600,
-                child: Icon(
-                  Icons.question_mark_rounded,
-                  size: 300,
+                child: FittedBox(
+                  child: Icon(
+                    Icons.question_mark_rounded,
+                    size: 300,
+                  ),
                 ),
               );
             },

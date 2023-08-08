@@ -82,7 +82,6 @@ class _TvPageState extends State<TvPage> {
                   cacheExtent: 3500,
                   children: [
                     listWidget(
-                      currentWidth: currentWidth,
                       list: B.tvShowsList,
                       scrollController: scrollController,
                     ),

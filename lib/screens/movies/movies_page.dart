@@ -82,7 +82,6 @@ class _MoviesPageState extends State<MoviesPage> {
                   cacheExtent: 3500,
                   children: [
                     listWidget(
-                      currentWidth: currentWidth,
                       list: B.moviesList,
                       scrollController: scrollController,
                     ),
@@ -104,7 +103,7 @@ class _MoviesPageState extends State<MoviesPage> {
                             children: [
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
-                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                  minimumSize: Size(currentWidth * 0.3, 60),
                                 ),
                                 onPressed: currentPage == 1
                                     ? null
@@ -119,7 +118,7 @@ class _MoviesPageState extends State<MoviesPage> {
                               ),
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
-                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                  minimumSize: Size(currentWidth * 0.3, 60),
                                 ),
                                 onPressed: currentPage == 1
                                     ? null
@@ -136,7 +135,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.white,
                                   backgroundColor: theme.primaryColor,
-                                  minimumSize: Size(currentWidth * 0.3, 50),
+                                  minimumSize: Size(currentWidth * 0.3, 60),
                                 ),
                                 onPressed: () {
                                   currentPage++;
