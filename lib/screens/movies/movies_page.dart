@@ -75,7 +75,9 @@ class _MoviesPageState extends State<MoviesPage> {
           ),
           body: B.moviesList.isEmpty
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Color(0xff8fcea2),
+                  ),
                 )
               : ListView(
                   physics: const BouncingScrollPhysics(),
@@ -111,9 +113,11 @@ class _MoviesPageState extends State<MoviesPage> {
                                         currentPage = 1;
                                         context.go("/movies/${widget.category}/${1}");
                                       },
-                                child: const Icon(
-                                  Icons.home_filled,
-                                  color: Color(0xff8fcea2),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.home_filled,
+                                    color: currentPage == 1 ? Colors.grey : const Color(0xff8fcea2),
+                                  ),
                                 ),
                               ),
                               OutlinedButton(
@@ -126,9 +130,11 @@ class _MoviesPageState extends State<MoviesPage> {
                                         currentPage--;
                                         context.go("/movies/${widget.category}/$currentPage");
                                       },
-                                child: const Icon(
-                                  Icons.arrow_back,
-                                  color: Color(0xff8fcea2),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.arrow_back,
+                                    color: currentPage == 1 ? Colors.grey : const Color(0xff8fcea2),
+                                  ),
                                 ),
                               ),
                               ElevatedButton(
@@ -141,7 +147,7 @@ class _MoviesPageState extends State<MoviesPage> {
                                   currentPage++;
                                   context.go("/movies/${widget.category}/$currentPage");
                                 },
-                                child: const Icon(Icons.arrow_forward),
+                                child: const Center(child: Icon(Icons.arrow_forward)),
                               )
                             ],
                           ),

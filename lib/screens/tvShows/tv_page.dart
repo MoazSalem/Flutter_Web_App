@@ -75,7 +75,9 @@ class _TvPageState extends State<TvPage> {
           ),
           body: B.tvShowsList.isEmpty
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Color(0xff09b5e1),
+                  ),
                 )
               : ListView(
                   physics: const BouncingScrollPhysics(),
@@ -110,9 +112,9 @@ class _TvPageState extends State<TvPage> {
                                         currentPage = 1;
                                         context.go("/tv/${widget.category}/${1}");
                                       },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.home_filled,
-                                  color: Color(0xff8fcea2),
+                                  color: currentPage == 1 ? Colors.grey : const Color(0xff8fcea2),
                                 ),
                               ),
                               OutlinedButton(
@@ -125,9 +127,9 @@ class _TvPageState extends State<TvPage> {
                                         currentPage--;
                                         context.go("/tv/${widget.category}/$currentPage");
                                       },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_back,
-                                  color: Color(0xff8fcea2),
+                                  color: currentPage == 1 ? Colors.grey : const Color(0xff8fcea2),
                                 ),
                               ),
                               ElevatedButton(

@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: B.popular.isEmpty
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Color(0xff09b5e1)),
                 )
               : ListView(
                   children: [

@@ -1,10 +1,9 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:tmdb_web/bloc/nex_bloc.dart';
 import 'package:tmdb_web/models/tv.dart';
@@ -25,6 +24,7 @@ class TvInfo extends StatefulWidget {
 
 class _TvInfoState extends State<TvInfo> {
   late NexBloc B;
+  late double width;
   final ScrollController scrollController = ScrollController();
   final Color grey = Colors.grey.shade400;
   bool videoPressed = false;
@@ -38,6 +38,12 @@ class _TvInfoState extends State<TvInfo> {
     B = NexBloc.get(context);
     B.casts = [];
     B.show = TvShows();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    width = MediaQuery.of(context).size.width;
   }
 
   changeShow() {
@@ -75,7 +81,7 @@ class _TvInfoState extends State<TvInfo> {
                   children: [
                     SizedBox(
                       width: double.infinity,
-                      height: 500,
+                      height: 50.h,
                       child: B.show.posterPath != ""
                           ? Image.network(
                               fit: BoxFit.cover,
@@ -84,9 +90,11 @@ class _TvInfoState extends State<TvInfo> {
                                 return const SizedBox(
                                   width: 300,
                                   height: 600,
-                                  child: Icon(
-                                    Icons.question_mark_rounded,
-                                    size: 300,
+                                  child: FittedBox(
+                                    child: Icon(
+                                      Icons.question_mark_rounded,
+                                      size: 300,
+                                    ),
                                   ),
                                 );
                               },
@@ -102,67 +110,86 @@ class _TvInfoState extends State<TvInfo> {
                             padding: const EdgeInsets.only(left: 10.0, top: 20),
                             child: Text(
                               B.show.name!,
-                              style: const TextStyle(
-                                fontSize: 24,
+                              style: TextStyle(
+                                fontSize: 6.w > 30 ? 30 : 6.w,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Row(
-                              children: [
-                                Text("${B.show.status}",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        color: Color(0xff8fcea2))),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.0),
-                                  child: Text("-"),
+                            child: SizedBox(
+                              width: 90.w > 550 ? 550 : 90.w,
+                              child: FittedBox(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text("${B.show.status}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 4.w > 18 ? 18 : 4.w,
+                                            color: const Color(0xff8fcea2))),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                      child: Text("-"),
+                                    ),
+                                    Text(
+                                        "${B.show.numberOfSeasons} Season${B.show.numberOfSeasons! > 1 ? "s" : ""}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 4.w > 18 ? 18 : 4.w,
+                                            color: const Color(0xff8fcea2))),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                      child: Text("-"),
+                                    ),
+                                    Text("${B.show.numberOfEpisodes} Episodes",
+                                        style:
+                                            TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                      child: Text("-"),
+                                    ),
+                                    Text(runtimeToHours(B.show.episodeRunTime!),
+                                        style:
+                                            TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                      child: Text("-"),
+                                    ),
+                                    Text(B.show.firstAirDate!.split('-')[0],
+                                        style:
+                                            TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
+                                  ],
                                 ),
-                                Text(
-                                    "${B.show.numberOfSeasons} Season${B.show.numberOfSeasons! > 1 ? "s" : ""}",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        color: Color(0xff8fcea2))),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.0),
-                                  child: Text("-"),
-                                ),
-                                Text("${B.show.numberOfEpisodes} Episodes",
-                                    style: TextStyle(fontSize: 18, color: grey)),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.0),
-                                  child: Text("-"),
-                                ),
-                                Text(runtimeToHours(B.show.episodeRunTime!),
-                                    style: TextStyle(fontSize: 18, color: grey)),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.0),
-                                  child: Text("-"),
-                                ),
-                                Text(B.show.firstAirDate!.split('-')[0],
-                                    style: TextStyle(fontSize: 18, color: grey)),
-                              ],
+                              ),
                             ),
                           ),
                           B.show.genres!.isNotEmpty
-                              ? Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5),
-                                  child: SizedBox(
-                                      height: 44,
-                                      child: ListView.builder(
-                                          itemCount: B.show.genres!.length,
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (
-                                            BuildContext context,
-                                            int index,
-                                          ) =>
-                                              categoriesWidget(
-                                                  index: index, movie: B.show, context: context))),
+                              ? SizedBox(
+                                  width: 90.w > 120 * B.show.genres!.length
+                                      ? (120 * B.show.genres!.length).toDouble()
+                                      : 90.w,
+                                  child: FittedBox(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5),
+                                      child: SizedBox(
+                                          height: 44,
+                                          child: ListView.builder(
+                                              itemCount: B.show.genres!.length,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (
+                                                BuildContext context,
+                                                int index,
+                                              ) =>
+                                                  categoriesWidget(
+                                                      index: index,
+                                                      movie: B.show,
+                                                      context: context))),
+                                    ),
+                                  ),
                                 )
                               : Container(),
                           const SizedBox(
@@ -172,17 +199,24 @@ class _TvInfoState extends State<TvInfo> {
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
                               B.show.overview!,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 4.w > 18
+                                      ? 100.w > 1200
+                                          ? 22
+                                          : 18
+                                      : 4.w,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white),
                             ),
                           ),
                           Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.star,
-                                    color: Color(0xff8fcea2),
+                                    color: const Color(0xff8fcea2),
+                                    size: 4.w > 18 ? 18 : 4.w,
                                   ),
                                   const SizedBox(
                                     width: 10,
@@ -191,15 +225,15 @@ class _TvInfoState extends State<TvInfo> {
                                       B.show.voteAverage!
                                           .toStringAsFixed(1)
                                           .replaceFirst(RegExp(r'\.?'), ''),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 18,
+                                          fontSize: 4.w > 18 ? 18 : 4.w,
                                           fontWeight: FontWeight.bold)),
                                   Text(
                                       B.show.voteCount! > 1000
                                           ? "/10 (${(B.show.voteCount! / 1000).toStringAsFixed(2)}K)"
                                           : "/10 (${B.show.voteCount})",
-                                      style: TextStyle(fontSize: 18, color: grey)),
+                                      style: TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
                                 ],
                               )),
                           const SizedBox(height: 10),
@@ -207,11 +241,11 @@ class _TvInfoState extends State<TvInfo> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
                                       child: Text(
                                         "Trailer :",
-                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                        style: TextStyle(fontSize: 5.w > 24 ? 24 : 5.w, fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Padding(
@@ -251,11 +285,14 @@ class _TvInfoState extends State<TvInfo> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 15),
                                       child: Text(
                                         "Shows Cast :",
-                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 5.w > 24 ? 24 : 5.w,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     const SizedBox(
@@ -264,7 +301,7 @@ class _TvInfoState extends State<TvInfo> {
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: SizedBox(
-                                        height: 185,
+                                        height: 30.w > 185 ? 185 : 30.w,
                                         child: ListView.builder(
                                             scrollDirection: Axis.horizontal,
                                             itemCount: B.casts.length,
@@ -279,18 +316,20 @@ class _TvInfoState extends State<TvInfo> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Padding(
-                                      padding: EdgeInsets.all(10.0),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
                                       child: Text(
                                         "Recommendations :",
-                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 5.w > 24 ? 24 : 5.w,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20),
                                         child: SizedBox(
-                                          height: 400,
+                                          height: 70.w > 400 ? 400 : 70.w,
                                           child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: B.suggestions.length,
@@ -298,8 +337,10 @@ class _TvInfoState extends State<TvInfo> {
                                                   GestureDetector(
                                                     onTap: () => context
                                                         .go('/tv/${B.suggestions[index].id}'),
-                                                    child: suggestionWidget(
-                                                        index: index, suggestions: B.suggestions),
+                                                    child: FittedBox(
+                                                      child: suggestionWidget(
+                                                          index: index, suggestions: B.suggestions),
+                                                    ),
                                                   )),
                                         )),
                                   ],
@@ -309,18 +350,20 @@ class _TvInfoState extends State<TvInfo> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Padding(
-                                      padding: EdgeInsets.all(10.0),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
                                       child: Text(
                                         "Might Also Interest You :",
-                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 5.w > 24 ? 24 : 5.w,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20),
                                         child: SizedBox(
-                                          height: 400,
+                                          height: 70.w > 400 ? 400 : 70.w,
                                           child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: B.similar.length,
@@ -328,8 +371,10 @@ class _TvInfoState extends State<TvInfo> {
                                                   GestureDetector(
                                                     onTap: () =>
                                                         context.go('/tv/${B.similar[index].id}'),
-                                                    child: suggestionWidget(
-                                                        index: index, suggestions: B.similar),
+                                                    child: FittedBox(
+                                                      child: suggestionWidget(
+                                                          index: index, suggestions: B.similar),
+                                                    ),
                                                   )),
                                         )),
                                   ],
@@ -339,11 +384,13 @@ class _TvInfoState extends State<TvInfo> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Padding(
-                                      padding: EdgeInsets.all(10.0),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
                                       child: Text(
                                         "Reviews :",
-                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 5.w > 24 ? 24 : 5.w,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     LiveList.options(
