@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tmdb_web/bloc/nex_bloc.dart';
@@ -52,9 +53,21 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       ClipRRect(
                         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                        child: Image.network(
-                            "https://image.tmdb.org/t/p/original/${item.backdropPath}",
-                            fit: BoxFit.cover),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: "https://image.tmdb.org/t/p/w1280/${item.backdropPath}",
+                          placeholder: (context, url) => const SizedBox(
+                              height: 1280,
+                              width: 724,
+                              child: SizedBox(
+                                  height: 60,
+                                  width: 60,
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: Color(0xff55c3bd),
+                                  )))),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        ),
                       ),
                       Positioned(
                         bottom: 0.0,
