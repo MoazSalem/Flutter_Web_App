@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -13,41 +14,47 @@ Widget reviewWidget({required B, required int index}) {
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0, bottom: 5.0),
             child: SizedBox(
-              width: 80.w > 350 ? 350 : 80.w,
               child: FittedBox(
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     CircleAvatar(
-                        backgroundColor: const Color(0xff0d9bc6),
-                        radius: 30,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: SizedBox(
+                      backgroundColor: const Color(0xff0d9bc6),
+                      radius: 30,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: CachedNetworkImage(
                             width: 100,
                             height: 100,
-                            child: Image.network(
-                              B.reviews[index].authorDetails?.avatarPath != null
-                                  ? B.reviews[index].authorDetails?.avatarPath!
-                                              .split("/")[1]
-                                              .split(":")[0] ==
-                                          "https"
-                                      ? B.reviews[index].authorDetails!.avatarPath!
-                                      : "https://image.tmdb.org/t/p/w200${B.reviews[index].authorDetails?.avatarPath}"
-                                  : "",
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const SizedBox(
+                            fit: BoxFit.cover,
+                            imageUrl: B.reviews[index].authorDetails?.avatarPath != null
+                                ? B.reviews[index].authorDetails?.avatarPath!
+                                            .split("/")[1]
+                                            .split(":")[0] ==
+                                        "https"
+                                    ? B.reviews[index].authorDetails!.avatarPath!
+                                    : "https://image.tmdb.org/t/p/w200${B.reviews[index].authorDetails?.avatarPath}"
+                                : "",
+                            placeholder: (context, url) => const SizedBox(
+                                height: 100,
+                                width: 100,
+                                child: SizedBox(
+                                    height: 60,
+                                    width: 60,
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )))),
+                            errorWidget: (context, url, error) => const SizedBox(
                                   width: 30,
                                   height: 60,
                                   child: Icon(
                                     Icons.person,
                                     size: 36,
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                        )),
+                                )),
+                      ),
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
@@ -55,8 +62,11 @@ Widget reviewWidget({required B, required int index}) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
+                          width: 60.w ,
                           child: Text(
-                            "A Review From ${B.reviews[index].author!}",
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                            "${B.reviews[index].author!}",
                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),

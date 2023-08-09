@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -47,22 +48,29 @@ Widget movieWidget({required movie, required BuildContext context}) {
       alignment: Alignment.topRight,
       children: [
         SizedBox(
-          child: Image.network(
-            fit: BoxFit.fill,
-            "https://image.tmdb.org/t/p/w500${movie.posterPath ?? ""}",
-            errorBuilder: (context, error, stackTrace) {
-              return const SizedBox(
-                width: 300,
-                height: 600,
-                child: FittedBox(
-                  child: Icon(
-                    Icons.question_mark_rounded,
-                    size: 300,
-                  ),
-                ),
-              );
-            },
-          ),
+          child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: "https://image.tmdb.org/t/p/w500${movie.posterPath ?? ""}",
+              placeholder: (context, url) => const SizedBox(
+                  height: 600,
+                  width: 300,
+                  child: SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Color(0xff55c3bd),
+                      )))),
+              errorWidget: (context, url, error) => const SizedBox(
+                    width: 300,
+                    height: 600,
+                    child: FittedBox(
+                      child: Icon(
+                        Icons.question_mark_rounded,
+                        size: 300,
+                      ),
+                    ),
+                  )),
         ),
         Padding(
           padding: const EdgeInsets.all(12.0),

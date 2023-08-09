@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 Widget suggestionWidget({
@@ -13,20 +14,27 @@ Widget suggestionWidget({
           SizedBox(
             height: 260,
             width: 160,
-            child: Image.network(
-              fit: BoxFit.fitHeight,
-              "https://image.tmdb.org/t/p/w400${suggestions[index].posterPath ?? ""}",
-              errorBuilder: (context, error, stackTrace) {
-                return const SizedBox(
-                  width: 60,
-                  height: 100,
-                  child: Icon(
-                    Icons.question_mark_rounded,
-                    size: 100,
-                  ),
-                );
-              },
-            ),
+            child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: "https://image.tmdb.org/t/p/w400${suggestions[index].posterPath ?? ""}",
+                placeholder: (context, url) => const SizedBox(
+                    height: 260,
+                    width: 160,
+                    child: SizedBox(
+                        height: 60,
+                        width: 60,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: Color(0xff55c3bd),
+                        )))),
+                errorWidget: (context, url, error) => const SizedBox(
+                      width: 60,
+                      height: 100,
+                      child: Icon(
+                        Icons.question_mark_rounded,
+                        size: 100,
+                      ),
+                    )),
           ),
           Container(
             decoration: const BoxDecoration(
@@ -69,7 +77,7 @@ Widget suggestionWidget({
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "${suggestions[index].title ?? suggestions[index].name} (${(suggestions[index].releaseDate ?? suggestions[index].firstAirDate).split("-")[0]})",
-                      style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
