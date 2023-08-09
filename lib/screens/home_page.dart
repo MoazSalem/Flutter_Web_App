@@ -56,10 +56,10 @@ class _HomePageState extends State<HomePage> {
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           imageUrl: "https://image.tmdb.org/t/p/w1280/${item.backdropPath}",
-                          placeholder: (context, url) => const SizedBox(
-                              height: 1280,
-                              width: 724,
-                              child: SizedBox(
+                          placeholder: (context, url) => SizedBox(
+                              height: 26.5.h,
+                              width: 80.w,
+                              child: const SizedBox(
                                   height: 60,
                                   width: 60,
                                   child: Center(
