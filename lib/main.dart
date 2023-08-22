@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/cubit/tmdb_cubit.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'data/router.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NexBloc(),
+      create: (context) => TmdbCubit(),
       child: MaterialApp.router(
           builder: (context, child) => ResponsiveSizer(
                 builder: (context, orientation, screenType) {

@@ -5,12 +5,13 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/cubit/tmdb_cubit.dart';
 import 'package:tmdb_web/models/tv.dart';
 import 'package:tmdb_web/widgets/suggestion_widget.dart';
 import 'package:tmdb_web/widgets/actor_widget.dart';
 import 'package:tmdb_web/widgets/categories_widget.dart';
 import 'package:tmdb_web/widgets/review_widget.dart';
+import '../home_page.dart';
 
 // This page is opened when you press on a tv show
 class TvInfo extends StatefulWidget {
@@ -23,7 +24,6 @@ class TvInfo extends StatefulWidget {
 }
 
 class _TvInfoState extends State<TvInfo> {
-  late NexBloc B;
   late double width;
   final ScrollController scrollController = ScrollController();
   final Color grey = Colors.grey.shade400;
@@ -35,9 +35,8 @@ class _TvInfoState extends State<TvInfo> {
   @override
   void initState() {
     super.initState();
-    B = NexBloc.get(context);
-    B.casts = [];
-    B.show = TvShows();
+    C.casts = [];
+    C.show = TvShows();
   }
 
   @override
@@ -49,7 +48,7 @@ class _TvInfoState extends State<TvInfo> {
   changeShow() {
     parsedId != int.parse(widget.id)
         ? {
-            B.videoController = YoutubePlayerController(
+            C.videoController = YoutubePlayerController(
               params: const YoutubePlayerParams(
                 mute: false,
                 showControls: true,
@@ -57,21 +56,20 @@ class _TvInfoState extends State<TvInfo> {
               ),
             ),
             parsedId = int.parse(widget.id),
-            B.show = TvShows(),
-            B.getShow(id: parsedId),
+            C.show = TvShows(),
+            C.getShow(id: parsedId),
           }
         : null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NexBloc, NexState>(
-      listener: (context, state) {},
+    return BlocBuilder<TmdbCubit, TmdbState>(
       builder: (context, state) {
         changeShow();
         return Scaffold(
           backgroundColor: Theme.of(context).canvasColor,
-          body: B.show.name == null
+          body: C.show.name == null
               ? const Center(
                   child: CircularProgressIndicator(
                     color: Color(0xff09b5e1),
@@ -82,10 +80,10 @@ class _TvInfoState extends State<TvInfo> {
                     SizedBox(
                       width: double.infinity,
                       height: 50.h,
-                      child: B.show.posterPath != ""
+                      child: C.show.posterPath != ""
                           ? Image.network(
                               fit: BoxFit.cover,
-                              "https://image.tmdb.org/t/p/original/${B.show.backdropPath ?? B.show.posterPath}",
+                              "https://image.tmdb.org/t/p/original/${C.show.backdropPath ?? C.show.posterPath}",
                               errorBuilder: (context, error, stackTrace) {
                                 return const SizedBox(
                                   width: 300,
@@ -109,7 +107,7 @@ class _TvInfoState extends State<TvInfo> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0, top: 20),
                             child: Text(
-                              B.show.name!,
+                              C.show.name!,
                               style: TextStyle(
                                 fontSize: 6.w > 30 ? 30 : 6.w,
                                 fontWeight: FontWeight.bold,
@@ -124,7 +122,7 @@ class _TvInfoState extends State<TvInfo> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text("${B.show.status}",
+                                    Text("${C.show.status}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 4.w > 18 ? 18 : 4.w,
@@ -134,7 +132,7 @@ class _TvInfoState extends State<TvInfo> {
                                       child: Text("-"),
                                     ),
                                     Text(
-                                        "${B.show.numberOfSeasons} Season${B.show.numberOfSeasons! > 1 ? "s" : ""}",
+                                        "${C.show.numberOfSeasons} Season${C.show.numberOfSeasons! > 1 ? "s" : ""}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 4.w > 18 ? 18 : 4.w,
@@ -143,21 +141,21 @@ class _TvInfoState extends State<TvInfo> {
                                       padding: EdgeInsets.symmetric(horizontal: 5.0),
                                       child: Text("-"),
                                     ),
-                                    Text("${B.show.numberOfEpisodes} Episodes",
+                                    Text("${C.show.numberOfEpisodes} Episodes",
                                         style:
                                             TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
                                     const Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 5.0),
                                       child: Text("-"),
                                     ),
-                                    Text(runtimeToHours(B.show.episodeRunTime!),
+                                    Text(runtimeToHours(C.show.episodeRunTime!),
                                         style:
                                             TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
                                     const Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 5.0),
                                       child: Text("-"),
                                     ),
-                                    Text(B.show.firstAirDate!.split('-')[0],
+                                    Text(C.show.firstAirDate!.split('-')[0],
                                         style:
                                             TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
                                   ],
@@ -165,10 +163,10 @@ class _TvInfoState extends State<TvInfo> {
                               ),
                             ),
                           ),
-                          B.show.genres!.isNotEmpty
+                          C.show.genres!.isNotEmpty
                               ? SizedBox(
-                                  width: 90.w > 120 * B.show.genres!.length
-                                      ? (120 * B.show.genres!.length).toDouble()
+                                  width: 90.w > 120 * C.show.genres!.length
+                                      ? (120 * C.show.genres!.length).toDouble()
                                       : 90.w,
                                   child: FittedBox(
                                     child: Padding(
@@ -177,7 +175,7 @@ class _TvInfoState extends State<TvInfo> {
                                       child: SizedBox(
                                           height: 44,
                                           child: ListView.builder(
-                                              itemCount: B.show.genres!.length,
+                                              itemCount: C.show.genres!.length,
                                               shrinkWrap: true,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (
@@ -186,7 +184,7 @@ class _TvInfoState extends State<TvInfo> {
                                               ) =>
                                                   categoriesWidget(
                                                       index: index,
-                                                      movie: B.show,
+                                                      movie: C.show,
                                                       context: context))),
                                     ),
                                   ),
@@ -198,7 +196,7 @@ class _TvInfoState extends State<TvInfo> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              B.show.overview!,
+                              C.show.overview!,
                               style: TextStyle(
                                   fontSize: 4.w > 18
                                       ? 100.w > 1200
@@ -222,7 +220,7 @@ class _TvInfoState extends State<TvInfo> {
                                     width: 10,
                                   ),
                                   Text(
-                                      B.show.voteAverage!
+                                      C.show.voteAverage!
                                           .toStringAsFixed(1)
                                           .replaceFirst(RegExp(r'\.?'), ''),
                                       style: TextStyle(
@@ -230,22 +228,25 @@ class _TvInfoState extends State<TvInfo> {
                                           fontSize: 4.w > 18 ? 18 : 4.w,
                                           fontWeight: FontWeight.bold)),
                                   Text(
-                                      B.show.voteCount! > 1000
-                                          ? "/10 (${(B.show.voteCount! / 1000).toStringAsFixed(2)}K)"
-                                          : "/10 (${B.show.voteCount})",
+                                      C.show.voteCount! > 1000
+                                          ? "/10 (${(C.show.voteCount! / 1000).toStringAsFixed(2)}K)"
+                                          : "/10 (${C.show.voteCount})",
                                       style: TextStyle(fontSize: 4.w > 18 ? 18 : 4.w, color: grey)),
                                 ],
                               )),
                           const SizedBox(height: 10),
-                          B.trailer.key != ""
+                          C.trailer.key != ""
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 15),
                                       child: Text(
                                         "Trailer :",
-                                        style: TextStyle(fontSize: 5.w > 24 ? 24 : 5.w, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 5.w > 24 ? 24 : 5.w,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Padding(
@@ -258,15 +259,15 @@ class _TvInfoState extends State<TvInfo> {
                                           ),
                                           child: Stack(children: [
                                             YoutubePlayer(
-                                              controller: B.videoController,
+                                              controller: C.videoController,
                                               aspectRatio: 16 / 9,
                                             ),
                                             PointerInterceptor(
                                               child: InkWell(
                                                 onTap: () {
                                                   videoPressed
-                                                      ? B.videoController.pauseVideo()
-                                                      : B.videoController.playVideo();
+                                                      ? C.videoController.pauseVideo()
+                                                      : C.videoController.playVideo();
                                                   videoPressed = !videoPressed;
                                                 },
                                                 child: const AspectRatio(
@@ -281,7 +282,7 @@ class _TvInfoState extends State<TvInfo> {
                                   ],
                                 )
                               : Container(),
-                          B.casts.isNotEmpty
+                          C.casts.isNotEmpty
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -304,15 +305,15 @@ class _TvInfoState extends State<TvInfo> {
                                         height: 30.w > 185 ? 185 : 30.w,
                                         child: ListView.builder(
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: B.casts.length,
+                                            itemCount: C.casts.length,
                                             itemBuilder: (BuildContext context, int index) =>
-                                                actorWidget(index: index, B: B)),
+                                                actorWidget(index: index, B: C)),
                                       ),
                                     ),
                                   ],
                                 )
                               : Container(),
-                          B.suggestions.isNotEmpty
+                          C.suggestions.isNotEmpty
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -332,21 +333,21 @@ class _TvInfoState extends State<TvInfo> {
                                           height: 70.w > 400 ? 400 : 70.w,
                                           child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: B.suggestions.length,
+                                              itemCount: C.suggestions.length,
                                               itemBuilder: (BuildContext context, int index) =>
                                                   GestureDetector(
                                                     onTap: () => context
-                                                        .go('/tv/${B.suggestions[index].id}'),
+                                                        .go('/tv/${C.suggestions[index].id}'),
                                                     child: FittedBox(
                                                       child: suggestionWidget(
-                                                          index: index, suggestions: B.suggestions),
+                                                          index: index, suggestions: C.suggestions),
                                                     ),
                                                   )),
                                         )),
                                   ],
                                 )
                               : Container(),
-                          B.similar.isNotEmpty
+                          C.similar.isNotEmpty
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -366,21 +367,21 @@ class _TvInfoState extends State<TvInfo> {
                                           height: 70.w > 400 ? 400 : 70.w,
                                           child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: B.similar.length,
+                                              itemCount: C.similar.length,
                                               itemBuilder: (BuildContext context, int index) =>
                                                   GestureDetector(
                                                     onTap: () =>
-                                                        context.go('/tv/${B.similar[index].id}'),
+                                                        context.go('/tv/${C.similar[index].id}'),
                                                     child: FittedBox(
                                                       child: suggestionWidget(
-                                                          index: index, suggestions: B.similar),
+                                                          index: index, suggestions: C.similar),
                                                     ),
                                                   )),
                                         )),
                                   ],
                                 )
                               : Container(),
-                          B.reviews.isNotEmpty
+                          C.reviews.isNotEmpty
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -419,17 +420,17 @@ class _TvInfoState extends State<TvInfo> {
                                           // Paste you Widget
                                           child: GestureDetector(
                                             onTap: () {},
-                                            child: reviewWidget(B: B, index: index),
+                                            child: reviewWidget(B: C, index: index),
                                           ),
                                         ),
                                       ),
                                       itemCount: seeMore
-                                          ? B.reviews.length
-                                          : B.reviews.length > 1
+                                          ? C.reviews.length
+                                          : C.reviews.length > 1
                                               ? 2
                                               : 1,
                                     ),
-                                    B.reviews.length > 2
+                                    C.reviews.length > 2
                                         ? Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -438,7 +439,7 @@ class _TvInfoState extends State<TvInfo> {
                                                 borderRadius: BorderRadius.circular(20),
                                                 onTap: () {
                                                   seeMore = !seeMore;
-                                                  B.onChanges();
+                                                  C.onChanges();
                                                 },
                                                 child: SizedBox(
                                                   height: 50,

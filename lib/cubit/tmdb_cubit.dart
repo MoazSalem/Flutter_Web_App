@@ -15,11 +15,11 @@ import 'package:tmdb_web/services/tv_service.dart';
 import 'package:tmdb_web/services/popular.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-part 'nex_event.dart';
+part 'tmdb_state.dart';
 
-part 'nex_state.dart';
-
-class NexBloc extends Bloc<NexEvent, NexState> {
+class TmdbCubit extends Cubit<TmdbState> {
+  static TmdbCubit get(context) => BlocProvider.of(context);
+  TmdbCubit() : super(TmdbInitial());
   List<String> moviesGenres = moviesCategoriesN;
   List<String> tvGenres = tvCategoriesN;
   List<Movie> searchedMovies = [];
@@ -38,13 +38,6 @@ class NexBloc extends Bloc<NexEvent, NexState> {
   List<Cast> casts = [];
   Video trailer = emptyVideo;
   late YoutubePlayerController videoController;
-
-  static NexBloc get(context) => BlocProvider.of(context);
-
-  NexBloc() : super(NexInitial()) {
-    on<NexEvent>((event, emit) {});
-  }
-
   getPopular() async {
     popular = await PopularService().getPopular();
     emit(GetMovies());
@@ -86,7 +79,7 @@ class NexBloc extends Bloc<NexEvent, NexState> {
     tvShowsList = category == "popular"
         ? await TVService().getTrendingShows(page: page)
         : await TVService()
-            .getShows(page: page, endPoint: getEndPoint(category: category, typeIndex: 1));
+        .getShows(page: page, endPoint: getEndPoint(category: category, typeIndex: 1));
     emit(GetMovies());
   }
 

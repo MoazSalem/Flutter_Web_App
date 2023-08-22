@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/cubit/tmdb_cubit.dart';
 import 'package:tmdb_web/widgets/app_bar.dart';
+import '../home_page.dart';
 
 class MainTv extends StatefulWidget {
   const MainTv({Key? key}) : super(key: key);
@@ -13,16 +14,9 @@ class MainTv extends StatefulWidget {
 }
 
 class _MainTvState extends State<MainTv> {
-  late NexBloc B;
   late double width;
   List<String> list = ["Popular", "Top Rated", "Airing Today", "On The Air"];
   List<String> tvCategories = ["popular", "top_rated", "airing_today", "on_the_air"];
-
-  @override
-  void initState() {
-    super.initState();
-    B = NexBloc.get(context);
-  }
 
   @override
   void didChangeDependencies() {
@@ -32,8 +26,7 @@ class _MainTvState extends State<MainTv> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NexBloc, NexState>(
-      listener: (context, state) {},
+    return BlocBuilder<TmdbCubit, TmdbState>(
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
@@ -133,7 +126,7 @@ class _MainTvState extends State<MainTv> {
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: B.tvGenres.length,
+                      itemCount: C.tvGenres.length,
                       cacheExtent: 20,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 2,
@@ -149,14 +142,14 @@ class _MainTvState extends State<MainTv> {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(10),
                               onTap: () {
-                                context.go('/tv/${B.tvGenres[index].toLowerCase()}/1');
+                                context.go('/tv/${C.tvGenres[index].toLowerCase()}/1');
                               },
                               child: Center(
                                   child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FittedBox(
                                   child: Text(
-                                    B.tvGenres[index],
+                                    C.tvGenres[index],
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold, fontSize: 3.w > 25 ? 25 : 3.w),
                                   ),

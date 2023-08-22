@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/cubit/tmdb_cubit.dart';
 import 'package:tmdb_web/widgets/app_bar.dart';
 import 'package:tmdb_web/widgets/list_widget.dart';
+import 'home_page.dart';
 
 final TextEditingController moviesSearch = TextEditingController();
 final TextEditingController tvSearch = TextEditingController();
@@ -18,15 +19,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late NexBloc B;
   late double width;
   final ScrollController scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    B = NexBloc.get(context);
-  }
 
   @override
   void didChangeDependencies() {
@@ -36,8 +30,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NexBloc, NexState>(
-      listener: (context, state) {},
+    return BlocBuilder<TmdbCubit, TmdbState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.black,
@@ -59,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                     child: TextFormField(
                         controller: widget.movie ? moviesSearch : tvSearch,
                         onChanged: (query) {
-                          widget.movie ? B.searchMovies(query: query) : B.searchShows(query: query);
+                          widget.movie ? C.searchMovies(query: query) : C.searchShows(query: query);
                         },
                         autofocus: true,
                         maxLines: 1,
@@ -80,12 +73,12 @@ class _SearchPageState extends State<SearchPage> {
                         )),
                   ),
                 ),
-                (widget.movie ? B.searchedMovies.isEmpty : B.searchedShows.isEmpty)
+                (widget.movie ? C.searchedMovies.isEmpty : C.searchedShows.isEmpty)
                     ? const SizedBox(height: 400, child: Center(child: Text("No Results")))
                     : listWidget(
-                      list: widget.movie ? B.searchedMovies : B.searchedShows,
-                      scrollController: scrollController,
-                    ),
+                        list: widget.movie ? C.searchedMovies : C.searchedShows,
+                        scrollController: scrollController,
+                      ),
               ]),
         );
       },

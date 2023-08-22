@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tmdb_web/widgets/list_widget.dart';
-import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/cubit/tmdb_cubit.dart';
 import 'package:tmdb_web/widgets/app_bar.dart';
 import 'package:tmdb_web/data/categories.dart';
+import '../home_page.dart';
 
 // This is the main page
 class TvPage extends StatefulWidget {
@@ -20,16 +21,9 @@ class TvPage extends StatefulWidget {
 class _TvPageState extends State<TvPage> {
   late double currentWidth;
   late ThemeData theme;
-  late NexBloc B;
   final ScrollController scrollController = ScrollController();
   int currentPage = 1;
   int loadedPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    B = NexBloc.get(context);
-  }
 
   @override
   void didChangeDependencies() {
@@ -44,14 +38,14 @@ class _TvPageState extends State<TvPage> {
             if ({"popular", "top_rated", "airing_today", "on_the_air"}.contains(widget.category))
               {
                 loadedPage = int.parse(widget.page),
-                B.tvShowsList = [],
-                B.getShows(page: currentPage, category: widget.category),
+                C.tvShowsList = [],
+                C.getShows(page: currentPage, category: widget.category),
               }
             else
               {
                 loadedPage = int.parse(widget.page),
-                B.tvShowsList = [],
-                B.getTvsGenre(page: currentPage, genre: tvCategories[widget.category]!),
+                C.tvShowsList = [],
+                C.getTvsGenre(page: currentPage, genre: tvCategories[widget.category]!),
               }
           }
         : null;
@@ -59,8 +53,7 @@ class _TvPageState extends State<TvPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NexBloc, NexState>(
-      listener: (context, state) {},
+    return BlocBuilder<TmdbCubit, TmdbState>(
       builder: (context, state) {
         currentPage = int.parse(widget.page);
         changePage();
@@ -73,7 +66,7 @@ class _TvPageState extends State<TvPage> {
             title: appBar(context: context, movie: false),
             backgroundColor: theme.canvasColor,
           ),
-          body: B.tvShowsList.isEmpty
+          body: C.tvShowsList.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(
                     color: Color(0xff09b5e1),
@@ -84,7 +77,7 @@ class _TvPageState extends State<TvPage> {
                   cacheExtent: 3500,
                   children: [
                     listWidget(
-                      list: B.tvShowsList,
+                      list: C.tvShowsList,
                       scrollController: scrollController,
                     ),
                     Column(

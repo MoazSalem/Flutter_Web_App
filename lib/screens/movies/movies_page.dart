@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/cubit/tmdb_cubit.dart';
 import 'package:tmdb_web/widgets/list_widget.dart';
 import 'package:tmdb_web/widgets/app_bar.dart';
 import 'package:tmdb_web/data/categories.dart';
+import '../home_page.dart';
 
 // This is the main page
 class MoviesPage extends StatefulWidget {
@@ -20,16 +21,9 @@ class MoviesPage extends StatefulWidget {
 class _MoviesPageState extends State<MoviesPage> {
   late double currentWidth;
   late ThemeData theme;
-  late NexBloc B;
   final ScrollController scrollController = ScrollController();
   int currentPage = 1;
   int loadedPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    B = NexBloc.get(context);
-  }
 
   @override
   void didChangeDependencies() {
@@ -44,14 +38,14 @@ class _MoviesPageState extends State<MoviesPage> {
             if ({"popular", "top_rated", "now_playing", "upcoming"}.contains(widget.category))
               {
                 loadedPage = int.parse(widget.page),
-                B.moviesList = [],
-                B.getMovies(page: currentPage, category: widget.category),
+                C.moviesList = [],
+                C.getMovies(page: currentPage, category: widget.category),
               }
             else
               {
                 loadedPage = int.parse(widget.page),
-                B.moviesList = [],
-                B.getMoviesGenre(page: currentPage, genre: moviesCategories[widget.category]!),
+                C.moviesList = [],
+                C.getMoviesGenre(page: currentPage, genre: moviesCategories[widget.category]!),
               }
           }
         : null;
@@ -59,8 +53,7 @@ class _MoviesPageState extends State<MoviesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NexBloc, NexState>(
-      listener: (context, state) {},
+    return BlocBuilder<TmdbCubit, TmdbState>(
       builder: (context, state) {
         currentPage = int.parse(widget.page);
         changePage();
@@ -73,7 +66,7 @@ class _MoviesPageState extends State<MoviesPage> {
             title: appBar(context: context),
             backgroundColor: theme.canvasColor,
           ),
-          body: B.moviesList.isEmpty
+          body: C.moviesList.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(
                     color: Color(0xff8fcea2),
@@ -84,7 +77,7 @@ class _MoviesPageState extends State<MoviesPage> {
                   cacheExtent: 3500,
                   children: [
                     listWidget(
-                      list: B.moviesList,
+                      list: C.moviesList,
                       scrollController: scrollController,
                     ),
                     Column(

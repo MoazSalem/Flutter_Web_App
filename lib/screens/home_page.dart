@@ -4,10 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:tmdb_web/bloc/nex_bloc.dart';
+import 'package:tmdb_web/cubit/tmdb_cubit.dart';
 import 'package:tmdb_web/widgets/suggestion_widget.dart';
 import 'package:tmdb_web/widgets/app_bar.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+late TmdbCubit C;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,7 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late NexBloc B;
   late double width;
   int _current = 0;
   final TextEditingController searchC = TextEditingController();
@@ -26,10 +27,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    B = NexBloc.get(context);
-    B.getPopular();
-    B.getMovies(page: 1, category: "popular");
-    B.getShows(page: 1, category: "popular");
+    C = TmdbCubit.get(context);
+    C.getPopular();
+    C.getMovies(page: 1, category: "popular");
+    C.getShows(page: 1, category: "popular");
   }
 
   // This is left to update the ui when the size changes
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> imageSliders = B.popular
+    final List<Widget> imageSliders = C.popular
         .map((item) => GestureDetector(
               onTap: () {
                 item.name == null ? context.go('/movies/${item.id}') : context.go('/tv/${item.id}');
@@ -123,8 +124,7 @@ class _HomePageState extends State<HomePage> {
                   )),
             ))
         .toList();
-    return BlocConsumer<NexBloc, NexState>(
-      listener: (context, state) {},
+    return BlocBuilder<TmdbCubit, TmdbState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.black,
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
             title: appBar(context: context, showSearch: false),
             backgroundColor: Theme.of(context).canvasColor,
           ),
-          body: B.popular.isEmpty
+          body: C.popular.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(color: Color(0xff09b5e1)),
                 )
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                           child: FittedBox(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: B.popular.asMap().entries.map((entry) {
+                              children: C.popular.asMap().entries.map((entry) {
                                 return InkWell(
                                   borderRadius: const BorderRadius.all(Radius.circular(30)),
                                   onTap: () => _controller.animateToPage(entry.key),
@@ -222,14 +222,14 @@ class _HomePageState extends State<HomePage> {
                                 height: 70.w > 400 ? 400 : 70.w,
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: B.moviesList.length,
+                                    itemCount: C.moviesList.length,
                                     itemBuilder: (BuildContext context, int index) => InkWell(
                                           borderRadius: const BorderRadius.all(Radius.circular(30)),
                                           onTap: () =>
-                                              context.go('/movies/${B.moviesList[index].id}'),
+                                              context.go('/movies/${C.moviesList[index].id}'),
                                           child: FittedBox(
                                             child: suggestionWidget(
-                                                index: index, suggestions: B.moviesList),
+                                                index: index, suggestions: C.moviesList),
                                           ),
                                         )),
                               )),
@@ -260,13 +260,13 @@ class _HomePageState extends State<HomePage> {
                                 height: 70.w > 400 ? 400 : 70.w,
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: B.tvShowsList.length,
+                                    itemCount: C.tvShowsList.length,
                                     itemBuilder: (BuildContext context, int index) => InkWell(
                                           borderRadius: const BorderRadius.all(Radius.circular(30)),
-                                          onTap: () => context.go('/tv/${B.tvShowsList[index].id}'),
+                                          onTap: () => context.go('/tv/${C.tvShowsList[index].id}'),
                                           child: FittedBox(
                                             child: suggestionWidget(
-                                                index: index, suggestions: B.tvShowsList),
+                                                index: index, suggestions: C.tvShowsList),
                                           ),
                                         )),
                               )),
